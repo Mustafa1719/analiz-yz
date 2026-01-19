@@ -1,0 +1,628 @@
+YAPAY ZEKA YETKİNLİK RUBRİĞİ - TÜM MADDELER
+
+SEVİYE 0: YAPAY ZEKA TEMEL FARKINDALIK
+Alt Başlık: Yapay zeka ile tanışma aşaması
+
+Madde 1: Yapay zeka ve araçlarını tanıyorum
+0 puan: Yapay zeka araçlarının ne olduğunu bilmiyorum, isimlerini duymadım.
+1 puan: ChatGPT, Gemini, Claude gibi araç isimlerini duydum ancak ne işe yaradıklarını bilmiyorum.
+2 puan: Bu araçların metin yazma, soru yanıtlama gibi genel işlevleri olduğunu biliyorum.
+3 puan: En az iki yapay zeka aracının adını ve hangi tür işlerde kullanıldığını açıklayabiliyorum.
+Kanıt (Örnek): "ChatGPT metin üretmek için, Gemini araştırma için kullanılıyor" gibi açıklama yapabilme
+
+Madde 2: Yapay zekanın işime nerede değer katabileceğini kavrıyorum
+0 puan: Yapay zekanın benim işimle ilgili olduğunu düşünmüyorum.
+1 puan: Yapay zekanın bazı işlerde kullanılabileceğini biliyorum ama kendi işimle ilişkilendirmedim.
+2 puan: Kendi işimde yapay zekanın hangi tür görevlerde kullanılabileceğini ayırt edebiliyorum (2-3 örnek verebiliyorum).
+3 puan: Kendi işimde yapay zekanın uygun olduğu ve olmadığı alanları örneklerle açıklayabiliyorum (5+ senaryo).
+Kanıt (Örnek): "E-posta taslağı yazabilir ama müşteriyle birebir kararları veremez" gibi açıklama
+
+Madde 3: Temel yapay zeka kavramlarını biliyorum
+0 puan: Prompt, model, yapay zeka gibi terimleri hiç duymadım.
+1 puan: Bu terimleri duydum ama ne anlama geldiklerini bilmiyorum.
+2 puan: Prompt'un "yapay zekaya verilen talimat" olduğunu biliyorum.
+3 puan: Prompt, model, halüsinasyon, veri güvenliği gibi en az 3-4 temel kavramı doğru şekilde açıklayabiliyorum.
+Kanıt (Örnek): "Halüsinasyon, yapay zekanın uydurma bilgi üretmesidir" şeklinde tanım yapabilme
+
+Madde 4: Yapay zekanın sınırlarını ve risklerini farkındayım
+0 puan: Yapay zekanın verdiği sonuçların her zaman doğru olduğunu düşünüyorum.
+1 puan: Yapay zekanın hata yapabileceğini duydum ama nedenlerini bilmiyorum.
+2 puan: Halüsinasyon ve veri güvenliği gibi temel riskleri biliyorum.
+3 puan: Yapay zeka çıktılarının kontrol edilmesi gerektiğini, etik ve gizlilik risklerini açıklayabiliyorum.
+Kanıt (Örnek): "YZ çıktıları kontrol edilmeli çünkü yanlış veya eksik olabilir" açıklaması
+
+Madde 5: Yapay zeka öğrenmek için somut adım attım
+0 puan: Herhangi bir araştırma veya deneme yapmadım.
+1 puan: Makale okudum, video izledim gibi pasif öğrenme yaptım.
+2 puan: Bir yapay zeka aracına üye oldum ve ilk denememi yaptım.
+3 puan: Farklı yapay zeka araçlarını denedim ve öğrenme kaynaklarını takip etmeye devam ediyorum.
+Kanıt (Örnek): İlk prompt denemesi, ekran görüntüsü veya örnek soru-cevap
+
+
+SEVİYE 1: PROMPT MÜHENDİSLİĞİ
+Alt Başlık: Temel YZ Kullanımı
+Madde 1: Yapay zeka araçlarını düzenli kullanıyorum
+
+0 puan: Hiç kullanmıyorum veya sadece bir kez denedim
+1 puan: Ayda birkaç kez kullanıyorum
+2 puan: Haftada 2-3 kez kullanıyorum
+3 puan: Günlük iş akışımda düzenli olarak (günde 1+ kez) kullanıyorum
+Kanıt: Örnek: Son 7 gündeki yapay zeka kullanım sıklığı, sohbet geçmişi
+
+Madde 2: Net ve yapılandırılmış talimatlar (prompt) yazıyorum
+
+0 puan: Belirsiz sorular soruyorum ('Bana yardım et', 'Bir şey yaz')
+1 puan: Konuyu belirtiyorum ama talimat net değil
+2 puan: Görev, format ve bağlam belirterek talimat yazıyorum
+3 puan: Rol, hedef kitle, ton, format gibi tüm bileşenleri sistematik kullanıyorum
+Kanıt: Örnek: 'Bir pazarlama uzmanı gibi, genç profesyonellere yönelik, samimi tonla 200 kelimelik blog yazısı yaz' formatında prompt
+
+Madde 3: Prompt formüllerini (PARTS, SALT) biliyorum ve uyguluyorum
+
+0 puan: Bu formülleri hiç duymadım
+1 puan: İsimlerini duydum ama ne olduğunu bilmiyorum
+2 puan: En az birini biliyorum ve bazen uyguluyorum
+3 puan: PARTS veya SALT'ı düzenli olarak uyguluyorum ve farkını görüyorum
+Kanıt: Örnek: PARTS (Persona, Action, Recipient, Theme, Structure) açıklaması veya örnek prompt
+
+Madde 4: Çıktı kalitesini iyileştirmek için prompt'u geliştiriyorum
+
+0 puan: İlk sonucu olduğu gibi kabul ediyorum
+1 puan: Bazen 'Daha kısa yaz' gibi basit düzeltmeler istiyorum
+2 puan: Sistematik olarak test edip iyileştiriyorum (A/B karşılaştırma)
+3 puan: Farklı yaklaşımları deneyip en iyi sonucu veren prompt'u kaydediyorum
+Kanıt: Örnek: Aynı görev için farklı prompt versiyonları ve sonuçların karşılaştırması
+
+Madde 5: Farklı yapay zeka modellerini karşılaştırarak en iyisini seçiyorum
+
+0 puan: Tek bir model kullanıyorum ve alternatifleri denemiyorum
+1 puan: Farklı modellerin olduğunu biliyorum ama hepsini aynı sanıyorum
+2 puan: Bazen farklı modelleri deniyorum
+3 puan: İstediğim sonucu alana kadar farklı modelleri (ChatGPT, Claude, Gemini vb.) sistematik test ediyorum
+Kanıt: Örnek: Aynı prompt'u 2+ farklı modelde test etme ve sonuçları karşılaştırma
+
+Madde 6: Hedef kitle ve ton yönetimi yapıyorum
+
+0 puan: Hedef kitle veya ton belirtmiyorum
+1 puan: Bazen 'Basit anlat' gibi genel ifadeler kullanıyorum
+2 puan: Hedef kitleyi her zaman belirtiyorum ('Yöneticilere', 'Öğrencilere' vb.)
+3 puan: Hedef kitle + ton + dil seviyesini detaylı tanımlayarak profesyonel sonuçlar alıyorum
+Kanıt: Örnek: 'C-suite yöneticilere yönelik, resmi ve özet (max 150 kelime) sunum notu' gibi prompt
+
+Madde 7: Yapay zeka çıktılarını kontrol edip düzenliyorum
+
+0 puan: Gelen sonucu hiç kontrol etmeden kullanıyorum
+1 puan: Bazen göz gezdiriyorum ama detaylı kontrol etmiyorum
+2 puan: Her zaman okuyup açık hataları düzeltiyorum
+3 puan: Faktörleri doğrulama, kaynak kontrol ve profesyonel düzenleme yaparak kullanıyorum
+Kanıt: Örnek: Yapay zeka çıktısı + düzenlenmiş final versiyonu karşılaştırması
+
+Madde 8: Farklı iş görevlerinde yapay zeka kullanıyorum
+
+0 puan: Sadece tek bir iş için kullanıyorum veya hiç kullanmıyorum
+1 puan: 1-2 farklı görevde kullanıyorum
+2 puan: 3-5 farklı görevde düzenli kullanıyorum
+3 puan: 7+ farklı iş görevinde (e-posta, rapor, analiz, sunum, kod vb.) aktif kullanıyorum
+Kanıt: Örnek: Son 1 ayda kullanılan görev listesi (e-posta taslağı, veri analizi, özet vb.)
+
+Madde 9: İş süreçlerimde yapay zeka ile zaman kazanıyorum
+
+0 puan: Henüz net bir fayda görmedim
+1 puan: Bazen işimi hızlandırıyor
+2 puan: Belirli görevlerde %20-30 zaman tasarrufu sağlıyorum
+3 puan: Düzenli kullandığım görevlerde %40+ zaman tasarrufu sağladım (ölçülebilir)
+Kanıt: Örnek: 'Rapor özeti eskiden 30 dk, şimdi 10 dk' gibi somut karşılaştırma
+
+Madde 10: Yapay zeka etiği ve veri güvenliği konusunda bilinçliyim
+
+0 puan: Bu konuları hiç düşünmedim
+1 puan: Hassas bilgi paylaşmaması gerektiğini biliyorum
+2 puan: Şirket verilerini, müşteri bilgilerini paylaşmıyorum
+3 puan: Veri gizliliği politikalarını biliyorum, çıktıları atıf/kaynak belirterek kullanıyorum ve telif haklarına dikkat ediyorum
+Kanıt: Örnek: Hassas bilgi içeren görevde yapay zeka kullanmama veya anonimleştirme örneği
+
+
+SEVİYE 2: YAPAY ZEKA ARAÇLARI KULLANIMI
+Alt Başlık: Özelleşmiş Araçlar
+Madde 1: Metin dışında farklı modalitelerde (görsel, video, ses) yapay zeka kullanıyorum
+
+0 puan: Sadece metin tabanlı araçlar kullanıyorum
+1 puan: Görsel veya ses araçlarını denedim ama düzenli kullanmıyorum
+2 puan: En az 2 farklı modalitede (görsel+ses veya video+görsel) araç kullanıyorum
+3 puan: 4+ farklı modalitede (metin, görsel, video, ses, kod) aktif ve düzenli kullanıyorum
+Kanıt: Örnek: Midjourney görseli + ElevenLabs ses kaydı + ChatGPT metni birleşik proje
+
+Madde 2: İhtiyaca göre doğru aracı seçebiliyorum
+
+0 puan: Tüm işler için aynı aracı kullanıyorum
+1 puan: Bazen farklı araçlar deniyorum ama hangisinin ne için iyi olduğunu bilmiyorum
+2 puan: Her modalite için en az 1 aracı biliyorum ve kullanıyorum
+3 puan: Her iş için en uygun aracı seçiyorum (fotorealistik görsel→Midjourney, hızlı kod→Claude vb.) ve tercihimi gerekçelendirebiliyorum
+Kanıt: Örnek: Görev-araç eşleştirme tablosu (Rapor→ChatGPT, Görsel→Midjourney, Video→Runway)
+
+Madde 3: Görsel oluşturma araçlarında istediğim çıktıyı alabiliyorum
+
+0 puan: Hiç görsel üretme aracı kullanmadım
+1 puan: Basit promptlar veriyorum ama istediğim sonucu alamıyorum
+2 puan: Stil, kompozisyon, renk belirterek iyi sonuçlar alıyorum
+3 puan: İleri prompt teknikleriyle (negatif prompt, aspect ratio, stil referansı) profesyonel sonuçlar üretiyorum
+Kanıt: Örnek: 'Minimalist, pastel renkler, üstten bakış açısı, kurumsal sunum için' gibi detaylı görsel prompt
+
+Madde 4: Video ve ses üretme araçlarını kullanıyorum
+
+0 puan: Hiç video/ses aracı kullanmadım
+1 puan: Bir kez denedim ama düzenli kullanmıyorum
+2 puan: Video veya ses araçlarından birini iş projelerimde kullandım
+3 puan: Her ikisini de (video+ses) iş projelerimde düzenli kullanıyorum ve kalite kontrol ediyorum
+Kanıt: Örnek: ElevenLabs ile üretilmiş ses dosyası veya Runway ile oluşturulmuş video
+
+Madde 5: Doküman ve veri analizi için yapay zeka kullanıyorum
+
+0 puan: Sadece metin yazıyorum, dosya analizi yapmıyorum
+1 puan: PDF veya Excel yükleyerek basit sorular soruyorum
+2 puan: Karmaşık dokümanları (sözleşme, rapor) analiz ettiriyorum
+3 puan: Çok sayfalı dokümanları, veri setlerini sistematik analiz edip sentez yapıyorum
+Kanıt: Örnek: 50 sayfalık raporu özetleme + ana bulguları çıkarma görevi
+
+Madde 6: Kod yazma/hata ayıklama için yapay zeka kullanıyorum
+
+0 puan: Hiç kod ile ilgili yapay zeka kullanmadım
+1 puan: Basit kod snippet'leri yazdırıyorum
+2 puan: Orta karmaşıklıkta kod yazıyor veya hata ayıklıyorum
+3 puan: Tam fonksiyonel uygulamalar geliştiriyor veya karmaşık kod tabanlarında hata ayıklıyorum
+Kanıt: Örnek: Claude/GitHub Copilot ile yazılmış 50+ satır çalışan kod
+
+Madde 7: Araştırma ve bilgi toplama için özelleşmiş araçlar kullanıyorum
+
+0 puan: Sadece genel sohbet araçlarıyla araştırma yapıyorum
+1 puan: Perplexity veya Google AI Studio'yu denedim
+2 puan: Düzenli olarak araştırma amaçlı özelleşmiş araçlar kullanıyorum
+3 puan: Derin araştırma, kaynak doğrulama ve çoklu kaynak sentezi yapıyorum
+Kanıt: Örnek: Perplexity ile kaynaklı araştırma raporu
+
+Madde 8: Farklı yapay zeka modellerinin güçlü-zayıf yönlerini biliyorum
+
+0 puan: Tüm modellerin aynı olduğunu düşünüyorum
+1 puan: Bazı modellerin farklı olduğunu biliyorum ama farkları bilmiyorum
+2 puan: GPT-4, Claude, Gemini arasındaki temel farkları biliyorum
+3 puan: Her modelin optimum kullanım alanını biliyorum (kod→Claude, analiz→GPT-4, hız→Gemini Flash vb.)
+Kanıt: Örnek: Model karşılaştırma tablosu (hız, maliyet, kod kalitesi, analiz derinliği)
+
+Madde 9: Ücretli abonelik veya API kullanımı deneyimim var
+
+0 puan: Sadece ücretsiz sürümleri kullanıyorum
+1 puan: Ücretli abonelik aldım ama özellikleri tam kullanmıyorum
+2 puan: Ücretli özellikleri (GPT-4, Claude Opus vb.) aktif kullanıyorum
+3 puan: API kullanımı veya kurumsal lisans deneyimim var ve maliyet optimizasyonu yapıyorum
+Kanıt: Örnek: ChatGPT Plus aboneliği veya API kullanım faturası/logu
+
+Madde 10: Farklı araçları kombine ederek iş akışı oluşturuyorum
+
+0 puan: Her aracı ayrı ve bağımsız kullanıyorum
+1 puan: Bazen bir araçtan diğerine manuel veri aktarıyorum
+2 puan: Düzenli olarak araçları zincir halinde kullanıyorum (ChatGPT→Midjourney→Canva)
+3 puan: Entegre iş akışları kuruyorum ve süreç dokümante ediyorum
+Kanıt: Örnek: 'Blog yazısı (ChatGPT) → Kapak görseli (Midjourney) → Sesli versiyon (ElevenLabs)' iş akışı
+
+
+SEVİYE 3: ÖZEL GPT / GEM TASARIMI
+Alt Başlık: Özelleştirilmiş Asistanlar
+Madde 1: Tekrar eden işlerim için özel asistan oluşturdum
+
+0 puan: Her seferinde sıfırdan prompt yazıyorum
+1 puan: Bazı promptları kopyala-yapıştır yapıyorum
+2 puan: 1 özel GPT/Gem oluşturdum
+3 puan: 3+ farklı iş için özel asistan oluşturdum ve aktif kullanıyorum
+Kanıt: Örnek: 'Satış E-postası Asistanı', 'Rapor Özet Uzmanı' gibi özel GPT ekran görüntüleri
+
+Madde 2: Özel asistanıma kalıcı rol ve talimatlar tanımladım
+
+0 puan: Özel asistan oluşturmadım
+1 puan: Basit bir tanım yazdım ama rol/sınır belirtmedim
+2 puan: Rol, görev ve format gibi temel talimatları tanımladım
+3 puan: Detaylı talimat, yapılacaklar/yapılmayacaklar listesi ve örneklerle kapsamlı yapılandırma yaptım
+Kanıt: Örnek: 'Sen bir İK uzmanısın. Sadece CV analizi yap. Kişisel görüş belirtme. Çıktıyı 3 madde halinde ver' gibi talimat seti
+
+Madde 3: Özel asistanıma referans dokümanlar yükledim
+
+0 puan: Hiç doküman yüklemedim
+1 puan: 1 basit doküman yükledim
+2 puan: 2-3 referans doküman (şablon, kılavuz) yükledim
+3 puan: Kapsamlı doküman seti (prosedür, şablon, stil kılavuzu, örnek çıktılar) yükledim ve güncelliyorum
+Kanıt: Örnek: Şirket yazım kılavuzu, e-posta şablonları, raporlama standartları PDF'leri
+
+Madde 4: Asistanımın tutarlılığını test ettim
+
+0 puan: Test yapmadım, ilk sonucu kullandım
+1 puan: 1-2 kez denedim
+2 puan: 5+ farklı senaryo ile test ettim
+3 puan: Sistematik test protokolü uyguladım (aynı soru farklı zamanlarda, edge case'ler vb.)
+Kanıt: Örnek: Aynı sorunun 5 farklı zamanda verilmesi ve tutarlılık analizi
+
+Madde 5: Farklı kullanım senaryoları için çoklu asistan yönetimi yapıyorum
+
+0 puan: Hiç veya sadece 1 asistan kullanıyorum
+1 puan: 2-3 asistan oluşturdum
+2 puan: 5+ farklı asistan oluşturdum ve aralarındaki farkları net tanımladım
+3 puan: Asistan kütüphanem var, dokümante edilmiş, kategorize edilmiş ve düzenli güncelleniyor
+Kanıt: Örnek: Asistan envanteri (İsim, Amaç, Son Güncelleme, Kullanım Sıklığı)
+
+Madde 6: Özel asistanımı ekiple paylaşıyorum veya özelleştiriyorum
+
+0 puan: Sadece kendim kullanıyorum ve kimseyle paylaşmadım
+1 puan: Bir kez bir asistanı paylaştım
+2 puan: Düzenli olarak ekibime asistanlar paylaşıyorum
+3 puan: Ekip üyeleri için kişiselleştirilmiş asistanlar oluşturuyorum ve kullanım eğitimi veriyorum
+Kanıt: Örnek: Ekip paylaşım linki veya özelleştirilmiş asistan versiyonları
+
+Madde 7: Asistan performansını ölçüyorum ve iyileştiriyorum
+
+0 puan: Hiç performans ölçümü yapmadım
+1 puan: Bazen 'iyi çalışmıyor' diyorum ama düzeltmiyorum
+2 puan: Geri bildirimlere göre talimatları güncelliyorum
+3 puan: Sistematik geri bildirim topluyorum, versiyon kontrolü yapıyorum ve iyileştirme döngüsü kurdum
+Kanıt: Örnek: V1.0→V2.0 değişiklik logu, kullanıcı geri bildirim formu
+
+Madde 8: Asistanlarım için net sınırlar ve kurallar tanımladım
+
+0 puan: Hiç sınır belirtmedim
+1 puan: 'Bu konulara girme' gibi genel ifadeler kullandım
+2 puan: Yapılacaklar ve yapılmayacaklar listesi oluşturdum
+3 puan: Detaylı guardrails (güvenlik, etik, format, içerik sınırları) tanımladım ve test ettim
+Kanıt: Örnek: 'Kişisel veri paylaşma', 'Medikal tavsiye verme', 'Kaynak olmadan iddia yapma' kuralları
+
+Madde 9: Özel asistanlarımı iş akışıma tam entegre ettim
+
+0 puan: Bazen hatırlayınca kullanıyorum
+1 puan: Haftada birkaç kez kullanıyorum
+2 puan: Belirli görevler için varsayılan aracım haline geldi
+3 puan: İş akışımın kritik parçası, günlük rutinimde vazgeçilmez ve ekip prosedürlerine dahil
+Kanıt: Örnek: 'Her pazartesi haftalık rapor için X asistanını kullanıyorum' gibi rutin
+
+Madde 10: Özel asistanlarla ölçülebilir verimlilik kazancı sağladım
+
+0 puan: Net bir kazanç ölçmedim
+1 puan: Biraz hızlandırdığını düşünüyorum
+2 puan: %20-30 zaman tasarrufu sağladım (subjektif)
+3 puan: %40+ zaman tasarrufu sağladım ve somut metriklerle kanıtlayabilirim (öncesi/sonrası)
+Kanıt: Örnek: 'CV analizi 20 dk→5 dk', 'Haftalık rapor 2 saat→30 dk' karşılaştırması
+
+
+SEVİYE 4: UYGULAMA PROTOTİPLEME
+Alt Başlık: No-Code YZ Uygulamaları
+Madde 1: İş süreçlerimi görselleştirebiliyorum
+
+0 puan: Süreçlerimi hiç haritalamadım
+1 puan: Basit liste veya not halinde yazıyorum
+2 puan: Akış şeması veya adım adım süreç çiziyorum
+3 puan: SIPOC, Cynefin gibi framework'lerle süreç analizi yapıyorum ve dokümante ediyorum
+Kanıt: Örnek: Müşteri onboarding sürecinin SIPOC diyagramı veya Miro/Lucidchart akış şeması
+
+Madde 2: Yapay zekanın değer yaratabileceği noktaları tespit ediyorum
+
+0 puan: Hangi işlerin YZ'ye uygun olduğunu bilmiyorum
+1 puan: 'Belki burada kullanılabilir' diye düşünüyorum ama net değil
+2 puan: Süreç içinde YZ kullanılabilecek 2-3 nokta belirleyebiliyorum
+3 puan: Sistematik analiz yapıyorum (tekrar eden iş, karar noktası, veri analizi vb.) ve önceliklendiriyorum
+Kanıt: Örnek: Süreç haritasında 'YZ kullanım noktaları' işaretli dokümantasyon
+
+Madde 3: Problem sınıflandırma yapıyorum
+
+0 puan: Tüm problemleri aynı sanıyorum
+1 puan: Kolay/zor ayrımı yapıyorum
+2 puan: Cynefin modeli gibi framework'leri duydum
+3 puan: Cynefin veya 4U ile problemleri sınıflandırıyor ve çözüm stratejisi belirliyorum
+Kanıt: Örnek: 'Bu problem Complex kategorisinde, deneme-öğrenme gerekir' analizi
+
+Madde 4: No-code platformlarda prototip geliştiriyorum
+
+0 puan: Hiç prototip geliştirmedim
+1 puan: Bir platform denedim ama tamamlamadım
+2 puan: En az 1 çalışan prototip oluşturdum
+3 puan: 3+ prototip geliştirdim ve iş değeri test ettim
+Kanıt: Örnek: Google AI Studio, Bolt.new veya Replit'te çalışan uygulama linki
+
+Madde 5: Kod yazmadan yapay zeka destekli araçlar geliştiriyorum
+
+0 puan: Hiç no-code geliştirme yapmadım
+1 puan: Basit form veya hesaplama aracı yaptım
+2 puan: Orta karmaşıklıkta uygulama (içerik üretimi, veri analizi) geliştirdim
+3 puan: İleri seviye prototip (çoklu adım, karar yapısı, entegrasyon) geliştirdim
+Kanıt: Örnek: 'Müşteri geri bildirimi analiz ve öneri aracı' gibi fonksiyonel prototip
+
+Madde 6: Prototipleri test edip geri bildirimle geliştiriyorum
+
+0 puan: Hiç test yapmadım
+1 puan: Kendim denedim
+2 puan: 2-3 kişiden geri bildirim aldım
+3 puan: Sistematik kullanıcı testi yaptım (5+ kişi), geri bildirimleri dokümante ettim ve iterasyon yaptım
+Kanıt: Örnek: Test senaryoları, kullanıcı geri bildirim formu, V1→V2 iyileştirme logu
+
+Madde 7: Hızlı doğrulama (validationContinue12 Oca) için prototipleme yapıyorum
+
+0 puan: Doğrudan tam çözüm geliştirmeye çalışıyorum
+1 puan: Bazen basit test yapıyorum
+2 puan: Fikir doğrulama için düzenli prototip yapıyorum
+3 puan: Lean/Agile yaklaşımla MVP mantığında hızlı prototip→test→öğren döngüsü kurdum
+Kanıt: Örnek: 'Bu fikri 2 günde prototiple test ettim, çalışmıyor, vazgeçtik' hikayesi
+
+Madde 8: Prototip ile tam yazılım arasındaki farkı anlıyorum
+
+0 puan: Prototip ve yazılım arasında fark olduğunu bilmiyorum
+1 puan: Genel olarak fark olduğunu biliyorum ama net değil
+2 puan: Prototip=test, Yazılım=production farkını biliyorum
+3 puan: Güvenlik, performans, bakım, ölçeklenebilirlik gibi boyutlarda farkları açıklayabilirim
+Kanıt: Örnek: 'Bu prototip sadece fikir testi için, production için güvenlik ve hata yönetimi gerekir' açıklaması
+
+Madde 9: Prototipleri iş değeri göstermek için sunuyorum
+
+0 puan: Hiç sunmadım
+1 puan: Bir kez gösterdim ama tepki almadım
+2 puan: Yöneticilere veya ekibe sunduk ve geri bildirim aldık
+3 puan: İş değeri analizi (zaman tasarrufu, maliyet, kalite) ile sundum ve onay/bütçe aldım
+Kanıt: Örnek: Sunum dökümanı + 'Bu prototip haftada 5 saat kazandırır' analizi
+
+Madde 10: Girdi-çıktı ilişkisini netleştiriyorum
+
+0 puan: Girdi ve çıktıyı tanımlamıyorum
+1 puan: Ne girdiğini ve ne çıktığını genel olarak biliyorum
+2 puan: Girdi formatı, veri tipi ve çıktı beklentisini dokümante ediyorum
+3 puan: SIPOC yaklaşımıyla Supplier-Input-Process-Output-Customer zincirini net tanımlıyorum
+Kanıt: Örnek: 'Girdi: Müşteri e-postası (text), Çıktı: Kategori (Şikayet/Soru/Öneri) + Öncelik (1-3)' tanımı
+
+
+SEVİYE 5: İŞ AKIŞI OTOMASYONU
+Alt Başlık: Yapay Zekasız Otomasyon
+Madde 1: Otomasyon araçlarını aktif kullanıyorum
+
+0 puan: Hiç otomasyon aracı kullanmadım
+1 puan: Bir platform denedim ama tamamlamadım
+2 puan: 1-2 basit otomasyon kurdum
+3 puan: 5+ aktif otomasyon kurdum ve düzenli çalışıyor
+Kanıt: Örnek: Zapier/Make/n8n dashboard ekran görüntüsü, çalışan otomasyon listesi
+
+Madde 2: Tetikleyici-İşlem-Çıktı mantığıyla düşünüyorum
+
+0 puan: Bu mantığı bilmiyorum
+1 puan: Duydum ama uygulamıyorum
+2 puan: Basit 'eğer X olursa Y yap' kuralları kuruyorum
+3 puan: Çoklu tetikleyici, dallanma ve hata yönetimi ile karmaşık mantık kuruyorum
+Kanıt: Örnek: 'Yeni Gmail gelirse (tetik) → Önceliğe göre filtrele (işlem) → Slack'e bildir (çıktı)' akış diyagramı
+
+Madde 3: Manuel tekrar eden işleri otomatikleştirdim
+
+0 puan: Hiçbir manuel işi otomatikleştirmedim
+1 puan: 1 basit veri aktarımı otomatikleştirdim
+2 puan: 3-5 farklı işi otomatikleştirdim
+3 puan: 10+ rutin işi otomatikleştirdim ve dokümante ettim
+Kanıt: Örnek: 'Form cevabı → Google Sheets → E-posta bildirimi' gibi 3+ aktif otomasyon
+
+Madde 4: Farklı uygulamaları birbirine bağlıyorum
+
+0 puan: Hiç entegrasyon yapmadım
+1 puan: Aynı ekosistem içinde (Google Workspace gibi) bağlantı kurdum
+2 puan: 2-3 farklı platform arasında entegrasyon kurdum
+3 puan: 5+ farklı platform (CRM, E-posta, Sheets, Slack, vb.) arasında çalışan entegrasyonlar kurdum
+Kanıt: Örnek: Salesforce → Gmail → Google Sheets → Slack entegrasyon zinciri
+
+Madde 5: Otomasyonlarımı izliyor ve bakım yapıyorum
+
+0 puan: Kurdum ve unuttum, çalışıp çalışmadığını bilmiyorum
+1 puan: Sorun olduğunda fark ediyorum
+2 puan: Haftada bir kontrol ediyorum
+3 puan: Otomatik bildirim + log takibi + periyodik review sistemi kurdum
+Kanıt: Örnek: Otomasyon sağlık kontrol check-listi, son 30 gün hata logu
+
+Madde 6: Hata durumları için alternatif akışlar kurdum
+
+0 puan: Hata yönetimi yapmadım
+1 puan: Başarısız olunca manuel müdahale ediyorum
+2 puan: Basit hata bildirimi kurdum
+3 puan: Try-catch, timeout, fallback mekanizması ve hata bildirimi sistemi kurdum
+Kanıt: Örnek: 'API yanıt vermezse e-posta gönder + 5 dk sonra tekrar dene' akışı
+
+Madde 7: Otomasyonlarla ölçülebilir zaman kazancı sağlıyorum
+
+0 puan: Kazancı ölçmedim
+1 puan: Genel olarak zaman kazandırdığını düşünüyorum
+2 puan: Haftalık 3-5 saat tasarruf sağlıyorum
+3 puan: Haftalık 10+ saat tasarruf sağlıyorum ve dokümante ettim
+Kanıt: Örnek: 'Rapor hazırlama 5 saat/hafta → 30 dk/hafta' karşılaştırması
+
+Madde 8: Karar yapıları (if-then) kuruyorum
+
+0 puan: Sadece lineer akışlar kuruyorum
+1 puan: Basit tek koşul kullanıyorum
+2 puan: Çoklu koşul ve dallanma kuruyorum
+3 puan: İç içe koşullar, çoklu kriter ve karmaşık karar ağaçları kuruyorum
+Kanıt: Örnek: 'Eğer tutar>1000 VE müşteri=premium İSE X, değilse Y' mantığı
+
+Madde 9: Otomasyon uygunluğunu değerlendirebiliyorum
+
+0 puan: Her işin otomasyona uygun olduğunu düşünüyorum
+1 puan: Bazen 'bu otomatikleştirilemez' diyorum ama neden bilmiyorum
+2 puan: Tekrar sıklığı ve kural netliği ile değerlendiriyorum
+3 puan: ROI analizi (kurulum süresi vs kazanç), teknik uygunluk ve risk değerlendirmesi yapıyorum
+Kanıt: Örnek: 'Bu iş ayda 2 kez, otomasyon 4 saat, kazanç 30 dk → uygun değil' analizi
+
+Madde 10: Otomasyon performansını ölçüyorum ve optimize ediyorum
+
+0 puan: Hiç performans ölçümü yapmıyorum
+1 puan: Bazen çalışma süresine bakıyorum
+2 puan: Başarı oranı ve süre gibi temel metrikleri izliyorum
+3 puan: KPI dashboard'u kurdum (başarı oranı, ortalama süre, hata oranı, maliyet) ve sürekli optimize ediyorum
+Kanıt: Örnek: Son 30 gün metrik raporu (97% başarı, ort. 2 dk, %3 hata)
+
+
+SEVİYE 6: YAPAY ZEKA DESTEKLİ OTOMASYON
+Alt Başlık: AI + Otomasyon
+Madde 1: Otomasyon içinde yapay zekayı stratejik noktalarda kullanıyorum
+
+0 puan: Hiç yapay zeka entegrasyonu yapmadım
+1 puan: Denedim ama tam çalıştıramadım
+2 puan: 1-2 otomasyonda yapay zeka kullanıyorum
+3 puan: 5+ otomasyonda stratejik karar noktalarında yapay zeka kullanıyorum ve kurallı mantıkla hibrit yaklaşım kurdum
+Kanıt: Örnek: E-posta sınıflandırma (AI) → Kategoriye göre routing (kural) akışı
+
+Madde 2: Yapay zekaya spesifik görevler tanımlıyorum
+
+0 puan: Yapay zekaya genel 'analiz et' gibi talimatlar veriyorum
+1 puan: Basit görevler tanımlıyorum ama çıktı kontrolsüz
+2 puan: Net görev (sınıflandır, özetle, çıkar) tanımlıyorum ve format belirtiyorum
+3 puan: Detaylı görev tanımı + çıktı formatı + kalite kriterleri + hata durumu yönetimi tanımlıyorum
+Kanıt: Örnek: 'Bu e-postayı 3 kategoriden birine sınıflandır: Şikayet/Soru/Öneri. Çıktı: JSON {category, confidence, reason}'
+
+Madde 3: Yapay zeka API'lerini otomasyon araçlarına entegre ediyorum
+
+0 puan: API kullanmadım
+1 puan: API key aldım ama kullanamadım
+2 puan: Basit API çağrısı yapıyorum
+3 puan: Çoklu API, hata yönetimi, rate limiting ve maliyet optimizasyonu ile entegrasyon yapıyorum
+Kanıt: Örnek: n8n'de OpenAI API çağrısı + retry mekanizması + token limiti kontrolü
+
+Madde 4: Kural ve yapay zeka arasındaki sınırı doğru çiziyorum
+
+0 puan: Her işi yapay zekaya yaptırmaya çalışıyorum
+1 puan: Bazen kural bazen yapay zeka kullanıyorum ama net kriter yok
+2 puan: Deterministik işlerde kural, belirsiz işlerde yapay zeka kullanıyorum
+3 puan: Sistematik karar matrisi kurdum (kural: hız+maliyet+kesinlik, AI: yorumlama+context+esneklik) ve hibrit optimize ediyorum
+Kanıt: Örnek: 'Tarih/sayı çıkarma→Kural, duygu analizi→AI' karar tablosu
+
+Madde 5: Yapay zeka çıktısını akış içinde kullanıyorum
+
+0 puan: Yapay zeka çıktısını manuel kopyalıyorum
+1 puan: Çıktıyı alıyorum ama sonraki adımda kullanamıyorum
+2 puan: Yapay zeka çıktısını sonraki adıma input olarak gönderiyorum
+3 puan: Yapay zeka çıktısına göre dallanma, filtreleme ve dinamik akış kontrolü yapıyorum
+Kanıt: Örnek: AI sınıflandırma sonucu 'Acil' ise Slack'e bildir, değilse ticket oluştur
+
+Madde 6: Doküman okuma ve analizi otomasyonları kurdum
+
+0 puan: Manuel doküman okuyorum
+1 puan: Yapay zekaya manuel yüklüyorum
+2 puan: Otomatik doküman upload + analiz akışı kurdum
+3 puan: Çoklu doküman işleme, OCR, tablo çıkarma ve yapılandırılmış veri çıktısı üretiyorum
+Kanıt: Örnek: PDF fatura → AI ile veri çıkarma → JSON → ERP'ye kayıt
+
+Madde 7: Yapay zeka kalitesini izliyor ve doğruluyorum
+
+0 puan: Yapay zeka sonuçlarını hiç kontrol etmiyorum
+1 puan: Bazen rastgele kontrol ediyorum
+2 puan: Düzenli örnekleme yapıyorum (%10 kontrol)
+3 puan: Otomatik kalite metrikleri (confidence score, validation rules) ve periyodik audit sistemi kurdum
+Kanıt: Örnek: 'Confidence<0.7 ise insan onayına gönder' kuralı + haftalık kalite raporu
+
+Madde 8: Akıllı yönlendirme ve önceliklendirme sistemleri kurdum
+
+0 puan: Tüm işler aynı öncelikle işleniyor
+1 puan: Manuel önceliklendirme yapıyorum
+2 puan: Kural bazlı önceliklendirme kurdum
+3 puan: Yapay zeka ile içerik analizi + sentiment + aciliyet skorlaması yapan dinamik önceliklendirme sistemi kurdum
+Kanıt: Örnek: E-posta AI analizi → Urgency skoru (1-10) → Sıraya göre routing
+
+Madde 9: Yapay zeka maliyetlerini yönetiyorum
+
+0 puan: Maliyet takibi yapmıyorum
+1 puan: Ne kadar harcadığımı biliyorum ama optimize etmiyorum
+2 puan: Model seçimi (GPT-4 vs GPT-3.5) ile optimizasyon yapıyorum
+3 puan: Token limitleri, caching, batch processing ve model optimizasyonu ile maliyet yönetimi yapıyorum
+Kanıt: Örnek: 'Basit görevlerde GPT-3.5, karmaşık analizde GPT-4' stratejisi + aylık maliyet raporu
+
+Madde 10: Esnek ve ölçeklenebilir yapay zeka destekli süreçler sunuyorum
+
+0 puan: Sabit, değişime kapalı akışlar kurdum
+1 puan: Küçük değişiklikler için akışı yeniden kurmam gerekiyor
+2 puan: Parametrik yapılar kurdum, bazı değişikliklere uyum sağlıyor
+3 puan: Yapay zeka adaptasyonu ile değişen durumlara otomatik uyum sağlayan, ölçeklenebilir sistemler kurdum ve dokümante ettim
+Kanıt: Örnek: Yeni kategori eklendiğinde AI otomatik öğreniyor, akış değişikliği gerektirmiyor
+
+
+SEVİYE 7: YAPAY ZEKA AJANLARI
+Alt Başlık: Otonom AI Sistemler
+Madde 1: Yapay zekaya hedef tanımlıyorum, adımları kendisi planlıyor
+
+0 puan: Her adımı ben tanımlıyorum
+1 puan: Bazı adımları yapay zeka belirliyor ama çoğunu ben yönetiyorum
+2 puan: Hedef veriyorum, temel planı yapay zeka oluşturuyor
+3 puan: Sadece hedef + kısıtları tanımlıyorum, yapay zeka tam otonom plan+yürütme yapıyor
+Kanıt: Örnek: 'Ocak ayı satış raporunu hazırla ve yöneticilere mail at' → Ajan veri topluyor, analiz ediyor, rapor oluşturuyor, gönderiyor
+
+Madde 2: Ajan platformlarını kullanıyorum
+
+0 puan: Hiç ajan platformu kullanmadım
+1 puan: Ajan kavramını biliyorum ama kurmadım
+2 puan: Basit bir ajan denedim (örn: AutoGPT)
+3 puan: Profesyonel ajan sistemleri (LangChain, AutoGen, CrewAI) kurdum ve production'da çalıştırıyorum
+Kanıt: Örnek: LangChain ile multi-agent sistemi + çalışan deployment
+
+Madde 3: Ajana araç erişimi tanımlıyorum
+
+0 puan: Ajan araç kullanamıyor
+1 puan: 1-2 basit araç (web arama gibi) kullanabiliyor
+2 puan: 5+ araç (API, database, dosya sistemi) erişimi tanımladım
+3 puan: Kapsamlı araç kütüphanesi + izin matrisi + güvenlik katmanı ile ajan tool kullanımı kurdum
+Kanıt: Örnek: Ajan için tool listesi: [Google Search, Salesforce API, Gmail, Sheets, SQL] + erişim politikası
+
+Madde 4: Ajan kendi adımlarını belirliyor ve uygulayabiliyor
+
+0 puan: Sabit akış takip ediyor
+1 puan: Basit dallanma yapabiliyor
+2 puan: Alternatif stratejiler deneyebiliyor
+3 puan: Hedefe ulaşmak için dinamik plan oluşturuyor, başarısız olursa alternatif yol buluyor
+Kanıt: Örnek: Ajan log'u: 'Web scraping başarısız oldu → API denedi → başarılı → devam etti'
+
+Madde 5: Ajana ara sonuçlara göre strateji değiştirme izni veriyorum
+
+0 puan: Ajan sabit planı takip ediyor
+1 puan: Hata durumunda duruyor ve bildiriyor
+2 puan: Basit hata yönetimi var (retry gibi)
+3 puan: Ara sonuçları değerlendirerek strateji değiştirebiliyor, alternatif yollar deneyebiliyor
+Kanıt: Örnek: 'Veri bulunamadı → Alternatif kaynak dene → Başka format dene → Başarısız → Rapor et' akışı
+
+Madde 6: Beklenmeyen durumlar için guardrails kurdum
+
+0 puan: Hata yönetimi yok, ajan sınırsız
+1 puan: Basit timeout veya limit var
+2 puan: Hata durumları için kurallar tanımladım
+3 puan: Kapsamlı guardrail sistemi: bütçe limiti, zaman limiti, veri erişim kontrolü, etik kurallar, insan onayı tetikleyicileri
+Kanıt: Örnek: 'Maliyet $10 aşarsa dur', '24 saat içinde bitir', 'Hassas veri algılarsa insan onayı iste' kuralları
+
+Madde 7: Ajan kararlarını izliyor ve denetimliyorum
+
+0 puan: Ajan ne yaptığını bilmiyorum
+1 puan: Sadece son sonucu görüyorum
+2 puan: Basit loglar tutuyorum
+3 puan: Detaylı observability: her karar, her araç çağrısı, reasoning log, metrikler ve alert sistemi
+Kanıt: Örnek: Ajan dashboard'u: gerçek zamanlı status, karar geçmişi, başarı/başarısızlık metrikleri
+
+Madde 8: Karmaşık, çok adımlı süreçleri ajan ile yönetiyorum
+
+0 puan: Sadece basit tek adımlı görevler
+1 puan: 2-3 adımlı basit akışlar
+2 puan: 5-10 adımlı orta karmaşıklıkta süreçler
+3 puan: 20+ adımlı, çoklu karar noktası, dış sistem entegrasyonu gerektiren karmaşık süreçleri ajan ile yönetiyorum
+Kanıt: Örnek: End-to-end müşteri onboarding: veri toplama, doğrulama, CRM kaydı, e-posta dizisi, takip planı
+
+Madde 9: Ajan tabanlı sistemlerle ölçeklenebilirlik ve hız sağlıyorum
+
+0 puan: Manuel müdahale gerektiriyor
+1 puan: Bazı işlerde hızlanma var
+2 puan: Belirli süreçlerde 5x hızlanma sağladım
+3 puan: 10x+ ölçeklenebilirlik, paralel işlem kapasitesi ve iş değeri metrikleriyle kanıtladım
+Kanıt: Örnek: 'Müşteri analizi 1 günden 1 saate düştü, aynı anda 50 müşteri işlenebiliyor'
+
+Madde 10: Ajan sistemlerinin bakım, güvenlik ve maliyet yönetimini yapıyorum
+
+0 puan: Kurdum ve unuttum, bakım yapmıyorum
+1 puan: Sorun olduğunda müdahale ediyorum
+2 puan: Periyodik kontrol ve güncelleme yapıyorum
+3 puan: Kapsamlı yönetişim: otomatik sağlık kontrolü, güvenlik audit, maliyet optimizasyonu, versiyon yönetimi, dokümantasyon ve ekip eğitimi
+Kanıt: Örnek: Ajan yönetişim dokümantasyonu: SLA, güvenlik politikası, maliyet raporu, incident log, update pipeline
+
+
+📊 PUANLAMA SİSTEMİ
+
+Seviye 0: 5 madde × 3 puan = 15 puan maksimum
+Seviye 1-7: Her biri 10 madde × 3 puan = 30 puan maksimum
+Toplam: 225 puan maksimum
+Seviye Geçiş Kriteri: %70+ (21/30 puan veya Seviye 0 için 11/15 puan)
