@@ -911,6 +911,22 @@ export default function AICompetencyApp() {
         [questionIndex]: score
       }
     }));
+
+    // Otomatik olarak sonraki soruya geç (300ms bekle)
+    setTimeout(() => {
+      const currentLevelData = competencyLevels[level];
+      if (questionIndex < currentLevelData.questions.length - 1) {
+        // Aynı seviyede sonraki soru
+        setCurrentQuestion(questionIndex + 1);
+      } else if (level < 7) {
+        // Sonraki seviyeye geç
+        setCurrentLevel(level + 1);
+        setCurrentQuestion(0);
+      } else {
+        // Son soru - sonuçlara git
+        setCurrentView('results');
+      }
+    }, 300);
   };
 
   const getLevelScore = (level) => {
@@ -989,239 +1005,505 @@ export default function AICompetencyApp() {
   // ==================== HOME PAGE ====================
   if (currentView === 'home') {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50">
-        {/* Animated background elements */}
-        <div className="fixed inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-20 left-10 w-72 h-72 bg-blue-200/30 rounded-full blur-3xl animate-pulse" style={{animationDuration: '4s'}}></div>
-          <div className="absolute bottom-20 right-10 w-96 h-96 bg-indigo-200/20 rounded-full blur-3xl animate-pulse" style={{animationDuration: '6s', animationDelay: '2s'}}></div>
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-cyan-100/20 to-blue-100/20 rounded-full blur-3xl"></div>
-        </div>
-
-        {/* Header */}
-        <header className="relative z-10 border-b border-slate-200/50 bg-white/70 backdrop-blur-xl">
-          <div className="max-w-5xl mx-auto px-6 py-5 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/25">
-                <Brain className="w-5 h-5 text-white" />
+      <div style={{ minHeight: '100vh', backgroundColor: '#f8fafc' }}>
+        {/* Sticky Header */}
+        <header style={{
+          position: 'sticky',
+          top: 0,
+          zIndex: 50,
+          backgroundColor: 'rgba(255,255,255,0.95)',
+          backdropFilter: 'blur(12px)',
+          borderBottom: '1px solid #e2e8f0',
+          boxShadow: '0 1px 3px rgba(0,0,0,0.05)'
+        }}>
+          <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 24px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '72px' }}>
+              {/* Logo */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                <div style={{
+                  width: '48px',
+                  height: '48px',
+                  background: 'linear-gradient(135deg, #2563eb, #4f46e5)',
+                  borderRadius: '14px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  boxShadow: '0 4px 12px rgba(37,99,235,0.3)'
+                }}>
+                  <Brain style={{ width: '24px', height: '24px', color: 'white' }} />
+                </div>
+                <div>
+                  <h1 style={{ color: '#0f172a', fontWeight: 700, fontSize: '18px', margin: 0 }}>YZ Yetkinlik Değerlendirme</h1>
+                  <p style={{ color: '#64748b', fontSize: '12px', margin: 0 }}>Kişisel Değerlendirme</p>
+                </div>
               </div>
-              <span className="text-slate-800 font-semibold text-lg tracking-tight">AI Yetkinlik</span>
+
+              {/* Nav */}
+              <nav style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <button
+                  onClick={() => setShowGlossary(true)}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    color: '#475569',
+                    fontSize: '14px',
+                    fontWeight: 500,
+                    padding: '10px 16px',
+                    borderRadius: '10px',
+                    border: 'none',
+                    background: 'transparent',
+                    cursor: 'pointer'
+                  }}
+                >
+                  <Library style={{ width: '16px', height: '16px' }} />
+                  Kavramlar
+                </button>
+                <button
+                  onClick={startAssessment}
+                  style={{
+                    background: 'linear-gradient(135deg, #2563eb, #4f46e5)',
+                    color: 'white',
+                    fontSize: '14px',
+                    fontWeight: 600,
+                    padding: '12px 24px',
+                    borderRadius: '12px',
+                    border: 'none',
+                    cursor: 'pointer',
+                    boxShadow: '0 4px 12px rgba(37,99,235,0.3)'
+                  }}
+                >
+                  Hemen Başla
+                </button>
+              </nav>
             </div>
-            <button
-              onClick={() => setShowGlossary(true)}
-              className="text-slate-500 hover:text-slate-800 text-sm font-medium transition-all duration-300 hover:bg-slate-100 px-4 py-2 rounded-lg"
-            >
-              Kavramlar
-            </button>
           </div>
         </header>
 
-        {/* Hero - Centered */}
-        <section className="relative z-10 min-h-[85vh] flex items-center justify-center px-6">
-          <div className="max-w-4xl mx-auto text-center">
+        {/* Hero Section */}
+        <section style={{
+          position: 'relative',
+          overflow: 'hidden',
+          background: 'linear-gradient(180deg, #eff6ff 0%, #f8fafc 100%)',
+          padding: '80px 24px 100px'
+        }}>
+          <div style={{ maxWidth: '1200px', margin: '0 auto', textAlign: 'center' }}>
             {/* Badge */}
-            <div className="inline-flex items-center gap-2 bg-blue-50 border border-blue-200 text-blue-700 px-4 py-2 rounded-full text-sm font-medium mb-8 animate-fade-in">
-              <Sparkles className="w-4 h-4" />
-              <span>Kurumsal Yapay Zeka Olgunluk Analizi</span>
+            <div style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '10px',
+              backgroundColor: 'white',
+              color: '#2563eb',
+              padding: '12px 20px',
+              borderRadius: '50px',
+              fontSize: '14px',
+              fontWeight: 600,
+              marginBottom: '32px',
+              boxShadow: '0 4px 16px rgba(0,0,0,0.08)',
+              border: '1px solid #dbeafe'
+            }}>
+              <Sparkles style={{ width: '16px', height: '16px' }} />
+              <span>Kişisel YZ Yetkinlik Analizi</span>
             </div>
 
-            {/* Main heading */}
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 leading-tight mb-6 tracking-tight">
-              Yapay Zeka Yetkinliğinizi
-              <span className="block bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 bg-clip-text text-transparent">
-                Profesyonelce Olcun
+            {/* Heading */}
+            <h1 style={{
+              fontSize: 'clamp(36px, 6vw, 72px)',
+              fontWeight: 800,
+              color: '#0f172a',
+              lineHeight: 1.1,
+              marginBottom: '32px',
+              letterSpacing: '-0.02em'
+            }}>
+              Yapay Zeka<br />
+              <span style={{
+                background: 'linear-gradient(135deg, #2563eb, #7c3aed)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text'
+              }}>
+                Yetkinliğinizi Ölçün
               </span>
             </h1>
 
-            <p className="text-lg md:text-xl text-slate-600 max-w-2xl mx-auto mb-10 leading-relaxed">
-              Organizasyonunuzun AI olgunlugunu 8 seviyeli cercevemizle
-              degerlendirin. Dogru egitim ve gelisim yolunu belirleyin.
+            {/* Subtitle */}
+            <p style={{
+              fontSize: 'clamp(16px, 2.5vw, 22px)',
+              color: '#475569',
+              lineHeight: 1.6,
+              marginBottom: '48px',
+              maxWidth: '700px',
+              margin: '0 auto 48px'
+            }}>
+              Yapay zeka yetkinliğinizi{' '}
+              <strong style={{ color: '#0f172a' }}>8 seviyeli</strong>{' '}
+              çerçevemizle değerlendirin ve kişisel gelişim yolunuzu belirleyin.
             </p>
 
-            {/* CTA Button */}
+            {/* CTA */}
             <button
               onClick={startAssessment}
-              className="group inline-flex items-center gap-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-4 rounded-xl font-semibold text-lg shadow-xl shadow-blue-500/25 hover:shadow-2xl hover:shadow-blue-500/30 hover:scale-105 transition-all duration-300"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '12px',
+                background: 'linear-gradient(135deg, #2563eb, #4f46e5)',
+                color: 'white',
+                fontSize: '18px',
+                fontWeight: 700,
+                padding: '20px 40px',
+                borderRadius: '16px',
+                border: 'none',
+                cursor: 'pointer',
+                boxShadow: '0 8px 32px rgba(37,99,235,0.35)'
+              }}
             >
-              <span>Degerlendirmeye Basla</span>
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              <span>Değerlendirmeye Başla</span>
+              <ArrowRight style={{ width: '20px', height: '20px' }} />
             </button>
+          </div>
+        </section>
 
-            {/* Stats */}
-            <div className="flex items-center justify-center gap-8 mt-10 text-sm text-slate-500">
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                <span>{getTotalQuestions()} soru</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Clock className="w-4 h-4" />
-                <span>~10 dakika</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Shield className="w-4 h-4" />
-                <span>Ucretsiz</span>
-              </div>
+        {/* Levels Section */}
+        <section style={{ padding: '80px 24px', backgroundColor: 'white' }}>
+          <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+            <div style={{ textAlign: 'center', marginBottom: '48px' }}>
+              <p style={{ fontSize: '12px', fontWeight: 700, color: '#2563eb', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '12px' }}>
+                YETKİNLİK SEVİYELERİ
+              </p>
+              <h2 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 700, color: '#0f172a' }}>
+                8 Seviyeli Değerlendirme
+              </h2>
             </div>
 
-            {/* AI Visual */}
-            <div className="mt-16 relative">
-              <div className="bg-white/80 backdrop-blur-xl rounded-2xl shadow-2xl shadow-slate-200/50 border border-slate-200/50 p-8 max-w-3xl mx-auto">
-                <div className="grid grid-cols-4 gap-4">
-                  {competencyLevels.slice(0, 8).map((level, index) => {
-                    const colors = ['#10b981', '#10b981', '#0ea5e9', '#0ea5e9', '#6366f1', '#6366f1', '#8b5cf6', '#8b5cf6'];
-                    return (
-                      <div
-                        key={level.id}
-                        className="group relative bg-slate-50 hover:bg-white rounded-xl p-4 transition-all duration-300 hover:shadow-lg hover:scale-105 cursor-default border border-slate-100 hover:border-slate-200"
-                        style={{animationDelay: `${index * 100}ms`}}
-                      >
-                        <div
-                          className="w-10 h-10 rounded-lg flex items-center justify-center text-white text-sm font-bold mb-3 mx-auto shadow-lg"
-                          style={{backgroundColor: colors[index], boxShadow: `0 4px 14px ${colors[index]}40`}}
-                        >
-                          {level.id}
-                        </div>
-                        <p className="text-xs text-slate-600 font-medium text-center leading-tight">{level.title}</p>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+              gap: '20px'
+            }}>
+              {competencyLevels.map((level, index) => {
+                const LevelIcon = level.icon;
+                const colors = ['#64748b', '#3b82f6', '#8b5cf6', '#f59e0b', '#10b981', '#06b6d4', '#ec4899', '#6366f1'];
+                const bgColor = colors[index];
+
+                return (
+                  <div
+                    key={level.id}
+                    style={{
+                      backgroundColor: 'white',
+                      border: '2px solid #f1f5f9',
+                      borderRadius: '20px',
+                      padding: '24px',
+                      transition: 'all 0.2s ease',
+                      cursor: 'default'
+                    }}
+                    onMouseOver={(e) => {
+                      e.currentTarget.style.borderColor = '#e2e8f0';
+                      e.currentTarget.style.boxShadow = '0 8px 32px rgba(0,0,0,0.1)';
+                      e.currentTarget.style.transform = 'translateY(-4px)';
+                    }}
+                    onMouseOut={(e) => {
+                      e.currentTarget.style.borderColor = '#f1f5f9';
+                      e.currentTarget.style.boxShadow = 'none';
+                      e.currentTarget.style.transform = 'translateY(0)';
+                    }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
+                      <div style={{
+                        width: '56px',
+                        height: '56px',
+                        backgroundColor: bgColor,
+                        borderRadius: '16px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexShrink: 0,
+                        boxShadow: `0 4px 12px ${bgColor}40`
+                      }}>
+                        <LevelIcon style={{ width: '28px', height: '28px', color: 'white' }} />
                       </div>
-                    );
-                  })}
-                </div>
-                <p className="text-center text-slate-400 text-sm mt-6">8 yetkinlik seviyesi ile kapsamli analiz</p>
-              </div>
+                      <div style={{ flex: 1 }}>
+                        <span style={{
+                          fontSize: '11px',
+                          fontWeight: 700,
+                          color: bgColor,
+                          backgroundColor: `${bgColor}15`,
+                          padding: '4px 10px',
+                          borderRadius: '50px',
+                          display: 'inline-block',
+                          marginBottom: '8px'
+                        }}>
+                          Seviye {level.id}
+                        </span>
+                        <h3 style={{ fontSize: '16px', fontWeight: 700, color: '#0f172a', margin: '0 0 4px' }}>{level.title}</h3>
+                        <p style={{ fontSize: '14px', color: '#64748b', margin: 0, lineHeight: 1.5 }}>{level.subtitle}</p>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </section>
 
         {/* Problem Section */}
-        <section className="relative z-10 py-24 px-6 bg-white/50">
-          <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-3xl font-bold text-slate-900 mb-4">
-              Tanidik Geliyor mu?
-            </h2>
-            <p className="text-slate-500 mb-12">Kurumsal AI donusumunun ortak zorluklari</p>
+        <section style={{ padding: '80px 24px', backgroundColor: '#f8fafc' }}>
+          <div style={{ maxWidth: '800px', margin: '0 auto' }}>
+            <div style={{ textAlign: 'center', marginBottom: '48px' }}>
+              <div style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                backgroundColor: '#fef3c7',
+                color: '#b45309',
+                padding: '10px 18px',
+                borderRadius: '50px',
+                fontSize: '14px',
+                fontWeight: 600,
+                marginBottom: '16px'
+              }}>
+                <Sparkles style={{ width: '16px', height: '16px' }} />
+                Tanıdık Geldi mi?
+              </div>
+              <h2 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 700, color: '#0f172a', marginBottom: '12px' }}>
+                8 Seviyeli Değerlendirme ile<br />
+                <span style={{ color: '#3b82f6' }}>Bu Sorulara Cevap Bulun</span>
+              </h2>
+              <p style={{ fontSize: '18px', color: '#64748b' }}>
+                Seviyenizi öğrenin, gelişim yolunuzu netleştirin
+              </p>
+            </div>
 
-            <div className="space-y-4">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               {[
-                "Yapay zekayi kullanmaya basladik ama aslinda hangi seviyedeyiz bilmiyoruz.",
-                "Ekiplere egitim vermek istiyoruz ama kimin neye ihtiyaci var, net degil.",
-                "Prompt mu ogretmeliyiz, otomasyon mu, yoksa daha temel bir sey mi?"
-              ].map((text, index) => (
-                <div
-                  key={index}
-                  className="bg-white rounded-xl p-6 shadow-sm border border-slate-100 hover:shadow-md hover:border-blue-200 transition-all duration-300 text-left"
-                >
-                  <div className="flex items-start gap-4">
-                    <div className="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <AlertCircle className="w-4 h-4 text-blue-600" />
+                { icon: Target, text: "Yapay zekada hangi seviyedeyim?" },
+                { icon: Compass, text: "Kendimi geliştirmek için nereden başlamalıyım?" },
+                { icon: Lightbulb, text: "Prompt mu öğrenmeliyim, otomasyon mu, yoksa daha temel bir şey mi?" }
+              ].map((item, index) => {
+                const ItemIcon = item.icon;
+                return (
+                  <div
+                    key={index}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'flex-start',
+                      gap: '20px',
+                      backgroundColor: 'white',
+                      borderRadius: '20px',
+                      padding: '24px',
+                      border: '1px solid #e2e8f0'
+                    }}
+                  >
+                    <div style={{
+                      width: '52px',
+                      height: '52px',
+                      backgroundColor: '#fef9c3',
+                      border: '1px solid #fde047',
+                      borderRadius: '14px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexShrink: 0
+                    }}>
+                      <ItemIcon style={{ width: '24px', height: '24px', color: '#ca8a04' }} />
                     </div>
-                    <p className="text-slate-700 text-lg leading-relaxed">"{text}"</p>
+                    <p style={{ fontSize: '17px', color: '#334155', lineHeight: 1.6, margin: 0, paddingTop: '8px' }}>{item.text}</p>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </section>
 
         {/* Benefits Section */}
-        <section className="relative z-10 py-24 px-6">
-          <div className="max-w-5xl mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl font-bold text-slate-900 mb-4">
-                Bu Degerlendirme Size Ne Saglar?
+        <section style={{ padding: '80px 24px', backgroundColor: 'white' }}>
+          <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
+            <div style={{ textAlign: 'center', marginBottom: '48px' }}>
+              <p style={{ fontSize: '12px', fontWeight: 700, color: '#10b981', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '12px' }}>
+                FAYDALAR
+              </p>
+              <h2 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 700, color: '#0f172a', marginBottom: '12px' }}>
+                Bu Değerlendirme Size Ne Sağlar?
               </h2>
-              <p className="text-slate-500">Somut ciktilar ve aksiyonlar</p>
+              <p style={{ fontSize: '18px', color: '#64748b' }}>Somut çıktılar ve aksiyonlar</p>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-6">
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+              gap: '24px'
+            }}>
               {[
-                {
-                  icon: Target,
-                  title: "Mevcut Durum",
-                  description: "8 seviyeli olgunluk modelinde su an nerede oldugunuzu gorun.",
-                  color: "emerald"
-                },
-                {
-                  icon: TrendingUp,
-                  title: "Gelisim Yolu",
-                  description: "Sonraki seviyeye gecmek icin hangi becerilere odaklanmaniz gerektigini ogrenin.",
-                  color: "blue"
-                },
-                {
-                  icon: Users,
-                  title: "Ortak Dil",
-                  description: "IK, yoneticiler ve ekipler arasinda ortak bir anlayis olusturun.",
-                  color: "violet"
-                }
-              ].map((item, index) => (
-                <div
-                  key={index}
-                  className="group bg-white rounded-2xl p-8 shadow-sm border border-slate-100 hover:shadow-xl hover:border-slate-200 transition-all duration-500 hover:-translate-y-1"
-                >
-                  <div className={`w-14 h-14 rounded-xl flex items-center justify-center mb-6 ${
-                    item.color === 'emerald' ? 'bg-emerald-50' :
-                    item.color === 'blue' ? 'bg-blue-50' : 'bg-violet-50'
-                  }`}>
-                    <item.icon className={`w-7 h-7 ${
-                      item.color === 'emerald' ? 'text-emerald-600' :
-                      item.color === 'blue' ? 'text-blue-600' : 'text-violet-600'
-                    }`} />
+                { icon: Target, title: 'Mevcut Durum', desc: '8 seviyeli olgunluk modelinde şu an nerede olduğunuzu net olarak görün.', gradient: 'linear-gradient(135deg, #ecfdf5, #d1fae5)', border: '#a7f3d0', iconBg: 'linear-gradient(135deg, #10b981, #14b8a6)' },
+                { icon: TrendingUp, title: 'Gelişim Yolu', desc: 'Sonraki seviyeye geçmek için hangi becerilere odaklanmanız gerektiğini öğrenin.', gradient: 'linear-gradient(135deg, #eff6ff, #dbeafe)', border: '#93c5fd', iconBg: 'linear-gradient(135deg, #3b82f6, #6366f1)' },
+                { icon: Users, title: 'Ortak Dil', desc: 'İK, yöneticiler ve ekipler arasında ortak bir anlayış ve terminoloji oluşturun.', gradient: 'linear-gradient(135deg, #f5f3ff, #ede9fe)', border: '#c4b5fd', iconBg: 'linear-gradient(135deg, #8b5cf6, #a855f7)' }
+              ].map((item, i) => {
+                const ItemIcon = item.icon;
+                return (
+                  <div
+                    key={i}
+                    style={{
+                      background: item.gradient,
+                      border: `2px solid ${item.border}`,
+                      borderRadius: '24px',
+                      padding: '32px',
+                      transition: 'all 0.3s ease'
+                    }}
+                    onMouseOver={(e) => {
+                      e.currentTarget.style.transform = 'translateY(-8px)';
+                      e.currentTarget.style.boxShadow = '0 20px 40px rgba(0,0,0,0.1)';
+                    }}
+                    onMouseOut={(e) => {
+                      e.currentTarget.style.transform = 'translateY(0)';
+                      e.currentTarget.style.boxShadow = 'none';
+                    }}
+                  >
+                    <div style={{
+                      width: '64px',
+                      height: '64px',
+                      background: item.iconBg,
+                      borderRadius: '18px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      marginBottom: '24px',
+                      boxShadow: '0 8px 20px rgba(0,0,0,0.15)'
+                    }}>
+                      <ItemIcon style={{ width: '32px', height: '32px', color: 'white' }} />
+                    </div>
+                    <h3 style={{ fontSize: '22px', fontWeight: 700, color: '#0f172a', marginBottom: '12px' }}>{item.title}</h3>
+                    <p style={{ fontSize: '16px', color: '#475569', lineHeight: 1.6, margin: 0 }}>{item.desc}</p>
                   </div>
-                  <h3 className="text-xl font-semibold text-slate-900 mb-3">{item.title}</h3>
-                  <p className="text-slate-500 leading-relaxed">{item.description}</p>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </section>
 
         {/* Trust Section */}
-        <section className="relative z-10 py-20 px-6 bg-slate-50">
-          <div className="max-w-4xl mx-auto">
-            <div className="grid md:grid-cols-3 gap-8 text-center">
+        <section style={{ padding: '80px 24px', backgroundColor: '#0f172a' }}>
+          <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+              gap: '48px',
+              textAlign: 'center'
+            }}>
               {[
-                { icon: Compass, title: "Test degil, pusula", desc: "Dogru veya yanlis cevap yok. Amacimiz yargilamak degil, yon gostermek." },
-                { icon: Lock, title: "Verileriniz sizde", desc: "Yanitlariniz sunucuya gonderilmez. Tum islem tarayicinizda gerceklesir." },
-                { icon: Building2, title: "Kurumsal odak", desc: "IK, L&D ve yoneticiler icin tasarlandi. Organizasyonel deger odakli." }
-              ].map((item, index) => (
-                <div key={index} className="p-6">
-                  <div className="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mx-auto mb-4">
-                    <item.icon className="w-6 h-6 text-slate-600" />
+                { icon: Compass, title: 'Test değil, pusula', desc: 'Doğru veya yanlış cevap yok. Amacımız yargılamak değil, yön göstermek.' },
+                { icon: Lock, title: 'Verileriniz sizde', desc: 'Yanıtlarınız sunucuya gönderilmez. Tüm işlem tarayıcınızda gerçekleşir.' },
+                { icon: Target, title: 'Kişisel gelişim odaklı', desc: 'Bireysel YZ yetkinliğinizi ölçün ve size özel gelişim önerileri alın.' }
+              ].map((item, i) => {
+                const ItemIcon = item.icon;
+                return (
+                  <div key={i}>
+                    <div style={{
+                      width: '60px',
+                      height: '60px',
+                      backgroundColor: 'rgba(255,255,255,0.1)',
+                      border: '1px solid rgba(255,255,255,0.2)',
+                      borderRadius: '18px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      margin: '0 auto 20px'
+                    }}>
+                      <ItemIcon style={{ width: '28px', height: '28px', color: 'white' }} />
+                    </div>
+                    <h3 style={{ fontSize: '20px', fontWeight: 700, color: 'white', marginBottom: '12px' }}>{item.title}</h3>
+                    <p style={{ fontSize: '16px', color: '#94a3b8', lineHeight: 1.6, margin: 0 }}>{item.desc}</p>
                   </div>
-                  <h3 className="text-lg font-semibold text-slate-900 mb-2">{item.title}</h3>
-                  <p className="text-slate-500 text-sm leading-relaxed">{item.desc}</p>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </section>
 
-        {/* CTA Section */}
-        <section className="relative z-10 py-24 px-6 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
-          <div className="max-w-2xl mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-              Hazir misiniz?
+        {/* Final CTA */}
+        <section style={{
+          padding: '100px 24px',
+          background: 'linear-gradient(135deg, #2563eb, #4f46e5, #7c3aed)',
+          textAlign: 'center'
+        }}>
+          <div style={{ maxWidth: '800px', margin: '0 auto' }}>
+            <div style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px',
+              backgroundColor: 'rgba(255,255,255,0.2)',
+              color: 'white',
+              padding: '10px 18px',
+              borderRadius: '50px',
+              fontSize: '14px',
+              fontWeight: 600,
+              marginBottom: '24px'
+            }}>
+              <Rocket style={{ width: '16px', height: '16px' }} />
+              <span>Hazır mısınız?</span>
+            </div>
+            <h2 style={{ fontSize: 'clamp(32px, 5vw, 52px)', fontWeight: 700, color: 'white', marginBottom: '20px' }}>
+              AI Yolculuğunuza Başlayın
             </h2>
-            <p className="text-slate-400 text-lg mb-10">
-              Degerlendirme yaklasik 10 dakika surer. Sonuclarinizi hemen goreceksiniz.
+            <p style={{ fontSize: '20px', color: 'rgba(255,255,255,0.85)', lineHeight: 1.6, marginBottom: '40px' }}>
+              Değerlendirme yaklaşık 10 dakika sürer.<br />
+              Sonuçlarınızı hemen göreceksiniz.
             </p>
             <button
               onClick={startAssessment}
-              className="group inline-flex items-center gap-3 bg-white text-slate-900 px-10 py-4 rounded-xl font-semibold text-lg hover:bg-slate-100 hover:scale-105 transition-all duration-300 shadow-xl"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '12px',
+                backgroundColor: 'white',
+                color: '#0f172a',
+                fontSize: '18px',
+                fontWeight: 700,
+                padding: '20px 40px',
+                borderRadius: '16px',
+                border: 'none',
+                cursor: 'pointer',
+                boxShadow: '0 8px 32px rgba(0,0,0,0.2)'
+              }}
             >
-              <span>Degerlendirmeye Basla</span>
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              <span>Değerlendirmeye Başla</span>
+              <ArrowRight style={{ width: '20px', height: '20px' }} />
             </button>
           </div>
         </section>
 
         {/* Footer */}
-        <footer className="relative z-10 bg-white border-t border-slate-200 py-8 px-6">
-          <div className="max-w-5xl mx-auto flex items-center justify-between">
-            <span className="text-sm text-slate-400">2026 Mustafa Aydin</span>
+        <footer style={{ padding: '40px 24px', backgroundColor: '#020617', borderTop: '1px solid #1e293b' }}>
+          <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '24px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <div style={{
+                width: '40px',
+                height: '40px',
+                background: 'linear-gradient(135deg, #2563eb, #4f46e5)',
+                borderRadius: '12px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}>
+                <Brain style={{ width: '20px', height: '20px', color: 'white' }} />
+              </div>
+              <span style={{ fontSize: '14px', color: '#64748b' }}>© 2026 Mustafa Aydın</span>
+            </div>
             <button
               onClick={() => setShowGlossary(true)}
-              className="text-sm text-slate-400 hover:text-slate-600 transition-colors"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                fontSize: '14px',
+                color: '#64748b',
+                background: 'transparent',
+                border: 'none',
+                cursor: 'pointer'
+              }}
             >
-              Kavramlar Sozlugu
+              <Library style={{ width: '16px', height: '16px' }} />
+              Kavramlar Sözlüğü
             </button>
           </div>
         </footer>
@@ -1245,69 +1527,155 @@ export default function AICompetencyApp() {
     const currentQuestionNumber = totalQuestionsBeforeCurrentLevel + currentQuestion + 1;
     const progress = (currentQuestionNumber / getTotalQuestions()) * 100;
 
+    const levelColors = ['#64748b', '#3b82f6', '#8b5cf6', '#f59e0b', '#10b981', '#06b6d4', '#ec4899', '#6366f1'];
+    const currentColor = levelColors[currentLevel];
+
     return (
-      <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 flex flex-col">
-        {/* Header */}
-        <header className="bg-slate-950/80 backdrop-blur-xl border-b border-white/5 sticky top-0 z-50">
-          <div className="max-w-4xl mx-auto px-6 py-4">
-            <div className="flex items-center justify-between mb-3">
+      <div style={{ minHeight: '100vh', backgroundColor: '#f8fafc', display: 'flex', flexDirection: 'column' }}>
+        {/* Header - Açık tema ile uyumlu */}
+        <header style={{
+          position: 'sticky',
+          top: 0,
+          zIndex: 50,
+          backgroundColor: 'rgba(255,255,255,0.95)',
+          backdropFilter: 'blur(12px)',
+          borderBottom: '1px solid #e2e8f0',
+          boxShadow: '0 1px 3px rgba(0,0,0,0.05)'
+        }}>
+          <div style={{ maxWidth: '900px', margin: '0 auto', padding: '8px 24px' }}>
+            {/* Top row */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
               <button
                 onClick={() => setCurrentView('home')}
-                className="flex items-center gap-2 text-slate-400 hover:text-white transition-all"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  color: '#64748b',
+                  fontSize: '13px',
+                  fontWeight: 500,
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  padding: '4px 8px',
+                  borderRadius: '6px',
+                  transition: 'all 0.2s'
+                }}
               >
-                <ChevronLeft className="w-5 h-5" />
-                <span className="hidden sm:inline">Ana Sayfa</span>
+                <ChevronLeft style={{ width: '18px', height: '18px' }} />
+                <span>Ana Sayfa</span>
               </button>
 
-              <div className="flex items-center gap-2">
-                <span className="text-slate-500 text-sm">Soru</span>
-                <span className="text-white font-semibold">{currentQuestionNumber}</span>
-                <span className="text-slate-500 text-sm">/ {getTotalQuestions()}</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span style={{
+                  backgroundColor: currentColor,
+                  color: 'white',
+                  padding: '4px 12px',
+                  borderRadius: '50px',
+                  fontSize: '13px',
+                  fontWeight: 600
+                }}>
+                  {currentQuestionNumber} / {getTotalQuestions()}
+                </span>
               </div>
 
               <button
                 onClick={() => setShowGlossary(true)}
-                className="flex items-center gap-2 text-slate-400 hover:text-white transition-all"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  color: '#64748b',
+                  fontSize: '13px',
+                  fontWeight: 500,
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  padding: '4px 8px',
+                  borderRadius: '6px'
+                }}
               >
-                <Library className="w-4 h-4" />
+                <Library style={{ width: '16px', height: '16px' }} />
+                <span>Kavramlar</span>
               </button>
             </div>
 
-            {/* Progress Bar */}
-            <div className="h-1 bg-white/10 rounded-full overflow-hidden">
+            {/* Progress Bar - Kompakt */}
+            <div style={{
+              height: '6px',
+              backgroundColor: '#e2e8f0',
+              borderRadius: '50px',
+              overflow: 'hidden'
+            }}>
               <div
-                className="h-full bg-gradient-to-r from-indigo-500 to-purple-500 transition-all duration-300"
-                style={{ width: `${progress}%` }}
+                style={{
+                  height: '100%',
+                  background: `linear-gradient(90deg, ${currentColor}, ${currentColor}cc)`,
+                  borderRadius: '50px',
+                  transition: 'width 0.3s ease',
+                  width: `${progress}%`
+                }}
               />
+            </div>
+            <div style={{
+              display: 'flex',
+              justifyContent: 'center',
+              marginTop: '4px',
+              fontSize: '11px',
+              color: '#94a3b8'
+            }}>
+              <span style={{ fontWeight: 600, color: currentColor }}>%{Math.round(progress)}</span>
             </div>
           </div>
         </header>
 
-        {/* Level Tabs */}
-        <div className="bg-slate-900/50 border-b border-white/5 overflow-x-auto">
-          <div className="max-w-4xl mx-auto px-6 py-3">
-            <div className="flex gap-2">
+        {/* Level Selector - X. Seviye formatı, kaydırmasız */}
+        <div style={{
+          backgroundColor: 'white',
+          borderBottom: '1px solid #e2e8f0',
+          padding: '6px 8px',
+          overflow: 'hidden'
+        }}>
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <div style={{
+              display: 'flex',
+              gap: '4px'
+            }}>
               {competencyLevels.map((level, idx) => {
                 const LevelIcon = level.icon;
                 const isActive = idx === currentLevel;
                 const answered = getAnsweredCount(idx);
                 const total = level.questions.length;
                 const isComplete = answered === total;
+                const color = levelColors[idx];
 
                 return (
                   <button
                     key={idx}
                     onClick={() => jumpToLevel(idx)}
-                    className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm whitespace-nowrap transition-all ${
-                      isActive
-                        ? `bg-gradient-to-r ${level.color} text-white`
-                        : 'text-slate-400 hover:text-white hover:bg-white/5'
-                    }`}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      padding: '5px 8px',
+                      borderRadius: '6px',
+                      fontSize: '11px',
+                      fontWeight: 600,
+                      whiteSpace: 'nowrap',
+                      border: isActive ? `2px solid ${color}` : '1px solid #e2e8f0',
+                      backgroundColor: isActive ? `${color}10` : 'white',
+                      color: isActive ? color : '#64748b',
+                      cursor: 'pointer',
+                      transition: 'all 0.15s'
+                    }}
                   >
-                    <LevelIcon className="w-4 h-4" />
-                    <span className="hidden sm:inline">{level.title}</span>
-                    <span className="sm:hidden">S{idx}</span>
-                    {isComplete && <CheckCircle2 className="w-3 h-3 text-emerald-300" />}
+                    <LevelIcon style={{ width: '13px', height: '13px' }} />
+                    <span>{idx}. Seviye</span>
+                    {isComplete ? (
+                      <CheckCircle2 style={{ width: '11px', height: '11px', color: '#10b981' }} />
+                    ) : (
+                      <span style={{ fontSize: '9px', color: '#94a3b8' }}>{answered}/{total}</span>
+                    )}
                   </button>
                 );
               })}
@@ -1316,40 +1684,78 @@ export default function AICompetencyApp() {
         </div>
 
         {/* Main Content */}
-        <main className="flex-1 px-6 py-8" ref={assessmentRef}>
-          <div className="max-w-3xl mx-auto">
-            {/* Level Info Card */}
-            <div className={`bg-gradient-to-br ${currentLevelData.color} rounded-2xl p-6 mb-8`}>
-              <div className="flex items-center gap-4">
-                <div className="w-14 h-14 rounded-xl bg-white/20 flex items-center justify-center">
-                  <Icon className="w-7 h-7 text-white" />
-                </div>
-                <div>
-                  <p className="text-white/70 text-sm">Seviye {currentLevel}</p>
-                  <h2 className="text-xl font-bold text-white">{currentLevelData.title}</h2>
-                  <p className="text-white/80 text-sm">{currentLevelData.subtitle}</p>
-                </div>
+        <main style={{ flex: 1, padding: '10px 24px' }} ref={assessmentRef}>
+          <div style={{ maxWidth: '800px', margin: '0 auto' }}>
+            {/* Level Info - Tek satır */}
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
+              marginBottom: '10px',
+              padding: '8px 12px',
+              backgroundColor: 'white',
+              borderRadius: '8px',
+              border: '1px solid #e2e8f0'
+            }}>
+              <div style={{
+                width: '28px',
+                height: '28px',
+                backgroundColor: currentColor,
+                borderRadius: '6px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}>
+                <Icon style={{ width: '16px', height: '16px', color: 'white' }} />
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flex: 1 }}>
+                <span style={{ fontSize: '11px', color: currentColor, fontWeight: 700 }}>SEVİYE {currentLevel}</span>
+                <span style={{ fontSize: '11px', color: '#94a3b8' }}>•</span>
+                <span style={{ fontSize: '13px', fontWeight: 600, color: '#0f172a' }}>{currentLevelData.title}</span>
+                <span style={{ fontSize: '12px', color: '#64748b' }}>- {currentLevelData.subtitle}</span>
               </div>
             </div>
 
-            {/* Question Card */}
-            <div className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
+            {/* Question Card - Kompakt */}
+            <div style={{
+              backgroundColor: 'white',
+              borderRadius: '14px',
+              border: '1px solid #e2e8f0',
+              overflow: 'hidden'
+            }}>
               {/* Question Header */}
-              <div className="p-6 border-b border-white/10">
-                <div className="flex items-start gap-4">
-                  <div className={`w-10 h-10 rounded-xl ${currentLevelData.bgColor} flex items-center justify-center flex-shrink-0`}>
-                    <span className="text-white font-bold">{currentQuestion + 1}</span>
+              <div style={{
+                padding: '14px 20px',
+                borderBottom: '1px solid #f1f5f9',
+                backgroundColor: '#fafbfc'
+              }}>
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
+                  <div style={{
+                    width: '32px',
+                    height: '32px',
+                    backgroundColor: currentColor,
+                    borderRadius: '8px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0
+                  }}>
+                    <span style={{ color: 'white', fontWeight: 700, fontSize: '14px' }}>{currentQuestion + 1}</span>
                   </div>
-                  <div>
-                    <h3 className="text-white font-semibold text-lg leading-relaxed">
-                      {currentQuestionData.text}
-                    </h3>
-                  </div>
+                  <h3 style={{
+                    fontSize: '15px',
+                    fontWeight: 600,
+                    color: '#0f172a',
+                    lineHeight: 1.45,
+                    margin: 0
+                  }}>
+                    {currentQuestionData.text}
+                  </h3>
                 </div>
               </div>
 
-              {/* Options */}
-              <div className="p-6 space-y-3">
+              {/* Options - Kompakt tasarım */}
+              <div style={{ padding: '16px 24px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 {currentQuestionData.options.map((option, idx) => {
                   const isSelected = selectedAnswer === idx;
 
@@ -1357,29 +1763,57 @@ export default function AICompetencyApp() {
                     <button
                       key={idx}
                       onClick={() => handleResponse(currentLevel, currentQuestion, idx)}
-                      className={`w-full text-left p-4 rounded-xl transition-all ${
-                        isSelected
-                          ? `bg-gradient-to-r ${currentLevelData.color} shadow-lg`
-                          : 'bg-white/5 hover:bg-white/10 border border-transparent hover:border-white/20'
-                      }`}
+                      style={{
+                        width: '100%',
+                        textAlign: 'left',
+                        padding: '12px 14px',
+                        borderRadius: '10px',
+                        border: isSelected ? `2px solid ${currentColor}` : '1px solid #e2e8f0',
+                        backgroundColor: isSelected ? `${currentColor}08` : 'white',
+                        cursor: 'pointer',
+                        transition: 'all 0.15s ease',
+                        boxShadow: isSelected ? `0 2px 8px ${currentColor}15` : 'none'
+                      }}
                     >
-                      <div className="flex items-start gap-3">
-                        <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
-                          isSelected ? 'bg-white/30' : 'bg-white/10'
-                        }`}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <div style={{
+                          width: '26px',
+                          height: '26px',
+                          borderRadius: '6px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          flexShrink: 0,
+                          backgroundColor: isSelected ? currentColor : '#f1f5f9',
+                          transition: 'all 0.15s'
+                        }}>
                           {isSelected ? (
-                            <CheckCircle2 className="w-5 h-5 text-white" />
+                            <CheckCircle2 style={{ width: '16px', height: '16px', color: 'white' }} />
                           ) : (
-                            <span className="text-sm font-medium text-slate-400">{idx}</span>
+                            <span style={{ fontSize: '12px', fontWeight: 600, color: '#94a3b8' }}>{idx}</span>
                           )}
                         </div>
-                        <span className={`text-sm leading-relaxed ${isSelected ? 'text-white' : 'text-slate-300'}`}>
-                          {option}
-                        </span>
-                        <div className={`ml-auto px-2 py-1 rounded text-xs font-medium flex-shrink-0 ${
-                          isSelected ? 'bg-white/20 text-white' : 'bg-white/5 text-slate-500'
-                        }`}>
-                          {idx} puan
+                        <div style={{ flex: 1, minWidth: 0 }}>
+                          <p style={{
+                            fontSize: '14px',
+                            lineHeight: 1.4,
+                            color: isSelected ? '#0f172a' : '#475569',
+                            margin: 0,
+                            fontWeight: isSelected ? 500 : 400
+                          }}>
+                            {option}
+                          </p>
+                        </div>
+                        <div style={{
+                          padding: '4px 8px',
+                          borderRadius: '6px',
+                          fontSize: '12px',
+                          fontWeight: 600,
+                          flexShrink: 0,
+                          backgroundColor: isSelected ? currentColor : '#f1f5f9',
+                          color: isSelected ? 'white' : '#64748b'
+                        }}>
+                          {idx}p
                         </div>
                       </div>
                     </button>
@@ -1387,53 +1821,104 @@ export default function AICompetencyApp() {
                 })}
               </div>
 
-              {/* Evidence */}
-              <div className="px-6 pb-6">
-                <div className="bg-amber-500/10 border border-amber-500/20 rounded-xl p-4">
-                  <div className="flex items-start gap-3">
-                    <Info className="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" />
-                    <div>
-                      <p className="text-amber-300 text-sm font-medium mb-1">Kanıt Örneği</p>
-                      <p className="text-slate-400 text-sm">{currentQuestionData.evidence}</p>
-                    </div>
+              {/* Evidence - Kompakt */}
+              <div style={{ padding: '0 16px 14px' }}>
+                <details style={{
+                  backgroundColor: '#fffbeb',
+                  border: '1px solid #fde68a',
+                  borderRadius: '8px',
+                  overflow: 'hidden'
+                }}>
+                  <summary style={{
+                    padding: '10px 12px',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    fontSize: '13px',
+                    fontWeight: 600,
+                    color: '#b45309',
+                    listStyle: 'none'
+                  }}>
+                    <Lightbulb style={{ width: '16px', height: '16px' }} />
+                    <span>Kanıt Örneği</span>
+                  </summary>
+                  <div style={{
+                    padding: '0 12px 10px',
+                    fontSize: '13px',
+                    color: '#78716c',
+                    lineHeight: 1.5
+                  }}>
+                    {currentQuestionData.evidence}
                   </div>
-                </div>
+                </details>
               </div>
             </div>
           </div>
         </main>
 
         {/* Navigation Footer */}
-        <footer className="bg-slate-950/80 backdrop-blur-xl border-t border-white/5 sticky bottom-0">
-          <div className="max-w-3xl mx-auto px-6 py-4">
-            <div className="flex gap-3">
+        <footer style={{
+          position: 'sticky',
+          bottom: 0,
+          backgroundColor: 'white',
+          borderTop: '1px solid #e2e8f0',
+          padding: '8px 24px',
+          boxShadow: '0 -2px 8px rgba(0,0,0,0.04)'
+        }}>
+          <div style={{ maxWidth: '800px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            {/* Önceki Soru - sadece ilk soru değilse göster */}
+            {(currentLevel > 0 || currentQuestion > 0) ? (
               <button
                 onClick={handlePrevQuestion}
-                disabled={currentLevel === 0 && currentQuestion === 0}
-                className="flex-1 bg-white/5 border border-white/10 text-white py-4 rounded-xl font-semibold hover:bg-white/10 transition-all disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '6px',
+                  padding: '10px 16px',
+                  borderRadius: '8px',
+                  fontSize: '13px',
+                  fontWeight: 600,
+                  border: '1px solid #e2e8f0',
+                  backgroundColor: 'white',
+                  color: '#475569',
+                  cursor: 'pointer',
+                  transition: 'all 0.15s'
+                }}
               >
-                <ChevronLeft className="w-5 h-5" />
+                <ChevronLeft style={{ width: '16px', height: '16px' }} />
                 Önceki
               </button>
+            ) : (
+              <div />
+            )}
 
+            {/* Raporu Göster - en az 1 cevap varsa göster */}
+            {Object.keys(responses).length > 0 && (
               <button
-                onClick={handleNextQuestion}
-                disabled={!isAnswered}
-                className={`flex-1 bg-gradient-to-r ${currentLevelData.color} text-white py-4 rounded-xl font-semibold hover:opacity-90 transition-all disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg`}
+                onClick={() => setCurrentView('results')}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '6px',
+                  padding: '10px 16px',
+                  borderRadius: '8px',
+                  fontSize: '13px',
+                  fontWeight: 600,
+                  border: 'none',
+                  backgroundColor: currentColor,
+                  color: 'white',
+                  cursor: 'pointer',
+                  transition: 'all 0.15s',
+                  boxShadow: `0 2px 8px ${currentColor}30`
+                }}
               >
-                {currentLevel === 7 && currentQuestion === currentLevelData.questions.length - 1 ? (
-                  <>
-                    <BarChart3 className="w-5 h-5" />
-                    Sonuçları Gör
-                  </>
-                ) : (
-                  <>
-                    Sonraki
-                    <ChevronRight className="w-5 h-5" />
-                  </>
-                )}
+                <BarChart3 style={{ width: '16px', height: '16px' }} />
+                Raporu Göster
               </button>
-            </div>
+            )}
           </div>
         </footer>
 
@@ -1467,100 +1952,235 @@ export default function AICompetencyApp() {
       window.print();
     };
 
+    // Seviye bazlı renkler
+    const levelColors = ['#64748b', '#3b82f6', '#8b5cf6', '#f59e0b', '#10b981', '#06b6d4', '#ec4899', '#6366f1'];
+    const currentColor = levelColors[Math.max(0, overallLevel)];
+
+    // Motivasyon mesajları
+    const getMotivationMessage = () => {
+      if (overallPercentage >= 80) return { emoji: '🎉', text: 'Mükemmel! YZ konusunda ileri seviyedesiniz.' };
+      if (overallPercentage >= 60) return { emoji: '💪', text: 'Harika ilerleme! Biraz daha pratikle uzmanlaşabilirsiniz.' };
+      if (overallPercentage >= 40) return { emoji: '🚀', text: 'İyi bir başlangıç! Potansiyeliniz yüksek.' };
+      return { emoji: '🌱', text: 'Yolculuğunuz başlıyor! Adım adım ilerleyeceksiniz.' };
+    };
+    const motivation = getMotivationMessage();
+
     return (
-      <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 print:bg-white">
+      <div style={{ minHeight: '100vh', backgroundColor: '#f8fafc' }}>
         {/* Print Styles */}
         <style>{`
           @media print {
             body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-            .print\\:hidden { display: none !important; }
-            .print\\:bg-white { background: white !important; }
           }
         `}</style>
 
-        {/* Header */}
-        <header className="bg-slate-950/80 backdrop-blur-xl border-b border-white/5 sticky top-0 z-50 print:hidden">
-          <div className="max-w-4xl mx-auto px-6 py-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
-                  <Brain className="w-5 h-5 text-white" />
-                </div>
-                <span className="text-white font-semibold">Değerlendirme Sonucu</span>
-              </div>
-              <div className="flex items-center gap-2">
+        {/* Header - Açık tema */}
+        <header style={{
+          position: 'sticky',
+          top: 0,
+          zIndex: 50,
+          backgroundColor: 'rgba(255,255,255,0.95)',
+          backdropFilter: 'blur(12px)',
+          borderBottom: '1px solid #e2e8f0',
+          boxShadow: '0 1px 3px rgba(0,0,0,0.05)'
+        }}>
+          <div style={{ maxWidth: '900px', margin: '0 auto', padding: '12px 24px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <button
+                onClick={() => setCurrentView('home')}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  color: '#64748b',
+                  fontSize: '14px',
+                  fontWeight: 500,
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  padding: '8px 12px',
+                  borderRadius: '8px'
+                }}
+              >
+                <ChevronLeft style={{ width: '20px', height: '20px' }} />
+                Ana Sayfa
+              </button>
+
+              <h1 style={{ fontSize: '16px', fontWeight: 700, color: '#0f172a' }}>
+                Değerlendirme Sonucu
+              </h1>
+
+              <div style={{ display: 'flex', gap: '8px' }}>
                 <button
                   onClick={() => setShowGlossary(true)}
-                  className="flex items-center gap-2 text-slate-400 hover:text-white px-3 py-2 rounded-lg hover:bg-white/5 transition-all"
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    color: '#64748b',
+                    fontSize: '13px',
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    padding: '8px'
+                  }}
                 >
-                  <Library className="w-4 h-4" />
+                  <Library style={{ width: '18px', height: '18px' }} />
                 </button>
                 <button
                   onClick={handleDownloadPDF}
-                  className="flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-lg transition-all"
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    backgroundColor: '#f1f5f9',
+                    color: '#475569',
+                    fontSize: '13px',
+                    fontWeight: 600,
+                    border: 'none',
+                    cursor: 'pointer',
+                    padding: '8px 14px',
+                    borderRadius: '8px'
+                  }}
                 >
-                  <Download className="w-4 h-4" />
-                  <span className="hidden sm:inline">PDF</span>
+                  <Download style={{ width: '16px', height: '16px' }} />
+                  PDF
                 </button>
               </div>
             </div>
           </div>
         </header>
 
-        <main className="px-6 py-8">
-          <div className="max-w-4xl mx-auto">
-            {/* Result Hero */}
-            <div className="bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 rounded-3xl p-8 mb-8 text-center">
-              <div className="w-20 h-20 rounded-full bg-white/20 flex items-center justify-center mx-auto mb-6">
-                <Trophy className="w-10 h-10 text-yellow-300" />
+        <main style={{ padding: '24px' }}>
+          <div style={{ maxWidth: '800px', margin: '0 auto' }}>
+
+            {/* Motivasyon Mesajı */}
+            <div style={{
+              backgroundColor: 'white',
+              borderRadius: '16px',
+              padding: '20px 24px',
+              marginBottom: '16px',
+              border: '1px solid #e2e8f0',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '16px'
+            }}>
+              <span style={{ fontSize: '32px' }}>{motivation.emoji}</span>
+              <div>
+                <p style={{ fontSize: '16px', fontWeight: 600, color: '#0f172a', marginBottom: '2px' }}>
+                  Tebrikler, değerlendirmeyi tamamladınız!
+                </p>
+                <p style={{ fontSize: '14px', color: '#64748b' }}>{motivation.text}</p>
               </div>
-              <p className="text-white/80 text-sm mb-2">Yapay Zeka Yetkinlik Seviyeniz</p>
-              <h1 className="text-5xl font-bold text-white mb-2">
-                Seviye {overallLevel === -1 ? 0 : overallLevel}
-              </h1>
-              <p className="text-2xl text-white/90 mb-6">
-                {currentLevelData.title}
-              </p>
-              <div className="flex justify-center gap-8">
-                <div className="text-center">
-                  <p className="text-3xl font-bold text-white">{totalScore}</p>
-                  <p className="text-white/60 text-sm">Toplam Puan</p>
+            </div>
+
+            {/* Sonuç Kartı */}
+            <div style={{
+              backgroundColor: 'white',
+              borderRadius: '20px',
+              border: '1px solid #e2e8f0',
+              overflow: 'hidden',
+              marginBottom: '16px'
+            }}>
+              {/* Üst Banner */}
+              <div style={{
+                background: `linear-gradient(135deg, ${currentColor}, ${currentColor}cc)`,
+                padding: '32px 24px',
+                textAlign: 'center'
+              }}>
+                <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: '14px', marginBottom: '8px' }}>
+                  Yapay Zeka Yetkinlik Seviyeniz
+                </p>
+                <h2 style={{ fontSize: '48px', fontWeight: 800, color: 'white', margin: '0 0 4px 0' }}>
+                  {overallLevel === -1 ? 0 : overallLevel}. Seviye
+                </h2>
+                <p style={{ fontSize: '20px', color: 'rgba(255,255,255,0.9)', margin: 0 }}>
+                  {currentLevelData.title}
+                </p>
+              </div>
+
+              {/* İstatistikler */}
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: '1fr 1fr',
+                borderTop: '1px solid #e2e8f0'
+              }}>
+                <div style={{
+                  padding: '20px',
+                  textAlign: 'center',
+                  borderRight: '1px solid #e2e8f0'
+                }}>
+                  <p style={{ fontSize: '32px', fontWeight: 700, color: currentColor, margin: 0 }}>{totalScore}</p>
+                  <p style={{ fontSize: '13px', color: '#64748b', margin: 0 }}>Toplam Puan</p>
                 </div>
-                <div className="text-center">
-                  <p className="text-3xl font-bold text-white">%{Math.round(overallPercentage)}</p>
-                  <p className="text-white/60 text-sm">Başarı Oranı</p>
+                <div style={{ padding: '20px', textAlign: 'center' }}>
+                  <p style={{ fontSize: '32px', fontWeight: 700, color: currentColor, margin: 0 }}>%{Math.round(overallPercentage)}</p>
+                  <p style={{ fontSize: '13px', color: '#64748b', margin: 0 }}>Başarı Oranı</p>
                 </div>
               </div>
             </div>
 
-            {/* Level Breakdown */}
-            <div className="grid md:grid-cols-2 gap-6 mb-8">
-              {/* Scores */}
-              <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
-                <h2 className="text-white font-semibold mb-4 flex items-center gap-2">
-                  <BarChart3 className="w-5 h-5 text-indigo-400" />
+            {/* İki Sütunlu Alan */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
+
+              {/* Seviye Bazlı Performans */}
+              <div style={{
+                backgroundColor: 'white',
+                borderRadius: '16px',
+                padding: '20px',
+                border: '1px solid #e2e8f0'
+              }}>
+                <h3 style={{
+                  fontSize: '14px',
+                  fontWeight: 700,
+                  color: '#0f172a',
+                  marginBottom: '16px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px'
+                }}>
+                  <BarChart3 style={{ width: '18px', height: '18px', color: '#3b82f6' }} />
                   Seviye Bazlı Performans
-                </h2>
-                <div className="space-y-3">
-                  {levelScores.map(({ level, title, icon: LIcon, color, score, maxScore, percentage }) => (
-                    <div key={level} className="flex items-center gap-3">
-                      <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${color} flex items-center justify-center flex-shrink-0`}>
-                        <LIcon className="w-4 h-4 text-white" />
+                </h3>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                  {levelScores.map(({ level, icon: LIcon, score, maxScore, percentage }) => (
+                    <div key={level} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                      <div style={{
+                        width: '28px',
+                        height: '28px',
+                        borderRadius: '6px',
+                        backgroundColor: levelColors[level],
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexShrink: 0
+                      }}>
+                        <LIcon style={{ width: '14px', height: '14px', color: 'white' }} />
                       </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between mb-1">
-                          <span className="text-sm text-slate-300 truncate">S{level}</span>
-                          <span className={`text-sm font-medium ${percentage >= 70 ? 'text-emerald-400' : 'text-slate-400'}`}>
+                      <div style={{ flex: 1 }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+                          <span style={{ fontSize: '12px', color: '#475569', fontWeight: 500 }}>{level}. Seviye</span>
+                          <span style={{
+                            fontSize: '12px',
+                            fontWeight: 600,
+                            color: percentage >= 70 ? '#10b981' : '#94a3b8'
+                          }}>
                             {score}/{maxScore}
                           </span>
                         </div>
-                        <div className="h-2 bg-white/10 rounded-full overflow-hidden">
-                          <div
-                            className={`h-full rounded-full transition-all ${
-                              percentage >= 70 ? 'bg-emerald-500' : 'bg-slate-500'
-                            }`}
-                            style={{ width: `${percentage}%` }}
-                          />
+                        <div style={{
+                          height: '6px',
+                          backgroundColor: '#e2e8f0',
+                          borderRadius: '50px',
+                          overflow: 'hidden'
+                        }}>
+                          <div style={{
+                            height: '100%',
+                            borderRadius: '50px',
+                            backgroundColor: percentage >= 70 ? '#10b981' : levelColors[level],
+                            width: `${percentage}%`,
+                            transition: 'width 0.3s'
+                          }} />
                         </div>
                       </div>
                     </div>
@@ -1568,37 +2188,80 @@ export default function AICompetencyApp() {
                 </div>
               </div>
 
-              {/* Recommendations */}
-              <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
-                <h2 className="text-white font-semibold mb-4 flex items-center gap-2">
-                  <TrendingUp className="w-5 h-5 text-emerald-400" />
+              {/* Gelişim Önerileri */}
+              <div style={{
+                backgroundColor: 'white',
+                borderRadius: '16px',
+                padding: '20px',
+                border: '1px solid #e2e8f0'
+              }}>
+                <h3 style={{
+                  fontSize: '14px',
+                  fontWeight: 700,
+                  color: '#0f172a',
+                  marginBottom: '16px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px'
+                }}>
+                  <TrendingUp style={{ width: '18px', height: '18px', color: '#10b981' }} />
                   Gelişim Önerileri
-                </h2>
+                </h3>
 
-                <div className="bg-indigo-500/20 border border-indigo-500/30 rounded-xl p-4 mb-4">
-                  <p className="text-white text-sm font-medium mb-1">Sonraki Hedef</p>
-                  <p className="text-slate-300 text-sm">{nextLevelRec.next}</p>
+                {/* Sonraki Hedef */}
+                <div style={{
+                  backgroundColor: '#eff6ff',
+                  border: '1px solid #bfdbfe',
+                  borderRadius: '10px',
+                  padding: '12px',
+                  marginBottom: '12px'
+                }}>
+                  <p style={{ fontSize: '12px', fontWeight: 700, color: '#1d4ed8', marginBottom: '4px' }}>
+                    Sonraki Hedef
+                  </p>
+                  <p style={{ fontSize: '13px', color: '#1e40af', margin: 0, lineHeight: 1.4 }}>
+                    {nextLevelRec.next}
+                  </p>
                 </div>
 
+                {/* Geliştirilmesi Gereken Alanlar */}
                 {weakAreas.length > 0 && (
-                  <div className="bg-amber-500/20 border border-amber-500/30 rounded-xl p-4 mb-4">
-                    <div className="flex items-start gap-2">
-                      <AlertTriangle className="w-4 h-4 text-amber-400 mt-0.5" />
+                  <div style={{
+                    backgroundColor: '#fffbeb',
+                    border: '1px solid #fde68a',
+                    borderRadius: '10px',
+                    padding: '12px',
+                    marginBottom: '12px'
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+                      <AlertTriangle style={{ width: '16px', height: '16px', color: '#d97706', flexShrink: 0, marginTop: '1px' }} />
                       <div>
-                        <p className="text-amber-300 text-sm font-medium">Geliştirilmesi Gereken Alanlar</p>
-                        <p className="text-slate-400 text-sm">
-                          {weakAreas.map(a => `Seviye ${a.level}`).join(', ')}
+                        <p style={{ fontSize: '12px', fontWeight: 700, color: '#b45309', marginBottom: '4px' }}>
+                          Geliştirilmesi Gereken Alanlar
+                        </p>
+                        <p style={{ fontSize: '12px', color: '#92400e', margin: 0 }}>
+                          {weakAreas.map(a => `${a.level}. Seviye`).join(', ')}
                         </p>
                       </div>
                     </div>
                   </div>
                 )}
 
+                {/* Önerilen Araçlar */}
                 <div>
-                  <p className="text-slate-500 text-xs uppercase tracking-wide mb-2">Önerilen Araçlar</p>
-                  <div className="flex flex-wrap gap-2">
+                  <p style={{ fontSize: '11px', color: '#94a3b8', fontWeight: 600, marginBottom: '8px', textTransform: 'uppercase' }}>
+                    Önerilen Araçlar
+                  </p>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
                     {nextLevelRec.tools.map((tool, idx) => (
-                      <span key={idx} className="px-3 py-1 bg-indigo-500/20 text-indigo-300 rounded-full text-xs">
+                      <span key={idx} style={{
+                        padding: '6px 12px',
+                        backgroundColor: '#f1f5f9',
+                        color: '#475569',
+                        borderRadius: '50px',
+                        fontSize: '12px',
+                        fontWeight: 500
+                      }}>
                         {tool}
                       </span>
                     ))}
@@ -1607,13 +2270,26 @@ export default function AICompetencyApp() {
               </div>
             </div>
 
-            {/* Actions */}
-            <div className="flex flex-col sm:flex-row gap-3 print:hidden">
+            {/* Aksiyon Butonları */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
               <button
                 onClick={handleDownloadPDF}
-                className="flex-1 bg-white/5 border border-white/10 text-white py-4 rounded-xl font-semibold hover:bg-white/10 transition-all flex items-center justify-center gap-2"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px',
+                  padding: '14px 20px',
+                  backgroundColor: 'white',
+                  border: '1px solid #e2e8f0',
+                  borderRadius: '12px',
+                  fontSize: '14px',
+                  fontWeight: 600,
+                  color: '#475569',
+                  cursor: 'pointer'
+                }}
               >
-                <Download className="w-5 h-5" />
+                <Download style={{ width: '18px', height: '18px' }} />
                 PDF Olarak İndir
               </button>
               <button
@@ -1623,16 +2299,32 @@ export default function AICompetencyApp() {
                   setCurrentLevel(0);
                   setCurrentQuestion(0);
                 }}
-                className="flex-1 bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-4 rounded-xl font-semibold hover:opacity-90 transition-all flex items-center justify-center gap-2"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px',
+                  padding: '14px 20px',
+                  background: `linear-gradient(135deg, ${currentColor}, ${currentColor}dd)`,
+                  border: 'none',
+                  borderRadius: '12px',
+                  fontSize: '14px',
+                  fontWeight: 600,
+                  color: 'white',
+                  cursor: 'pointer',
+                  boxShadow: `0 4px 12px ${currentColor}40`
+                }}
               >
-                <ArrowRight className="w-5 h-5" />
+                <ArrowRight style={{ width: '18px', height: '18px' }} />
                 Yeniden Değerlendir
               </button>
             </div>
 
             {/* Print Footer */}
-            <div className="hidden print:block mt-8 pt-4 border-t border-gray-200 text-center text-gray-500 text-sm">
-              <p>Yapay Zeka Yetkinlik Değerlendirmesi - {new Date().toLocaleDateString('tr-TR')}</p>
+            <div style={{ display: 'none' }} className="print:block">
+              <p style={{ marginTop: '32px', paddingTop: '16px', borderTop: '1px solid #e2e8f0', textAlign: 'center', color: '#64748b', fontSize: '12px' }}>
+                Yapay Zeka Yetkinlik Değerlendirmesi - {new Date().toLocaleDateString('tr-TR')}
+              </p>
             </div>
           </div>
         </main>
