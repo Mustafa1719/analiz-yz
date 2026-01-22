@@ -4,10 +4,11 @@ import {
   ChevronLeft, ChevronRight, CheckCircle2,
   Brain, Zap, Target, Layers, Cpu, Bot, Sparkles, Rocket,
   TrendingUp, Trophy, Info, Download, AlertTriangle,
-  Library, ArrowDown, Users, Lightbulb,
+  Library, ArrowDown, Users, Lightbulb, MessageCircle,
   Clock, Shield, AlertCircle, Compass, Lock, Building2
 } from 'lucide-react';
 import GlossaryModal from './GlossaryModal';
+import MentorChat from './MentorChat';
 
 // Seviye verileri - YZ_Sorular belgesinden
 const competencyLevels = [
@@ -901,6 +902,7 @@ export default function AICompetencyApp() {
   const [responses, setResponses] = useState({});
   const [showGlossary, setShowGlossary] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [showMentorChat, setShowMentorChat] = useState(false);
   const assessmentRef = useRef(null);
 
   const handleResponse = (level, questionIndex, score) => {
@@ -1821,28 +1823,53 @@ export default function AICompetencyApp() {
                 })}
               </div>
 
-              {/* Evidence - Kompakt */}
+              {/* Evidence + Mentor Chat */}
               <div style={{ padding: '0 16px 14px' }}>
-                <details style={{
+                {/* Kanıt Örneği - tıklanınca sohbet açılır */}
+                <div style={{
                   backgroundColor: '#fffbeb',
                   border: '1px solid #fde68a',
                   borderRadius: '8px',
                   overflow: 'hidden'
                 }}>
-                  <summary style={{
-                    padding: '10px 12px',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                    fontSize: '13px',
-                    fontWeight: 600,
-                    color: '#b45309',
-                    listStyle: 'none'
-                  }}>
-                    <Lightbulb style={{ width: '16px', height: '16px' }} />
-                    <span>Kanıt Örneği</span>
-                  </summary>
+                  <button
+                    onClick={() => setShowMentorChat(!showMentorChat)}
+                    style={{
+                      width: '100%',
+                      padding: '10px 12px',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      fontSize: '13px',
+                      fontWeight: 600,
+                      color: '#b45309',
+                      backgroundColor: 'transparent',
+                      border: 'none',
+                      textAlign: 'left'
+                    }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <Lightbulb style={{ width: '16px', height: '16px' }} />
+                      <span>Kanıt Örneği</span>
+                    </div>
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                      padding: '4px 10px',
+                      backgroundColor: showMentorChat ? '#3b82f6' : '#fef3c7',
+                      borderRadius: '12px',
+                      fontSize: '11px',
+                      color: showMentorChat ? '#ffffff' : '#92400e',
+                      transition: 'all 0.2s'
+                    }}>
+                      <MessageCircle style={{ width: '12px', height: '12px' }} />
+                      {showMentorChat ? 'Sohbeti Kapat' : 'Mentöre Sor'}
+                    </div>
+                  </button>
+
+                  {/* Kanıt metni */}
                   <div style={{
                     padding: '0 12px 10px',
                     fontSize: '13px',
@@ -1851,7 +1878,21 @@ export default function AICompetencyApp() {
                   }}>
                     {currentQuestionData.evidence}
                   </div>
-                </details>
+                </div>
+
+                {/* Mentor Chat */}
+                <MentorChat
+                  isOpen={showMentorChat}
+                  onClose={() => setShowMentorChat(false)}
+                  context={{
+                    level: currentLevel,
+                    levelTitle: currentLevelData.title,
+                    questionIndex: currentQuestion,
+                    questionText: currentQuestionData.text,
+                    options: currentQuestionData.options,
+                    evidence: currentQuestionData.evidence
+                  }}
+                />
               </div>
             </div>
           </div>
