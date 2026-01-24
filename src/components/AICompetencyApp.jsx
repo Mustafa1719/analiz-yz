@@ -103,16 +103,6 @@ const competencyLevels = [
         evidence: "'Bir pazarlama uzmanı gibi, genç profesyonellere yönelik, samimi tonla 200 kelimelik blog yazısı yaz' formatında prompt"
       },
       {
-        text: "Prompt formüllerini (PARTS, SALT) biliyorum ve uyguluyorum",
-        options: [
-          "Bu formülleri hiç duymadım",
-          "İsimlerini duydum ama ne olduğunu bilmiyorum",
-          "En az birini biliyorum ve bazen uyguluyorum",
-          "PARTS veya SALT'ı düzenli olarak uyguluyorum ve farkını görüyorum"
-        ],
-        evidence: "PARTS (Persona, Action, Recipient, Theme, Structure) açıklaması veya örnek prompt"
-      },
-      {
         text: "Çıktı kalitesini iyileştirmek için prompt'u geliştiriyorum",
         options: [
           "İlk sonucu olduğu gibi kabul ediyorum",
@@ -123,26 +113,6 @@ const competencyLevels = [
         evidence: "Aynı görev için farklı prompt versiyonları ve sonuçların karşılaştırması"
       },
       {
-        text: "Farklı yapay zeka modellerini karşılaştırarak en iyisini seçiyorum",
-        options: [
-          "Tek bir model kullanıyorum ve alternatifleri denemiyorum",
-          "Farklı modellerin olduğunu biliyorum ama hepsini aynı sanıyorum",
-          "Bazen farklı modelleri deniyorum",
-          "İstediğim sonucu alana kadar farklı modelleri (ChatGPT, Claude, Gemini vb.) sistematik test ediyorum"
-        ],
-        evidence: "Aynı prompt'u 2+ farklı modelde test etme ve sonuçları karşılaştırma"
-      },
-      {
-        text: "Hedef kitle ve ton yönetimi yapıyorum",
-        options: [
-          "Hedef kitle veya ton belirtmiyorum",
-          "Bazen 'Basit anlat' gibi genel ifadeler kullanıyorum",
-          "Hedef kitleyi her zaman belirtiyorum ('Yöneticilere', 'Öğrencilere' vb.)",
-          "Hedef kitle + ton + dil seviyesini detaylı tanımlayarak profesyonel sonuçlar alıyorum"
-        ],
-        evidence: "'C-suite yöneticilere yönelik, resmi ve özet (max 150 kelime) sunum notu' gibi prompt"
-      },
-      {
         text: "Yapay zeka çıktılarını kontrol edip düzenliyorum",
         options: [
           "Gelen sonucu hiç kontrol etmeden kullanıyorum",
@@ -151,26 +121,6 @@ const competencyLevels = [
           "Faktörleri doğrulama, kaynak kontrol ve profesyonel düzenleme yaparak kullanıyorum"
         ],
         evidence: "Yapay zeka çıktısı + düzenlenmiş final versiyonu karşılaştırması"
-      },
-      {
-        text: "Farklı iş görevlerinde yapay zeka kullanıyorum",
-        options: [
-          "Sadece tek bir iş için kullanıyorum veya hiç kullanmıyorum",
-          "1-2 farklı görevde kullanıyorum",
-          "3-5 farklı görevde düzenli kullanıyorum",
-          "7+ farklı iş görevinde (e-posta, rapor, analiz, sunum, kod vb.) aktif kullanıyorum"
-        ],
-        evidence: "Son 1 ayda kullanılan görev listesi (e-posta taslağı, veri analizi, özet vb.)"
-      },
-      {
-        text: "İş süreçlerimde yapay zeka ile zaman kazanıyorum",
-        options: [
-          "Henüz net bir fayda görmedim",
-          "Bazen işimi hızlandırıyor",
-          "Belirli görevlerde %20-30 zaman tasarrufu sağlıyorum",
-          "Düzenli kullandığım görevlerde %40+ zaman tasarrufu sağladım (ölçülebilir)"
-        ],
-        evidence: "'Rapor özeti eskiden 30 dk, şimdi 10 dk' gibi somut karşılaştırma"
       },
       {
         text: "Yapay zeka etiği ve veri güvenliği konusunda bilinçliyim",
@@ -224,16 +174,6 @@ const competencyLevels = [
         evidence: "'Minimalist, pastel renkler, üstten bakış açısı, kurumsal sunum için' gibi detaylı görsel prompt"
       },
       {
-        text: "Video ve ses üretme araçlarını kullanıyorum",
-        options: [
-          "Hiç video/ses aracı kullanmadım",
-          "Bir kez denedim ama düzenli kullanmıyorum",
-          "Video veya ses araçlarından birini iş projelerimde kullandım",
-          "Her ikisini de (video+ses) iş projelerimde düzenli kullanıyorum ve kalite kontrol ediyorum"
-        ],
-        evidence: "ElevenLabs ile üretilmiş ses dosyası veya Runway ile oluşturulmuş video"
-      },
-      {
         text: "Doküman ve veri analizi için yapay zeka kullanıyorum",
         options: [
           "Sadece metin yazıyorum, dosya analizi yapmıyorum",
@@ -242,46 +182,6 @@ const competencyLevels = [
           "Çok sayfalı dokümanları, veri setlerini sistematik analiz edip sentez yapıyorum"
         ],
         evidence: "50 sayfalık raporu özetleme + ana bulguları çıkarma görevi"
-      },
-      {
-        text: "Kod yazma/hata ayıklama için yapay zeka kullanıyorum",
-        options: [
-          "Hiç kod ile ilgili yapay zeka kullanmadım",
-          "Basit kod snippet'leri yazdırıyorum",
-          "Orta karmaşıklıkta kod yazıyor veya hata ayıklıyorum",
-          "Tam fonksiyonel uygulamalar geliştiriyor veya karmaşık kod tabanlarında hata ayıklıyorum"
-        ],
-        evidence: "Claude/GitHub Copilot ile yazılmış 50+ satır çalışan kod"
-      },
-      {
-        text: "Araştırma ve bilgi toplama için özelleşmiş araçlar kullanıyorum",
-        options: [
-          "Sadece genel sohbet araçlarıyla araştırma yapıyorum",
-          "Perplexity veya Google AI Studio'yu denedim",
-          "Düzenli olarak araştırma amaçlı özelleşmiş araçlar kullanıyorum",
-          "Derin araştırma, kaynak doğrulama ve çoklu kaynak sentezi yapıyorum"
-        ],
-        evidence: "Perplexity ile kaynaklı araştırma raporu"
-      },
-      {
-        text: "Farklı yapay zeka modellerinin güçlü-zayıf yönlerini biliyorum",
-        options: [
-          "Tüm modellerin aynı olduğunu düşünüyorum",
-          "Bazı modellerin farklı olduğunu biliyorum ama farkları bilmiyorum",
-          "GPT-4, Claude, Gemini arasındaki temel farkları biliyorum",
-          "Her modelin optimum kullanım alanını biliyorum (kod→Claude, analiz→GPT-4, hız→Gemini Flash vb.)"
-        ],
-        evidence: "Model karşılaştırma tablosu (hız, maliyet, kod kalitesi, analiz derinliği)"
-      },
-      {
-        text: "Ücretli abonelik veya API kullanımı deneyimim var",
-        options: [
-          "Sadece ücretsiz sürümleri kullanıyorum",
-          "Ücretli abonelik aldım ama özellikleri tam kullanmıyorum",
-          "Ücretli özellikleri (GPT-4, Claude Opus vb.) aktif kullanıyorum",
-          "API kullanımı veya kurumsal lisans deneyimim var ve maliyet optimizasyonu yapıyorum"
-        ],
-        evidence: "ChatGPT Plus aboneliği veya API kullanım faturası/logu"
       },
       {
         text: "Farklı araçları kombine ederek iş akışı oluşturuyorum",
@@ -345,56 +245,6 @@ const competencyLevels = [
         evidence: "Aynı sorunun 5 farklı zamanda verilmesi ve tutarlılık analizi"
       },
       {
-        text: "Farklı kullanım senaryoları için çoklu asistan yönetimi yapıyorum",
-        options: [
-          "Hiç veya sadece 1 asistan kullanıyorum",
-          "2-3 asistan oluşturdum",
-          "5+ farklı asistan oluşturdum ve aralarındaki farkları net tanımladım",
-          "Asistan kütüphanem var, dokümante edilmiş, kategorize edilmiş ve düzenli güncelleniyor"
-        ],
-        evidence: "Asistan envanteri (İsim, Amaç, Son Güncelleme, Kullanım Sıklığı)"
-      },
-      {
-        text: "Özel asistanımı ekiple paylaşıyorum veya özelleştiriyorum",
-        options: [
-          "Sadece kendim kullanıyorum ve kimseyle paylaşmadım",
-          "Bir kez bir asistanı paylaştım",
-          "Düzenli olarak ekibime asistanlar paylaşıyorum",
-          "Ekip üyeleri için kişiselleştirilmiş asistanlar oluşturuyorum ve kullanım eğitimi veriyorum"
-        ],
-        evidence: "Ekip paylaşım linki veya özelleştirilmiş asistan versiyonları"
-      },
-      {
-        text: "Asistan performansını ölçüyorum ve iyileştiriyorum",
-        options: [
-          "Hiç performans ölçümü yapmadım",
-          "Bazen 'iyi çalışmıyor' diyorum ama düzeltmiyorum",
-          "Geri bildirimlere göre talimatları güncelliyorum",
-          "Sistematik geri bildirim topluyorum, versiyon kontrolü yapıyorum ve iyileştirme döngüsü kurdum"
-        ],
-        evidence: "V1.0→V2.0 değişiklik logu, kullanıcı geri bildirim formu"
-      },
-      {
-        text: "Asistanlarım için net sınırlar ve kurallar tanımladım",
-        options: [
-          "Hiç sınır belirtmedim",
-          "'Bu konulara girme' gibi genel ifadeler kullandım",
-          "Yapılacaklar ve yapılmayacaklar listesi oluşturdum",
-          "Detaylı guardrails (güvenlik, etik, format, içerik sınırları) tanımladım ve test ettim"
-        ],
-        evidence: "'Kişisel veri paylaşma', 'Medikal tavsiye verme', 'Kaynak olmadan iddia yapma' kuralları"
-      },
-      {
-        text: "Özel asistanlarımı iş akışıma tam entegre ettim",
-        options: [
-          "Bazen hatırlayınca kullanıyorum",
-          "Haftada birkaç kez kullanıyorum",
-          "Belirli görevler için varsayılan aracım haline geldi",
-          "İş akışımın kritik parçası, günlük rutinimde vazgeçilmez ve ekip prosedürlerine dahil"
-        ],
-        evidence: "'Her pazartesi haftalık rapor için X asistanını kullanıyorum' gibi rutin"
-      },
-      {
         text: "Özel asistanlarla ölçülebilir verimlilik kazancı sağladım",
         options: [
           "Net bir kazanç ölçmedim",
@@ -436,16 +286,6 @@ const competencyLevels = [
         evidence: "Süreç haritasında 'YZ kullanım noktaları' işaretli dokümantasyon"
       },
       {
-        text: "Problem sınıflandırma yapıyorum",
-        options: [
-          "Tüm problemleri aynı sanıyorum",
-          "Kolay/zor ayrımı yapıyorum",
-          "Cynefin modeli gibi framework'leri duydum",
-          "Cynefin veya 4U ile problemleri sınıflandırıyor ve çözüm stratejisi belirliyorum"
-        ],
-        evidence: "'Bu problem Complex kategorisinde, deneme-öğrenme gerekir' analizi"
-      },
-      {
         text: "No-code platformlarda prototip geliştiriyorum",
         options: [
           "Hiç prototip geliştirmedim",
@@ -454,16 +294,6 @@ const competencyLevels = [
           "3+ prototip geliştirdim ve iş değeri test ettim"
         ],
         evidence: "Google AI Studio, Bolt.new veya Replit'te çalışan uygulama linki"
-      },
-      {
-        text: "Kod yazmadan yapay zeka destekli araçlar geliştiriyorum",
-        options: [
-          "Hiç no-code geliştirme yapmadım",
-          "Basit form veya hesaplama aracı yaptım",
-          "Orta karmaşıklıkta uygulama (içerik üretimi, veri analizi) geliştirdim",
-          "İleri seviye prototip (çoklu adım, karar yapısı, entegrasyon) geliştirdim"
-        ],
-        evidence: "'Müşteri geri bildirimi analiz ve öneri aracı' gibi fonksiyonel prototip"
       },
       {
         text: "Prototipleri test edip geri bildirimle geliştiriyorum",
@@ -476,16 +306,6 @@ const competencyLevels = [
         evidence: "Test senaryoları, kullanıcı geri bildirim formu, V1→V2 iyileştirme logu"
       },
       {
-        text: "Hızlı doğrulama (validation) için prototipleme yapıyorum",
-        options: [
-          "Doğrudan tam çözüm geliştirmeye çalışıyorum",
-          "Bazen basit test yapıyorum",
-          "Fikir doğrulama için düzenli prototip yapıyorum",
-          "Lean/Agile yaklaşımla MVP mantığında hızlı prototip→test→öğren döngüsü kurdum"
-        ],
-        evidence: "'Bu fikri 2 günde prototiple test ettim, çalışmıyor, vazgeçtik' hikayesi"
-      },
-      {
         text: "Prototip ile tam yazılım arasındaki farkı anlıyorum",
         options: [
           "Prototip ve yazılım arasında fark olduğunu bilmiyorum",
@@ -494,26 +314,6 @@ const competencyLevels = [
           "Güvenlik, performans, bakım, ölçeklenebilirlik gibi boyutlarda farkları açıklayabilirim"
         ],
         evidence: "'Bu prototip sadece fikir testi için, production için güvenlik ve hata yönetimi gerekir' açıklaması"
-      },
-      {
-        text: "Prototipleri iş değeri göstermek için sunuyorum",
-        options: [
-          "Hiç sunmadım",
-          "Bir kez gösterdim ama tepki almadım",
-          "Yöneticilere veya ekibe sunduk ve geri bildirim aldık",
-          "İş değeri analizi (zaman tasarrufu, maliyet, kalite) ile sundum ve onay/bütçe aldım"
-        ],
-        evidence: "Sunum dökümanı + 'Bu prototip haftada 5 saat kazandırır' analizi"
-      },
-      {
-        text: "Girdi-çıktı ilişkisini netleştiriyorum",
-        options: [
-          "Girdi ve çıktıyı tanımlamıyorum",
-          "Ne girdiğini ve ne çıktığını genel olarak biliyorum",
-          "Girdi formatı, veri tipi ve çıktı beklentisini dokümante ediyorum",
-          "SIPOC yaklaşımıyla Supplier-Input-Process-Output-Customer zincirini net tanımlıyorum"
-        ],
-        evidence: "'Girdi: Müşteri e-postası (text), Çıktı: Kategori (Şikayet/Soru/Öneri) + Öncelik (1-3)' tanımı"
       }
     ]
   },
@@ -547,16 +347,6 @@ const competencyLevels = [
         evidence: "'Yeni Gmail gelirse (tetik) → Önceliğe göre filtrele (işlem) → Slack'e bildir (çıktı)' akış diyagramı"
       },
       {
-        text: "Manuel tekrar eden işleri otomatikleştirdim",
-        options: [
-          "Hiçbir manuel işi otomatikleştirmedim",
-          "1 basit veri aktarımı otomatikleştirdim",
-          "3-5 farklı işi otomatikleştirdim",
-          "10+ rutin işi otomatikleştirdim ve dokümante ettim"
-        ],
-        evidence: "'Form cevabı → Google Sheets → E-posta bildirimi' gibi 3+ aktif otomasyon"
-      },
-      {
         text: "Farklı uygulamaları birbirine bağlıyorum",
         options: [
           "Hiç entegrasyon yapmadım",
@@ -565,16 +355,6 @@ const competencyLevels = [
           "5+ farklı platform (CRM, E-posta, Sheets, Slack, vb.) arasında çalışan entegrasyonlar kurdum"
         ],
         evidence: "Salesforce → Gmail → Google Sheets → Slack entegrasyon zinciri"
-      },
-      {
-        text: "Otomasyonlarımı izliyor ve bakım yapıyorum",
-        options: [
-          "Kurdum ve unuttum, çalışıp çalışmadığını bilmiyorum",
-          "Sorun olduğunda fark ediyorum",
-          "Haftada bir kontrol ediyorum",
-          "Otomatik bildirim + log takibi + periyodik review sistemi kurdum"
-        ],
-        evidence: "Otomasyon sağlık kontrol check-listi, son 30 gün hata logu"
       },
       {
         text: "Hata durumları için alternatif akışlar kurdum",
@@ -595,36 +375,6 @@ const competencyLevels = [
           "Haftalık 10+ saat tasarruf sağlıyorum ve dokümante ettim"
         ],
         evidence: "'Rapor hazırlama 5 saat/hafta → 30 dk/hafta' karşılaştırması"
-      },
-      {
-        text: "Karar yapıları (if-then) kuruyorum",
-        options: [
-          "Sadece lineer akışlar kuruyorum",
-          "Basit tek koşul kullanıyorum",
-          "Çoklu koşul ve dallanma kuruyorum",
-          "İç içe koşullar, çoklu kriter ve karmaşık karar ağaçları kuruyorum"
-        ],
-        evidence: "'Eğer tutar>1000 VE müşteri=premium İSE X, değilse Y' mantığı"
-      },
-      {
-        text: "Otomasyon uygunluğunu değerlendirebiliyorum",
-        options: [
-          "Her işin otomasyona uygun olduğunu düşünüyorum",
-          "Bazen 'bu otomatikleştirilemez' diyorum ama neden bilmiyorum",
-          "Tekrar sıklığı ve kural netliği ile değerlendiriyorum",
-          "ROI analizi (kurulum süresi vs kazanç), teknik uygunluk ve risk değerlendirmesi yapıyorum"
-        ],
-        evidence: "'Bu iş ayda 2 kez, otomasyon 4 saat, kazanç 30 dk → uygun değil' analizi"
-      },
-      {
-        text: "Otomasyon performansını ölçüyorum ve optimize ediyorum",
-        options: [
-          "Hiç performans ölçümü yapmıyorum",
-          "Bazen çalışma süresine bakıyorum",
-          "Başarı oranı ve süre gibi temel metrikleri izliyorum",
-          "KPI dashboard'u kurdum (başarı oranı, ortalama süre, hata oranı, maliyet) ve sürekli optimize ediyorum"
-        ],
-        evidence: "Son 30 gün metrik raporu (97% başarı, ort. 2 dk, %3 hata)"
       }
     ]
   },
@@ -658,16 +408,6 @@ const competencyLevels = [
         evidence: "'Bu e-postayı 3 kategoriden birine sınıflandır: Şikayet/Soru/Öneri. Çıktı: JSON {category, confidence, reason}'"
       },
       {
-        text: "Yapay zeka API'lerini otomasyon araçlarına entegre ediyorum",
-        options: [
-          "API kullanmadım",
-          "API key aldım ama kullanamadım",
-          "Basit API çağrısı yapıyorum",
-          "Çoklu API, hata yönetimi, rate limiting ve maliyet optimizasyonu ile entegrasyon yapıyorum"
-        ],
-        evidence: "n8n'de OpenAI API çağrısı + retry mekanizması + token limiti kontrolü"
-      },
-      {
         text: "Kural ve yapay zeka arasındaki sınırı doğru çiziyorum",
         options: [
           "Her işi yapay zekaya yaptırmaya çalışıyorum",
@@ -688,16 +428,6 @@ const competencyLevels = [
         evidence: "AI sınıflandırma sonucu 'Acil' ise Slack'e bildir, değilse ticket oluştur"
       },
       {
-        text: "Doküman okuma ve analizi otomasyonları kurdum",
-        options: [
-          "Manuel doküman okuyorum",
-          "Yapay zekaya manuel yüklüyorum",
-          "Otomatik doküman upload + analiz akışı kurdum",
-          "Çoklu doküman işleme, OCR, tablo çıkarma ve yapılandırılmış veri çıktısı üretiyorum"
-        ],
-        evidence: "PDF fatura → AI ile veri çıkarma → JSON → ERP'ye kayıt"
-      },
-      {
         text: "Yapay zeka kalitesini izliyor ve doğruluyorum",
         options: [
           "Yapay zeka sonuçlarını hiç kontrol etmiyorum",
@@ -706,36 +436,6 @@ const competencyLevels = [
           "Otomatik kalite metrikleri (confidence score, validation rules) ve periyodik audit sistemi kurdum"
         ],
         evidence: "'Confidence<0.7 ise insan onayına gönder' kuralı + haftalık kalite raporu"
-      },
-      {
-        text: "Akıllı yönlendirme ve önceliklendirme sistemleri kurdum",
-        options: [
-          "Tüm işler aynı öncelikle işleniyor",
-          "Manuel önceliklendirme yapıyorum",
-          "Kural bazlı önceliklendirme kurdum",
-          "Yapay zeka ile içerik analizi + sentiment + aciliyet skorlaması yapan dinamik önceliklendirme sistemi kurdum"
-        ],
-        evidence: "E-posta AI analizi → Urgency skoru (1-10) → Sıraya göre routing"
-      },
-      {
-        text: "Yapay zeka maliyetlerini yönetiyorum",
-        options: [
-          "Maliyet takibi yapmıyorum",
-          "Ne kadar harcadığımı biliyorum ama optimize etmiyorum",
-          "Model seçimi (GPT-4 vs GPT-3.5) ile optimizasyon yapıyorum",
-          "Token limitleri, caching, batch processing ve model optimizasyonu ile maliyet yönetimi yapıyorum"
-        ],
-        evidence: "'Basit görevlerde GPT-3.5, karmaşık analizde GPT-4' stratejisi + aylık maliyet raporu"
-      },
-      {
-        text: "Esnek ve ölçeklenebilir yapay zeka destekli süreçler sunuyorum",
-        options: [
-          "Sabit, değişime kapalı akışlar kurdum",
-          "Küçük değişiklikler için akışı yeniden kurmam gerekiyor",
-          "Parametrik yapılar kurdum, bazı değişikliklere uyum sağlıyor",
-          "Yapay zeka adaptasyonu ile değişen durumlara otomatik uyum sağlayan, ölçeklenebilir sistemler kurdum ve dokümante ettim"
-        ],
-        evidence: "Yeni kategori eklendiğinde AI otomatik öğreniyor, akış değişikliği gerektirmiyor"
       }
     ]
   },
@@ -779,26 +479,6 @@ const competencyLevels = [
         evidence: "Ajan için tool listesi: [Google Search, Salesforce API, Gmail, Sheets, SQL] + erişim politikası"
       },
       {
-        text: "Ajan kendi adımlarını belirliyor ve uygulayabiliyor",
-        options: [
-          "Sabit akış takip ediyor",
-          "Basit dallanma yapabiliyor",
-          "Alternatif stratejiler deneyebiliyor",
-          "Hedefe ulaşmak için dinamik plan oluşturuyor, başarısız olursa alternatif yol buluyor"
-        ],
-        evidence: "Ajan log'u: 'Web scraping başarısız oldu → API denedi → başarılı → devam etti'"
-      },
-      {
-        text: "Ajana ara sonuçlara göre strateji değiştirme izni veriyorum",
-        options: [
-          "Ajan sabit planı takip ediyor",
-          "Hata durumunda duruyor ve bildiriyor",
-          "Basit hata yönetimi var (retry gibi)",
-          "Ara sonuçları değerlendirerek strateji değiştirebiliyor, alternatif yollar deneyebiliyor"
-        ],
-        evidence: "'Veri bulunamadı → Alternatif kaynak dene → Başka format dene → Başarısız → Rapor et' akışı"
-      },
-      {
         text: "Beklenmeyen durumlar için guardrails kurdum",
         options: [
           "Hata yönetimi yok, ajan sınırsız",
@@ -817,36 +497,6 @@ const competencyLevels = [
           "Detaylı observability: her karar, her araç çağrısı, reasoning log, metrikler ve alert sistemi"
         ],
         evidence: "Ajan dashboard'u: gerçek zamanlı status, karar geçmişi, başarı/başarısızlık metrikleri"
-      },
-      {
-        text: "Karmaşık, çok adımlı süreçleri ajan ile yönetiyorum",
-        options: [
-          "Sadece basit tek adımlı görevler",
-          "2-3 adımlı basit akışlar",
-          "5-10 adımlı orta karmaşıklıkta süreçler",
-          "20+ adımlı, çoklu karar noktası, dış sistem entegrasyonu gerektiren karmaşık süreçleri ajan ile yönetiyorum"
-        ],
-        evidence: "End-to-end müşteri onboarding: veri toplama, doğrulama, CRM kaydı, e-posta dizisi, takip planı"
-      },
-      {
-        text: "Ajan tabanlı sistemlerle ölçeklenebilirlik ve hız sağlıyorum",
-        options: [
-          "Manuel müdahale gerektiriyor",
-          "Bazı işlerde hızlanma var",
-          "Belirli süreçlerde 5x hızlanma sağladım",
-          "10x+ ölçeklenebilirlik, paralel işlem kapasitesi ve iş değeri metrikleriyle kanıtladım"
-        ],
-        evidence: "'Müşteri analizi 1 günden 1 saate düştü, aynı anda 50 müşteri işlenebiliyor'"
-      },
-      {
-        text: "Ajan sistemlerinin bakım, güvenlik ve maliyet yönetimini yapıyorum",
-        options: [
-          "Kurdum ve unuttum, bakım yapmıyorum",
-          "Sorun olduğunda müdahale ediyorum",
-          "Periyodik kontrol ve güncelleme yapıyorum",
-          "Kapsamlı yönetişim: otomatik sağlık kontrolü, güvenlik audit, maliyet optimizasyonu, versiyon yönetimi, dokümantasyon ve ekip eğitimi"
-        ],
-        evidence: "Ajan yönetişim dokümantasyonu: SLA, güvenlik politikası, maliyet raporu, incident log, update pipeline"
       }
     ]
   }
