@@ -551,6 +551,7 @@ export default function AICompetencyApp() {
   const [currentLevel, setCurrentLevel] = useState(0);
   const [responses, setResponses] = useState({});
   const [showGlossary, setShowGlossary] = useState(false);
+  const [selectedLevelPopover, setSelectedLevelPopover] = useState(null);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [showMentorChat, setShowMentorChat] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -859,64 +860,164 @@ export default function AICompetencyApp() {
                 const LevelIcon = level.icon;
                 const colors = ['#64748b', '#3b82f6', '#8b5cf6', '#f59e0b', '#10b981', '#06b6d4', '#ec4899', '#6366f1'];
                 const bgColor = colors[index];
+                const isPopoverOpen = selectedLevelPopover === index;
 
                 return (
                   <div
                     key={level.id}
-                    style={{
-                      backgroundColor: 'white',
-                      border: '2px solid #f1f5f9',
-                      borderRadius: '20px',
-                      padding: '24px',
-                      transition: 'all 0.2s ease',
-                      cursor: 'default'
-                    }}
-                    onMouseOver={(e) => {
-                      e.currentTarget.style.borderColor = '#e2e8f0';
-                      e.currentTarget.style.boxShadow = '0 8px 32px rgba(0,0,0,0.1)';
-                      e.currentTarget.style.transform = 'translateY(-4px)';
-                    }}
-                    onMouseOut={(e) => {
-                      e.currentTarget.style.borderColor = '#f1f5f9';
-                      e.currentTarget.style.boxShadow = 'none';
-                      e.currentTarget.style.transform = 'translateY(0)';
-                    }}
+                    style={{ position: 'relative' }}
                   >
-                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
-                      <div style={{
-                        width: '56px',
-                        height: '56px',
-                        backgroundColor: bgColor,
-                        borderRadius: '16px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        flexShrink: 0,
-                        boxShadow: `0 4px 12px ${bgColor}40`
-                      }}>
-                        <LevelIcon style={{ width: '28px', height: '28px', color: 'white' }} />
-                      </div>
-                      <div style={{ flex: 1 }}>
-                        <span style={{
-                          fontSize: '11px',
-                          fontWeight: 700,
-                          color: bgColor,
-                          backgroundColor: `${bgColor}15`,
-                          padding: '4px 10px',
-                          borderRadius: '50px',
-                          display: 'inline-block',
-                          marginBottom: '8px'
+                    {/* Level Card */}
+                    <div
+                      onClick={() => setSelectedLevelPopover(isPopoverOpen ? null : index)}
+                      style={{
+                        backgroundColor: 'white',
+                        border: isPopoverOpen ? `2px solid ${bgColor}` : '2px solid #f1f5f9',
+                        borderRadius: '20px',
+                        padding: '24px',
+                        transition: 'all 0.2s ease',
+                        cursor: 'pointer',
+                        boxShadow: isPopoverOpen ? `0 8px 32px ${bgColor}25` : 'none',
+                        transform: isPopoverOpen ? 'translateY(-4px)' : 'translateY(0)'
+                      }}
+                      onMouseOver={(e) => {
+                        if (!isPopoverOpen) {
+                          e.currentTarget.style.borderColor = '#e2e8f0';
+                          e.currentTarget.style.boxShadow = '0 8px 32px rgba(0,0,0,0.1)';
+                          e.currentTarget.style.transform = 'translateY(-4px)';
+                        }
+                      }}
+                      onMouseOut={(e) => {
+                        if (!isPopoverOpen) {
+                          e.currentTarget.style.borderColor = '#f1f5f9';
+                          e.currentTarget.style.boxShadow = 'none';
+                          e.currentTarget.style.transform = 'translateY(0)';
+                        }
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
+                        <div style={{
+                          width: '56px',
+                          height: '56px',
+                          backgroundColor: bgColor,
+                          borderRadius: '16px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          flexShrink: 0,
+                          boxShadow: `0 4px 12px ${bgColor}40`
                         }}>
-                          Seviye {level.id}
-                        </span>
-                        <h3 style={{ fontSize: '16px', fontWeight: 700, color: '#0f172a', margin: '0 0 4px' }}>{level.title}</h3>
-                        <p style={{ fontSize: '14px', color: '#64748b', margin: 0, lineHeight: 1.5 }}>{level.subtitle}</p>
+                          <LevelIcon style={{ width: '28px', height: '28px', color: 'white' }} />
+                        </div>
+                        <div style={{ flex: 1 }}>
+                          <span style={{
+                            fontSize: '11px',
+                            fontWeight: 700,
+                            color: bgColor,
+                            backgroundColor: `${bgColor}15`,
+                            padding: '4px 10px',
+                            borderRadius: '50px',
+                            display: 'inline-block',
+                            marginBottom: '8px'
+                          }}>
+                            Seviye {level.id}
+                          </span>
+                          <h3 style={{ fontSize: '16px', fontWeight: 700, color: '#0f172a', margin: '0 0 4px' }}>{level.title}</h3>
+                          <p style={{ fontSize: '14px', color: '#64748b', margin: 0, lineHeight: 1.5 }}>{level.subtitle}</p>
+                        </div>
+                        {/* Expand indicator */}
+                        <div style={{
+                          width: '24px',
+                          height: '24px',
+                          borderRadius: '50%',
+                          backgroundColor: isPopoverOpen ? bgColor : '#f1f5f9',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          transition: 'all 0.2s',
+                          flexShrink: 0
+                        }}>
+                          <ChevronRight style={{
+                            width: '14px',
+                            height: '14px',
+                            color: isPopoverOpen ? 'white' : '#94a3b8',
+                            transform: isPopoverOpen ? 'rotate(90deg)' : 'rotate(0deg)',
+                            transition: 'transform 0.2s'
+                          }} />
+                        </div>
                       </div>
                     </div>
+
+                    {/* Popover Content */}
+                    {isPopoverOpen && (
+                      <div style={{
+                        marginTop: '12px',
+                        backgroundColor: 'white',
+                        border: `2px solid ${bgColor}30`,
+                        borderRadius: '16px',
+                        padding: '20px',
+                        boxShadow: '0 12px 40px rgba(0,0,0,0.12)',
+                        animation: 'fadeIn 0.2s ease'
+                      }}>
+                        {/* Description */}
+                        <p style={{
+                          fontSize: '14px',
+                          color: '#475569',
+                          lineHeight: 1.6,
+                          margin: '0 0 16px',
+                          paddingBottom: '16px',
+                          borderBottom: '1px solid #f1f5f9'
+                        }}>
+                          {level.description}
+                        </p>
+
+                        {/* Behavioral Indicators */}
+                        <div>
+                          <p style={{
+                            fontSize: '12px',
+                            fontWeight: 700,
+                            color: '#64748b',
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.5px',
+                            margin: '0 0 12px'
+                          }}>
+                            Davranış Göstergeleri
+                          </p>
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                            {level.questions.slice(0, 4).map((q, qIdx) => (
+                              <div key={qIdx} style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+                                <CheckCircle2 style={{
+                                  width: '16px',
+                                  height: '16px',
+                                  color: bgColor,
+                                  flexShrink: 0,
+                                  marginTop: '2px'
+                                }} />
+                                <span style={{
+                                  fontSize: '13px',
+                                  color: '#334155',
+                                  lineHeight: 1.4
+                                }}>
+                                  {q.text}
+                                </span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 );
               })}
             </div>
+
+            {/* CSS Animation */}
+            <style>{`
+              @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(-8px); }
+                to { opacity: 1; transform: translateY(0); }
+              }
+            `}</style>
           </div>
         </section>
 
