@@ -1,11 +1,11 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   BarChart3, ArrowRight,
   ChevronLeft, ChevronRight, CheckCircle2,
   Brain, Zap, Target, Layers, Cpu, Bot, Sparkles, Rocket,
   TrendingUp, Trophy, Info, Download, AlertTriangle,
   Library, ArrowDown, Users, Lightbulb, MessageCircle,
-  Clock, Shield, AlertCircle, Compass, Lock, Building2
+  Clock, Shield, AlertCircle, Compass, Lock, Building2, Menu
 } from 'lucide-react';
 import GlossaryModal from './GlossaryModal';
 import MentorChat from './MentorChat';
@@ -903,7 +903,18 @@ export default function AICompetencyApp() {
   const [showGlossary, setShowGlossary] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [showMentorChat, setShowMentorChat] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const assessmentRef = useRef(null);
+
+  // Mobil cihaz kontrolü
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const handleResponse = (level, questionIndex, score) => {
     setResponses(prev => ({
@@ -1019,63 +1030,69 @@ export default function AICompetencyApp() {
           boxShadow: '0 1px 3px rgba(0,0,0,0.05)'
         }}>
           <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 24px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '72px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: isMobile ? '60px' : '72px' }}>
               {/* Logo */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: isMobile ? '10px' : '16px' }}>
                 <div style={{
-                  width: '48px',
-                  height: '48px',
+                  width: isMobile ? '40px' : '48px',
+                  height: isMobile ? '40px' : '48px',
                   background: 'linear-gradient(135deg, #2563eb, #4f46e5)',
-                  borderRadius: '14px',
+                  borderRadius: isMobile ? '10px' : '14px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   boxShadow: '0 4px 12px rgba(37,99,235,0.3)'
                 }}>
-                  <Brain style={{ width: '24px', height: '24px', color: 'white' }} />
+                  <Brain style={{ width: isMobile ? '20px' : '24px', height: isMobile ? '20px' : '24px', color: 'white' }} />
                 </div>
-                <div>
-                  <h1 style={{ color: '#0f172a', fontWeight: 700, fontSize: '18px', margin: 0 }}>YZ Yetkinlik Değerlendirme</h1>
-                  <p style={{ color: '#64748b', fontSize: '12px', margin: 0 }}>Kişisel Değerlendirme</p>
-                </div>
+                {!isMobile && (
+                  <div>
+                    <h1 style={{ color: '#0f172a', fontWeight: 700, fontSize: '18px', margin: 0 }}>YZ Yetkinlik Değerlendirme</h1>
+                    <p style={{ color: '#64748b', fontSize: '12px', margin: 0 }}>Kişisel Değerlendirme</p>
+                  </div>
+                )}
               </div>
 
               {/* Nav */}
-              <nav style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <nav style={{ display: 'flex', alignItems: 'center', gap: isMobile ? '8px' : '12px' }}>
                 <button
                   onClick={() => setShowGlossary(true)}
                   style={{
                     display: 'flex',
                     alignItems: 'center',
+                    justifyContent: 'center',
                     gap: '8px',
                     color: '#475569',
                     fontSize: '14px',
                     fontWeight: 500,
-                    padding: '10px 16px',
+                    padding: isMobile ? '10px' : '10px 16px',
                     borderRadius: '10px',
                     border: 'none',
                     background: 'transparent',
-                    cursor: 'pointer'
+                    cursor: 'pointer',
+                    minWidth: '44px',
+                    minHeight: '44px'
                   }}
                 >
-                  <Library style={{ width: '16px', height: '16px' }} />
-                  Kavramlar
+                  <Library style={{ width: isMobile ? '20px' : '16px', height: isMobile ? '20px' : '16px' }} />
+                  {!isMobile && 'Kavramlar'}
                 </button>
                 <button
                   onClick={startAssessment}
                   style={{
                     background: 'linear-gradient(135deg, #2563eb, #4f46e5)',
                     color: 'white',
-                    fontSize: '14px',
+                    fontSize: isMobile ? '13px' : '14px',
                     fontWeight: 600,
-                    padding: '12px 24px',
+                    padding: isMobile ? '10px 16px' : '12px 24px',
                     borderRadius: '12px',
                     border: 'none',
                     cursor: 'pointer',
-                    boxShadow: '0 4px 12px rgba(37,99,235,0.3)'
+                    boxShadow: '0 4px 12px rgba(37,99,235,0.3)',
+                    minHeight: '44px'
                   }}
                 >
-                  Hemen Başla
+                  {isMobile ? 'Başla' : 'Hemen Başla'}
                 </button>
               </nav>
             </div>
@@ -1087,25 +1104,25 @@ export default function AICompetencyApp() {
           position: 'relative',
           overflow: 'hidden',
           background: 'linear-gradient(180deg, #eff6ff 0%, #f8fafc 100%)',
-          padding: '80px 24px 100px'
+          padding: isMobile ? '48px 20px 60px' : '80px 24px 100px'
         }}>
           <div style={{ maxWidth: '1200px', margin: '0 auto', textAlign: 'center' }}>
             {/* Badge */}
             <div style={{
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '10px',
+              gap: isMobile ? '8px' : '10px',
               backgroundColor: 'white',
               color: '#2563eb',
-              padding: '12px 20px',
+              padding: isMobile ? '10px 16px' : '12px 20px',
               borderRadius: '50px',
-              fontSize: '14px',
+              fontSize: isMobile ? '13px' : '14px',
               fontWeight: 600,
-              marginBottom: '32px',
+              marginBottom: isMobile ? '24px' : '32px',
               boxShadow: '0 4px 16px rgba(0,0,0,0.08)',
               border: '1px solid #dbeafe'
             }}>
-              <Sparkles style={{ width: '16px', height: '16px' }} />
+              <Sparkles style={{ width: isMobile ? '14px' : '16px', height: isMobile ? '14px' : '16px' }} />
               <span>Kişisel YZ Yetkinlik Analizi</span>
             </div>
 
@@ -1149,26 +1166,30 @@ export default function AICompetencyApp() {
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: '12px',
+                justifyContent: 'center',
+                gap: isMobile ? '10px' : '12px',
                 background: 'linear-gradient(135deg, #2563eb, #4f46e5)',
                 color: 'white',
-                fontSize: '18px',
+                fontSize: isMobile ? '16px' : '18px',
                 fontWeight: 700,
-                padding: '20px 40px',
-                borderRadius: '16px',
+                padding: isMobile ? '16px 28px' : '20px 40px',
+                minHeight: isMobile ? '52px' : 'auto',
+                width: isMobile ? '100%' : 'auto',
+                maxWidth: isMobile ? '320px' : 'none',
+                borderRadius: isMobile ? '14px' : '16px',
                 border: 'none',
                 cursor: 'pointer',
                 boxShadow: '0 8px 32px rgba(37,99,235,0.35)'
               }}
             >
               <span>Değerlendirmeye Başla</span>
-              <ArrowRight style={{ width: '20px', height: '20px' }} />
+              <ArrowRight style={{ width: isMobile ? '18px' : '20px', height: isMobile ? '18px' : '20px' }} />
             </button>
           </div>
         </section>
 
         {/* Levels Section */}
-        <section style={{ padding: '80px 24px', backgroundColor: 'white' }}>
+        <section style={{ padding: isMobile ? '48px 16px' : '80px 24px', backgroundColor: 'white' }}>
           <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
             <div style={{ textAlign: 'center', marginBottom: '48px' }}>
               <p style={{ fontSize: '12px', fontWeight: 700, color: '#2563eb', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '12px' }}>
@@ -1554,18 +1575,19 @@ export default function AICompetencyApp() {
                   alignItems: 'center',
                   gap: '6px',
                   color: '#64748b',
-                  fontSize: '13px',
+                  fontSize: isMobile ? '14px' : '13px',
                   fontWeight: 500,
                   background: 'none',
                   border: 'none',
                   cursor: 'pointer',
-                  padding: '4px 8px',
+                  padding: isMobile ? '10px 12px' : '4px 8px',
+                  minHeight: isMobile ? '44px' : 'auto',
                   borderRadius: '6px',
                   transition: 'all 0.2s'
                 }}
               >
-                <ChevronLeft style={{ width: '18px', height: '18px' }} />
-                <span>Ana Sayfa</span>
+                <ChevronLeft style={{ width: isMobile ? '22px' : '18px', height: isMobile ? '22px' : '18px' }} />
+                {!isMobile && <span>Ana Sayfa</span>}
               </button>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -1588,17 +1610,18 @@ export default function AICompetencyApp() {
                   alignItems: 'center',
                   gap: '6px',
                   color: '#64748b',
-                  fontSize: '13px',
+                  fontSize: isMobile ? '14px' : '13px',
                   fontWeight: 500,
                   background: 'none',
                   border: 'none',
                   cursor: 'pointer',
-                  padding: '4px 8px',
+                  padding: isMobile ? '10px 12px' : '4px 8px',
+                  minHeight: isMobile ? '44px' : 'auto',
                   borderRadius: '6px'
                 }}
               >
-                <Library style={{ width: '16px', height: '16px' }} />
-                <span>Kavramlar</span>
+                <Library style={{ width: isMobile ? '20px' : '16px', height: isMobile ? '20px' : '16px' }} />
+                {!isMobile && <span>Kavramlar</span>}
               </button>
             </div>
 
@@ -1631,17 +1654,18 @@ export default function AICompetencyApp() {
           </div>
         </header>
 
-        {/* Level Selector - X. Seviye formatı, kaydırmasız */}
+        {/* Level Selector - Mobilde yatay kaydırmalı */}
         <div style={{
           backgroundColor: 'white',
           borderBottom: '1px solid #e2e8f0',
-          padding: '6px 8px',
-          overflow: 'hidden'
+          padding: isMobile ? '8px 12px' : '6px 8px',
+          overflowX: isMobile ? 'auto' : 'hidden',
+          WebkitOverflowScrolling: 'touch'
         }}>
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <div style={{ display: 'flex', justifyContent: isMobile ? 'flex-start' : 'center' }}>
             <div style={{
               display: 'flex',
-              gap: '4px'
+              gap: isMobile ? '8px' : '4px'
             }}>
               {competencyLevels.map((level, idx) => {
                 const LevelIcon = level.icon;
@@ -1658,25 +1682,27 @@ export default function AICompetencyApp() {
                     style={{
                       display: 'flex',
                       alignItems: 'center',
-                      gap: '4px',
-                      padding: '5px 8px',
-                      borderRadius: '6px',
-                      fontSize: '11px',
+                      gap: isMobile ? '6px' : '4px',
+                      padding: isMobile ? '10px 14px' : '5px 8px',
+                      minHeight: isMobile ? '44px' : 'auto',
+                      borderRadius: isMobile ? '10px' : '6px',
+                      fontSize: isMobile ? '13px' : '11px',
                       fontWeight: 600,
                       whiteSpace: 'nowrap',
                       border: isActive ? `2px solid ${color}` : '1px solid #e2e8f0',
                       backgroundColor: isActive ? `${color}10` : 'white',
                       color: isActive ? color : '#64748b',
                       cursor: 'pointer',
-                      transition: 'all 0.15s'
+                      transition: 'all 0.15s',
+                      flexShrink: 0
                     }}
                   >
-                    <LevelIcon style={{ width: '13px', height: '13px' }} />
-                    <span>{idx}. Seviye</span>
+                    <LevelIcon style={{ width: isMobile ? '16px' : '13px', height: isMobile ? '16px' : '13px' }} />
+                    <span>{isMobile ? `${idx}` : `${idx}. Seviye`}</span>
                     {isComplete ? (
-                      <CheckCircle2 style={{ width: '11px', height: '11px', color: '#10b981' }} />
+                      <CheckCircle2 style={{ width: isMobile ? '14px' : '11px', height: isMobile ? '14px' : '11px', color: '#10b981' }} />
                     ) : (
-                      <span style={{ fontSize: '9px', color: '#94a3b8' }}>{answered}/{total}</span>
+                      <span style={{ fontSize: isMobile ? '11px' : '9px', color: '#94a3b8' }}>{answered}/{total}</span>
                     )}
                   </button>
                 );
@@ -1768,8 +1794,9 @@ export default function AICompetencyApp() {
                       style={{
                         width: '100%',
                         textAlign: 'left',
-                        padding: '12px 14px',
-                        borderRadius: '10px',
+                        padding: isMobile ? '14px 16px' : '12px 14px',
+                        minHeight: isMobile ? '56px' : 'auto',
+                        borderRadius: isMobile ? '12px' : '10px',
                         border: isSelected ? `2px solid ${currentColor}` : '1px solid #e2e8f0',
                         backgroundColor: isSelected ? `${currentColor}08` : 'white',
                         cursor: 'pointer',
@@ -1777,11 +1804,11 @@ export default function AICompetencyApp() {
                         boxShadow: isSelected ? `0 2px 8px ${currentColor}15` : 'none'
                       }}
                     >
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: isMobile ? '12px' : '10px' }}>
                         <div style={{
-                          width: '26px',
-                          height: '26px',
-                          borderRadius: '6px',
+                          width: isMobile ? '32px' : '26px',
+                          height: isMobile ? '32px' : '26px',
+                          borderRadius: isMobile ? '8px' : '6px',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
@@ -1790,14 +1817,14 @@ export default function AICompetencyApp() {
                           transition: 'all 0.15s'
                         }}>
                           {isSelected ? (
-                            <CheckCircle2 style={{ width: '16px', height: '16px', color: 'white' }} />
+                            <CheckCircle2 style={{ width: isMobile ? '18px' : '16px', height: isMobile ? '18px' : '16px', color: 'white' }} />
                           ) : (
-                            <span style={{ fontSize: '12px', fontWeight: 600, color: '#94a3b8' }}>{idx}</span>
+                            <span style={{ fontSize: isMobile ? '14px' : '12px', fontWeight: 600, color: '#94a3b8' }}>{idx}</span>
                           )}
                         </div>
                         <div style={{ flex: 1, minWidth: 0 }}>
                           <p style={{
-                            fontSize: '14px',
+                            fontSize: isMobile ? '15px' : '14px',
                             lineHeight: 1.4,
                             color: isSelected ? '#0f172a' : '#475569',
                             margin: 0,
@@ -1807,9 +1834,9 @@ export default function AICompetencyApp() {
                           </p>
                         </div>
                         <div style={{
-                          padding: '4px 8px',
-                          borderRadius: '6px',
-                          fontSize: '12px',
+                          padding: isMobile ? '6px 10px' : '4px 8px',
+                          borderRadius: isMobile ? '8px' : '6px',
+                          fontSize: isMobile ? '13px' : '12px',
                           fontWeight: 600,
                           flexShrink: 0,
                           backgroundColor: isSelected ? currentColor : '#f1f5f9',
@@ -1917,9 +1944,10 @@ export default function AICompetencyApp() {
                   alignItems: 'center',
                   justifyContent: 'center',
                   gap: '6px',
-                  padding: '10px 16px',
-                  borderRadius: '8px',
-                  fontSize: '13px',
+                  padding: isMobile ? '12px 18px' : '10px 16px',
+                  minHeight: isMobile ? '44px' : 'auto',
+                  borderRadius: isMobile ? '10px' : '8px',
+                  fontSize: isMobile ? '14px' : '13px',
                   fontWeight: 600,
                   border: '1px solid #e2e8f0',
                   backgroundColor: 'white',
@@ -1928,8 +1956,8 @@ export default function AICompetencyApp() {
                   transition: 'all 0.15s'
                 }}
               >
-                <ChevronLeft style={{ width: '16px', height: '16px' }} />
-                Önceki
+                <ChevronLeft style={{ width: isMobile ? '18px' : '16px', height: isMobile ? '18px' : '16px' }} />
+                {isMobile ? '' : 'Önceki'}
               </button>
             ) : (
               <div />
@@ -1944,9 +1972,10 @@ export default function AICompetencyApp() {
                   alignItems: 'center',
                   justifyContent: 'center',
                   gap: '6px',
-                  padding: '10px 16px',
-                  borderRadius: '8px',
-                  fontSize: '13px',
+                  padding: isMobile ? '12px 18px' : '10px 16px',
+                  minHeight: isMobile ? '44px' : 'auto',
+                  borderRadius: isMobile ? '10px' : '8px',
+                  fontSize: isMobile ? '14px' : '13px',
                   fontWeight: 600,
                   border: 'none',
                   backgroundColor: currentColor,
@@ -1956,8 +1985,8 @@ export default function AICompetencyApp() {
                   boxShadow: `0 2px 8px ${currentColor}30`
                 }}
               >
-                <BarChart3 style={{ width: '16px', height: '16px' }} />
-                Raporu Göster
+                <BarChart3 style={{ width: isMobile ? '18px' : '16px', height: isMobile ? '18px' : '16px' }} />
+                {isMobile ? 'Rapor' : 'Raporu Göster'}
               </button>
             )}
           </div>

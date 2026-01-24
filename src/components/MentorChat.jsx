@@ -12,9 +12,20 @@ export default function MentorChat({
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const [sessionId] = useState(() => `session-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`);
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
+
+  // Mobil cihaz kontrolü
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Sohbet açıldığında hoşgeldin mesajı
   useEffect(() => {
@@ -37,6 +48,18 @@ export default function MentorChat({
       setTimeout(() => inputRef.current?.focus(), 100);
     }
   }, [isOpen]);
+
+  // Mobilde body scroll'u kapat
+  useEffect(() => {
+    if (isOpen && isMobile) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen, isMobile]);
 
   const sendMessage = async (messageText) => {
     if (!messageText.trim() || isLoading) return;
@@ -98,8 +121,18 @@ export default function MentorChat({
 
   if (!isOpen) return null;
 
-  // Styles
-  const containerStyle = {
+  // Mobil tam ekran container
+  const containerStyle = isMobile ? {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: '#ffffff',
+    zIndex: 1000,
+    display: 'flex',
+    flexDirection: 'column'
+  } : {
     marginTop: '16px',
     backgroundColor: '#ffffff',
     borderRadius: '12px',
@@ -112,20 +145,21 @@ export default function MentorChat({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: '12px 16px',
+    padding: isMobile ? '16px 20px' : '12px 16px',
     borderBottom: '1px solid #e2e8f0',
-    backgroundColor: '#f8fafc'
+    backgroundColor: '#f8fafc',
+    flexShrink: 0
   };
 
   const headerLeftStyle = {
     display: 'flex',
     alignItems: 'center',
-    gap: '10px'
+    gap: isMobile ? '12px' : '10px'
   };
 
   const avatarStyle = {
-    width: '32px',
-    height: '32px',
+    width: isMobile ? '40px' : '32px',
+    height: isMobile ? '40px' : '32px',
     borderRadius: '50%',
     background: 'linear-gradient(135deg, #3b82f6, #8b5cf6)',
     display: 'flex',
@@ -134,70 +168,77 @@ export default function MentorChat({
   };
 
   const messagesContainerStyle = {
-    maxHeight: '240px',
+    flex: isMobile ? 1 : 'none',
+    maxHeight: isMobile ? 'none' : '240px',
     overflowY: 'auto',
-    padding: '16px'
+    padding: isMobile ? '20px' : '16px',
+    WebkitOverflowScrolling: 'touch'
   };
 
   const messageStyle = (isUser) => ({
     display: 'flex',
-    gap: '10px',
-    marginBottom: '12px',
+    gap: isMobile ? '12px' : '10px',
+    marginBottom: isMobile ? '16px' : '12px',
     flexDirection: isUser ? 'row-reverse' : 'row'
   });
 
   const messageBubbleStyle = (isUser) => ({
     maxWidth: '85%',
-    padding: '10px 14px',
-    borderRadius: '12px',
+    padding: isMobile ? '12px 16px' : '10px 14px',
+    borderRadius: isMobile ? '16px' : '12px',
     backgroundColor: isUser ? '#3b82f6' : '#f1f5f9',
     color: isUser ? '#ffffff' : '#334155',
-    fontSize: '14px',
+    fontSize: isMobile ? '15px' : '14px',
     lineHeight: '1.5'
   });
 
   const quickQuestionsStyle = {
     display: 'flex',
-    gap: '8px',
+    gap: isMobile ? '10px' : '8px',
     flexWrap: 'wrap',
-    padding: '0 16px 12px 16px'
+    padding: isMobile ? '0 20px 16px 20px' : '0 16px 12px 16px'
   };
 
   const quickButtonStyle = {
-    padding: '6px 12px',
-    fontSize: '12px',
+    padding: isMobile ? '12px 16px' : '6px 12px',
+    minHeight: isMobile ? '44px' : 'auto',
+    fontSize: isMobile ? '14px' : '12px',
     backgroundColor: '#f1f5f9',
     color: '#475569',
     border: '1px solid #e2e8f0',
-    borderRadius: '16px',
+    borderRadius: isMobile ? '22px' : '16px',
     cursor: 'pointer',
     transition: 'all 0.2s'
   };
 
   const inputContainerStyle = {
     display: 'flex',
-    gap: '8px',
-    padding: '12px 16px',
+    gap: isMobile ? '12px' : '8px',
+    padding: isMobile ? '16px 20px' : '12px 16px',
+    paddingBottom: isMobile ? 'max(16px, env(safe-area-inset-bottom))' : '12px',
     borderTop: '1px solid #e2e8f0',
-    backgroundColor: '#f8fafc'
+    backgroundColor: '#f8fafc',
+    flexShrink: 0
   };
 
   const inputStyle = {
     flex: 1,
-    padding: '10px 14px',
-    fontSize: '14px',
+    padding: isMobile ? '14px 18px' : '10px 14px',
+    fontSize: isMobile ? '16px' : '14px', // 16px mobilde zoom'u önler
     border: '1px solid #e2e8f0',
-    borderRadius: '8px',
+    borderRadius: isMobile ? '12px' : '8px',
     outline: 'none',
     backgroundColor: '#ffffff'
   };
 
   const sendButtonStyle = {
-    padding: '10px 16px',
+    padding: isMobile ? '14px 20px' : '10px 16px',
+    minWidth: isMobile ? '52px' : 'auto',
+    minHeight: isMobile ? '52px' : 'auto',
     backgroundColor: isLoading ? '#94a3b8' : '#3b82f6',
     color: '#ffffff',
     border: 'none',
-    borderRadius: '8px',
+    borderRadius: isMobile ? '12px' : '8px',
     cursor: isLoading ? 'not-allowed' : 'pointer',
     display: 'flex',
     alignItems: 'center',
@@ -206,11 +247,13 @@ export default function MentorChat({
   };
 
   const closeButtonStyle = {
-    padding: '4px',
+    padding: isMobile ? '10px' : '4px',
+    minWidth: isMobile ? '44px' : 'auto',
+    minHeight: isMobile ? '44px' : 'auto',
     backgroundColor: 'transparent',
     border: 'none',
     cursor: 'pointer',
-    borderRadius: '4px',
+    borderRadius: isMobile ? '10px' : '4px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center'
@@ -222,13 +265,13 @@ export default function MentorChat({
       <div style={headerStyle}>
         <div style={headerLeftStyle}>
           <div style={avatarStyle}>
-            <Bot style={{ width: '18px', height: '18px', color: '#ffffff' }} />
+            <Bot style={{ width: isMobile ? '22px' : '18px', height: isMobile ? '22px' : '18px', color: '#ffffff' }} />
           </div>
           <div>
-            <p style={{ margin: 0, fontSize: '14px', fontWeight: 600, color: '#0f172a' }}>
+            <p style={{ margin: 0, fontSize: isMobile ? '16px' : '14px', fontWeight: 600, color: '#0f172a' }}>
               YZ Yetkinlik Mentörü
             </p>
-            <p style={{ margin: 0, fontSize: '11px', color: '#64748b' }}>
+            <p style={{ margin: 0, fontSize: isMobile ? '13px' : '11px', color: '#64748b' }}>
               Bu maddeyi açıklamak için buradayım
             </p>
           </div>
@@ -239,7 +282,7 @@ export default function MentorChat({
           onMouseEnter={(e) => e.target.style.backgroundColor = '#e2e8f0'}
           onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}
         >
-          <X style={{ width: '18px', height: '18px', color: '#64748b' }} />
+          <X style={{ width: isMobile ? '24px' : '18px', height: isMobile ? '24px' : '18px', color: '#64748b' }} />
         </button>
       </div>
 
@@ -248,8 +291,8 @@ export default function MentorChat({
         {messages.map((msg, index) => (
           <div key={index} style={messageStyle(msg.role === 'user')}>
             <div style={{
-              width: '28px',
-              height: '28px',
+              width: isMobile ? '36px' : '28px',
+              height: isMobile ? '36px' : '28px',
               borderRadius: '50%',
               backgroundColor: msg.role === 'user' ? '#e0e7ff' : '#f1f5f9',
               display: 'flex',
@@ -258,9 +301,9 @@ export default function MentorChat({
               flexShrink: 0
             }}>
               {msg.role === 'user' ? (
-                <User style={{ width: '14px', height: '14px', color: '#6366f1' }} />
+                <User style={{ width: isMobile ? '18px' : '14px', height: isMobile ? '18px' : '14px', color: '#6366f1' }} />
               ) : (
-                <Bot style={{ width: '14px', height: '14px', color: '#64748b' }} />
+                <Bot style={{ width: isMobile ? '18px' : '14px', height: isMobile ? '18px' : '14px', color: '#64748b' }} />
               )}
             </div>
             <div style={messageBubbleStyle(msg.role === 'user')}>
@@ -271,8 +314,8 @@ export default function MentorChat({
         {isLoading && (
           <div style={messageStyle(false)}>
             <div style={{
-              width: '28px',
-              height: '28px',
+              width: isMobile ? '36px' : '28px',
+              height: isMobile ? '36px' : '28px',
               borderRadius: '50%',
               backgroundColor: '#f1f5f9',
               display: 'flex',
@@ -280,10 +323,10 @@ export default function MentorChat({
               justifyContent: 'center',
               flexShrink: 0
             }}>
-              <Bot style={{ width: '14px', height: '14px', color: '#64748b' }} />
+              <Bot style={{ width: isMobile ? '18px' : '14px', height: isMobile ? '18px' : '14px', color: '#64748b' }} />
             </div>
             <div style={{ ...messageBubbleStyle(false), display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <Loader2 style={{ width: '14px', height: '14px', animation: 'spin 1s linear infinite' }} />
+              <Loader2 style={{ width: isMobile ? '16px' : '14px', height: isMobile ? '16px' : '14px', animation: 'spin 1s linear infinite' }} />
               Yazıyor...
             </div>
           </div>
@@ -339,9 +382,9 @@ export default function MentorChat({
           disabled={isLoading || !inputValue.trim()}
         >
           {isLoading ? (
-            <Loader2 style={{ width: '18px', height: '18px', animation: 'spin 1s linear infinite' }} />
+            <Loader2 style={{ width: isMobile ? '22px' : '18px', height: isMobile ? '22px' : '18px', animation: 'spin 1s linear infinite' }} />
           ) : (
-            <Send style={{ width: '18px', height: '18px' }} />
+            <Send style={{ width: isMobile ? '22px' : '18px', height: isMobile ? '22px' : '18px' }} />
           )}
         </button>
       </form>
