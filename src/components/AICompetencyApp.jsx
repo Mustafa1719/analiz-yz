@@ -1,78 +1,24 @@
 import React, { useState, useRef, useEffect } from 'react';
 import {
   BarChart3, ArrowRight,
-  ChevronLeft, ChevronRight, CheckCircle2,
+  ChevronLeft, ChevronRight, ChevronDown, CheckCircle2,
   Brain, Zap, Target, Layers, Cpu, Bot, Sparkles, Rocket,
   TrendingUp, Trophy, Info, Download, AlertTriangle,
   Library, ArrowDown, Users, Lightbulb, MessageCircle,
-  Clock, Shield, AlertCircle, Compass, Lock, Building2, Menu
+  Clock, Shield, AlertCircle, Compass, Lock, Building2, Menu, BookOpen, PlayCircle
 } from 'lucide-react';
 import GlossaryModal from './GlossaryModal';
 import MentorChat from './MentorChat';
+import NewsModal from './NewsModal';
+import SlideViewer from './SlideViewer';
+import YouTubeVideoList from './YouTubeVideoList';
 
-// Seviye verileri - YZ_Sorular belgesinden
+const GEMINI_SLIDES = Array.from({ length: 15 }, (_, i) =>
+  `/slides/gemini-prompting/slide${i + 1}.png`
+);
+
+// Seviye verileri - Yapay Zeka Gelişim Piramidi (5 Seviye)
 const competencyLevels = [
-  {
-    id: 0,
-    title: "Temel Farkındalık",
-    subtitle: "Yapay zeka ile tanışma aşaması",
-    icon: Brain,
-    color: "from-slate-500 to-slate-700",
-    bgColor: "bg-slate-500",
-    description: "Yapay zeka araçlarının varlığından haberdar olma ve temel kavramları anlama aşaması.",
-    questions: [
-      {
-        text: "Yapay zeka ve araçlarını tanıyorum",
-        options: [
-          "Yapay zeka araçlarının ne olduğunu bilmiyorum, isimlerini duymadım",
-          "ChatGPT, Gemini, Claude gibi araç isimlerini duydum ancak ne işe yaradıklarını bilmiyorum",
-          "Bu araçların metin yazma, soru yanıtlama gibi genel işlevleri olduğunu biliyorum",
-          "En az iki yapay zeka aracının adını ve hangi tür işlerde kullanıldığını açıklayabiliyorum"
-        ],
-        evidence: "'ChatGPT metin üretmek için, Gemini araştırma için kullanılıyor' gibi açıklama yapabilme"
-      },
-      {
-        text: "Yapay zekanın işime nerede değer katabileceğini kavrıyorum",
-        options: [
-          "Yapay zekanın benim işimle ilgili olduğunu düşünmüyorum",
-          "Yapay zekanın bazı işlerde kullanılabileceğini biliyorum ama kendi işimle ilişkilendirmedim",
-          "Kendi işimde yapay zekanın hangi tür görevlerde kullanılabileceğini ayırt edebiliyorum (2-3 örnek)",
-          "Kendi işimde yapay zekanın uygun olduğu ve olmadığı alanları örneklerle açıklayabiliyorum (5+ senaryo)"
-        ],
-        evidence: "'E-posta taslağı yazabilir ama müşteriyle birebir kararları veremez' gibi açıklama"
-      },
-      {
-        text: "Temel yapay zeka kavramlarını biliyorum",
-        options: [
-          "Prompt, model, yapay zeka gibi terimleri hiç duymadım",
-          "Bu terimleri duydum ama ne anlama geldiklerini bilmiyorum",
-          "Prompt'un 'yapay zekaya verilen talimat' olduğunu biliyorum",
-          "Prompt, model, halüsinasyon, veri güvenliği gibi en az 3-4 temel kavramı doğru şekilde açıklayabiliyorum"
-        ],
-        evidence: "'Halüsinasyon, yapay zekanın uydurma bilgi üretmesidir' şeklinde tanım yapabilme"
-      },
-      {
-        text: "Yapay zekanın sınırlarını ve risklerini farkındayım",
-        options: [
-          "Yapay zekanın verdiği sonuçların her zaman doğru olduğunu düşünüyorum",
-          "Yapay zekanın hata yapabileceğini duydum ama nedenlerini bilmiyorum",
-          "Halüsinasyon ve veri güvenliği gibi temel riskleri biliyorum",
-          "Yapay zeka çıktılarının kontrol edilmesi gerektiğini, etik ve gizlilik risklerini açıklayabiliyorum"
-        ],
-        evidence: "'YZ çıktıları kontrol edilmeli çünkü yanlış veya eksik olabilir' açıklaması"
-      },
-      {
-        text: "Yapay zeka öğrenmek için somut adım attım",
-        options: [
-          "Herhangi bir araştırma veya deneme yapmadım",
-          "Makale okudum, video izledim gibi pasif öğrenme yaptım",
-          "Bir yapay zeka aracına üye oldum ve ilk denememi yaptım",
-          "Farklı yapay zeka araçlarını denedim ve öğrenme kaynaklarını takip etmeye devam ediyorum"
-        ],
-        evidence: "İlk prompt denemesi, ekran görüntüsü veya örnek soru-cevap"
-      }
-    ]
-  },
   {
     id: 1,
     title: "Prompt Mühendisliği",
@@ -81,6 +27,7 @@ const competencyLevels = [
     color: "from-blue-500 to-blue-700",
     bgColor: "bg-blue-500",
     description: "Yapay zekaya doğru talimatlar vererek etkili sonuçlar alma becerisi.",
+    tools: ["ChatGPT", "Gemini", "CoPilot", "Grok", "Perplexity"],
     questions: [
       {
         text: "Yapay zeka araçlarını düzenli kullanıyorum",
@@ -136,73 +83,13 @@ const competencyLevels = [
   },
   {
     id: 2,
-    title: "YZ Araçları Kullanımı",
-    subtitle: "Özelleşmiş Araçlar",
-    icon: Layers,
-    color: "from-violet-500 to-violet-700",
-    bgColor: "bg-violet-500",
-    description: "Metin dışında görsel, ses, video gibi farklı yapay zeka araçlarını kullanabilme.",
-    questions: [
-      {
-        text: "Metin dışında farklı modalitelerde (görsel, video, ses) yapay zeka kullanıyorum",
-        options: [
-          "Sadece metin tabanlı araçlar kullanıyorum",
-          "Görsel veya ses araçlarını denedim ama düzenli kullanmıyorum",
-          "En az 2 farklı modalitede (görsel+ses veya video+görsel) araç kullanıyorum",
-          "4+ farklı modalitede (metin, görsel, video, ses, kod) aktif ve düzenli kullanıyorum"
-        ],
-        evidence: "Midjourney görseli + ElevenLabs ses kaydı + ChatGPT metni birleşik proje"
-      },
-      {
-        text: "İhtiyaca göre doğru aracı seçebiliyorum",
-        options: [
-          "Tüm işler için aynı aracı kullanıyorum",
-          "Bazen farklı araçlar deniyorum ama hangisinin ne için iyi olduğunu bilmiyorum",
-          "Her modalite için en az 1 aracı biliyorum ve kullanıyorum",
-          "Her iş için en uygun aracı seçiyorum (fotorealistik görsel→Midjourney, hızlı kod→Claude vb.) ve tercihimi gerekçelendirebiliyorum"
-        ],
-        evidence: "Görev-araç eşleştirme tablosu (Rapor→ChatGPT, Görsel→Midjourney, Video→Runway)"
-      },
-      {
-        text: "Görsel oluşturma araçlarında istediğim çıktıyı alabiliyorum",
-        options: [
-          "Hiç görsel üretme aracı kullanmadım",
-          "Basit promptlar veriyorum ama istediğim sonucu alamıyorum",
-          "Stil, kompozisyon, renk belirterek iyi sonuçlar alıyorum",
-          "İleri prompt teknikleriyle (negatif prompt, aspect ratio, stil referansı) profesyonel sonuçlar üretiyorum"
-        ],
-        evidence: "'Minimalist, pastel renkler, üstten bakış açısı, kurumsal sunum için' gibi detaylı görsel prompt"
-      },
-      {
-        text: "Doküman ve veri analizi için yapay zeka kullanıyorum",
-        options: [
-          "Sadece metin yazıyorum, dosya analizi yapmıyorum",
-          "PDF veya Excel yükleyerek basit sorular soruyorum",
-          "Karmaşık dokümanları (sözleşme, rapor) analiz ettiriyorum",
-          "Çok sayfalı dokümanları, veri setlerini sistematik analiz edip sentez yapıyorum"
-        ],
-        evidence: "50 sayfalık raporu özetleme + ana bulguları çıkarma görevi"
-      },
-      {
-        text: "Farklı araçları kombine ederek iş akışı oluşturuyorum",
-        options: [
-          "Her aracı ayrı ve bağımsız kullanıyorum",
-          "Bazen bir araçtan diğerine manuel veri aktarıyorum",
-          "Düzenli olarak araçları zincir halinde kullanıyorum (ChatGPT→Midjourney→Canva)",
-          "Entegre iş akışları kuruyorum ve süreç dokümante ediyorum"
-        ],
-        evidence: "'Blog yazısı (ChatGPT) → Kapak görseli (Midjourney) → Sesli versiyon (ElevenLabs)' iş akışı"
-      }
-    ]
-  },
-  {
-    id: 3,
-    title: "Özel GPT / Gem Tasarımı",
+    title: "Özel GPT'ler",
     subtitle: "Özelleştirilmiş Asistanlar",
     icon: Sparkles,
     color: "from-amber-500 to-orange-600",
     bgColor: "bg-amber-500",
     description: "Tekrar eden işler için özel yapay zeka asistanları oluşturabilme.",
+    tools: ["Gemini GEM", "Custom GPT", "NotebookLM", "ChippAI"],
     questions: [
       {
         text: "Tekrar eden işlerim için özel asistan oluşturdum",
@@ -257,13 +144,14 @@ const competencyLevels = [
     ]
   },
   {
-    id: 4,
-    title: "Uygulama Prototipleme",
-    subtitle: "No-Code YZ Uygulamaları",
+    id: 3,
+    title: "Temel Otomasyonlar",
+    subtitle: "Builder / No-Code Uygulamalar",
     icon: Target,
     color: "from-emerald-500 to-teal-600",
     bgColor: "bg-emerald-500",
     description: "Kod yazmadan yapay zeka destekli uygulamalar ve prototipler geliştirebilme.",
+    tools: ["Google AI Studio", "Claude Artifacts", "Replit", "Cursor", "Lovable"],
     questions: [
       {
         text: "İş süreçlerimi görselleştirebiliyorum",
@@ -318,13 +206,14 @@ const competencyLevels = [
     ]
   },
   {
-    id: 5,
-    title: "İş Akışı Otomasyonu",
-    subtitle: "Yapay Zekasız Otomasyon",
+    id: 4,
+    title: "YZ Destekli Otomasyon",
+    subtitle: "Workflow / AI + Otomasyon",
     icon: Cpu,
-    color: "from-cyan-500 to-blue-600",
-    bgColor: "bg-cyan-500",
-    description: "Tekrarlayan işleri otomatikleştirerek manuel yükü azaltma.",
+    color: "from-purple-500 to-indigo-600",
+    bgColor: "bg-purple-500",
+    description: "Otomasyon araçlarıyla yapay zekayı birleştirerek akıllı iş akışları kurma.",
+    tools: ["n8n", "Make.com", "Google Opal", "OpenAI Platform"],
     questions: [
       {
         text: "Otomasyon araçlarını aktif kullanıyorum",
@@ -337,16 +226,6 @@ const competencyLevels = [
         evidence: "Zapier/Make/n8n dashboard ekran görüntüsü, çalışan otomasyon listesi"
       },
       {
-        text: "Tetikleyici-İşlem-Çıktı mantığıyla düşünüyorum",
-        options: [
-          "Bu mantığı bilmiyorum",
-          "Duydum ama uygulamıyorum",
-          "Basit 'eğer X olursa Y yap' kuralları kuruyorum",
-          "Çoklu tetikleyici, dallanma ve hata yönetimi ile karmaşık mantık kuruyorum"
-        ],
-        evidence: "'Yeni Gmail gelirse (tetik) → Önceliğe göre filtrele (işlem) → Slack'e bildir (çıktı)' akış diyagramı"
-      },
-      {
         text: "Farklı uygulamaları birbirine bağlıyorum",
         options: [
           "Hiç entegrasyon yapmadım",
@@ -357,37 +236,6 @@ const competencyLevels = [
         evidence: "Salesforce → Gmail → Google Sheets → Slack entegrasyon zinciri"
       },
       {
-        text: "Hata durumları için alternatif akışlar kurdum",
-        options: [
-          "Hata yönetimi yapmadım",
-          "Başarısız olunca manuel müdahale ediyorum",
-          "Basit hata bildirimi kurdum",
-          "Try-catch, timeout, fallback mekanizması ve hata bildirimi sistemi kurdum"
-        ],
-        evidence: "'API yanıt vermezse e-posta gönder + 5 dk sonra tekrar dene' akışı"
-      },
-      {
-        text: "Otomasyonlarla ölçülebilir zaman kazancı sağlıyorum",
-        options: [
-          "Kazancı ölçmedim",
-          "Genel olarak zaman kazandırdığını düşünüyorum",
-          "Haftalık 3-5 saat tasarruf sağlıyorum",
-          "Haftalık 10+ saat tasarruf sağlıyorum ve dokümante ettim"
-        ],
-        evidence: "'Rapor hazırlama 5 saat/hafta → 30 dk/hafta' karşılaştırması"
-      }
-    ]
-  },
-  {
-    id: 6,
-    title: "YZ Destekli Otomasyon",
-    subtitle: "AI + Otomasyon",
-    icon: Bot,
-    color: "from-purple-500 to-indigo-600",
-    bgColor: "bg-purple-500",
-    description: "Otomasyon içinde yapay zekayı karar destek noktalarında kullanma.",
-    questions: [
-      {
         text: "Otomasyon içinde yapay zekayı stratejik noktalarda kullanıyorum",
         options: [
           "Hiç yapay zeka entegrasyonu yapmadım",
@@ -396,26 +244,6 @@ const competencyLevels = [
           "5+ otomasyonda stratejik karar noktalarında yapay zeka kullanıyorum ve kurallı mantıkla hibrit yaklaşım kurdum"
         ],
         evidence: "E-posta sınıflandırma (AI) → Kategoriye göre routing (kural) akışı"
-      },
-      {
-        text: "Yapay zekaya spesifik görevler tanımlıyorum",
-        options: [
-          "Yapay zekaya genel 'analiz et' gibi talimatlar veriyorum",
-          "Basit görevler tanımlıyorum ama çıktı kontrolsüz",
-          "Net görev (sınıflandır, özetle, çıkar) tanımlıyorum ve format belirtiyorum",
-          "Detaylı görev tanımı + çıktı formatı + kalite kriterleri + hata durumu yönetimi tanımlıyorum"
-        ],
-        evidence: "'Bu e-postayı 3 kategoriden birine sınıflandır: Şikayet/Soru/Öneri. Çıktı: JSON {category, confidence, reason}'"
-      },
-      {
-        text: "Kural ve yapay zeka arasındaki sınırı doğru çiziyorum",
-        options: [
-          "Her işi yapay zekaya yaptırmaya çalışıyorum",
-          "Bazen kural bazen yapay zeka kullanıyorum ama net kriter yok",
-          "Deterministik işlerde kural, belirsiz işlerde yapay zeka kullanıyorum",
-          "Sistematik karar matrisi kurdum (kural: hız+maliyet+kesinlik, AI: yorumlama+context+esneklik) ve hibrit optimize ediyorum"
-        ],
-        evidence: "'Tarih/sayı çıkarma→Kural, duygu analizi→AI' karar tablosu"
       },
       {
         text: "Yapay zeka çıktısını akış içinde kullanıyorum",
@@ -428,25 +256,26 @@ const competencyLevels = [
         evidence: "AI sınıflandırma sonucu 'Acil' ise Slack'e bildir, değilse ticket oluştur"
       },
       {
-        text: "Yapay zeka kalitesini izliyor ve doğruluyorum",
+        text: "Hata durumları için alternatif akışlar kurdum",
         options: [
-          "Yapay zeka sonuçlarını hiç kontrol etmiyorum",
-          "Bazen rastgele kontrol ediyorum",
-          "Düzenli örnekleme yapıyorum (%10 kontrol)",
-          "Otomatik kalite metrikleri (confidence score, validation rules) ve periyodik audit sistemi kurdum"
+          "Hata yönetimi yapmadım",
+          "Başarısız olunca manuel müdahale ediyorum",
+          "Basit hata bildirimi kurdum",
+          "Try-catch, timeout, fallback mekanizması ve hata bildirimi sistemi kurdum"
         ],
-        evidence: "'Confidence<0.7 ise insan onayına gönder' kuralı + haftalık kalite raporu"
+        evidence: "'API yanıt vermezse e-posta gönder + 5 dk sonra tekrar dene' akışı"
       }
     ]
   },
   {
-    id: 7,
-    title: "Yapay Zeka Ajanları",
+    id: 5,
+    title: "YZ Ajanları",
     subtitle: "Otonom AI Sistemler",
     icon: Rocket,
     color: "from-rose-500 to-pink-600",
     bgColor: "bg-rose-500",
     description: "Hedef bazlı çalışan otonom yapay zeka sistemleri tasarlayabilme.",
+    tools: ["Claude Code", "Google Antigravity", "Clawbot", "ChatGPT Codex"],
     questions: [
       {
         text: "Yapay zekaya hedef tanımlıyorum, adımları kendisi planlıyor",
@@ -504,42 +333,27 @@ const competencyLevels = [
 
 // Öneriler
 const recommendations = {
-  0: {
-    next: "ChatGPT veya Gemini'ye üye olun ve günde 15 dakika basit sorular sorun.",
-    tools: ["ChatGPT", "Gemini", "Perplexity"],
-    resources: ["YouTube'da 'Yapay Zeka Nedir?' videoları", "Prompt, model, API terimlerini öğrenin"]
-  },
   1: {
-    next: "PARTS ve SALT formüllerini öğrenin ve günlük uygulayın.",
-    tools: ["ChatGPT Plus", "Claude", "Gemini Advanced"],
-    resources: ["Prompt mühendisliği kursları", "Farklı modelleri karşılaştırın"]
+    next: "Özel GPT veya Gem oluşturarak tekrar eden işlerinizi otomatikleştirin.",
+    tools: ["Custom GPT", "Gemini GEM", "NotebookLM"],
+    resources: ["Özel asistan oluşturma rehberleri", "Prompt şablonlarınızı kaydedin"]
   },
   2: {
-    next: "Tekrar eden işleriniz için özel GPT veya Gem oluşturun.",
-    tools: ["ChatGPT GPTs", "Gemini Gems", "Midjourney", "ElevenLabs"],
-    resources: ["Her modalite için en az 1 araç öğrenin", "İş akışı zincirleri kurun"]
+    next: "No-code platformlarda ilk prototiplerinizi geliştirin.",
+    tools: ["Google AI Studio", "Claude Artifacts", "Replit", "Lovable"],
+    resources: ["İş süreçlerinizi haritalayın", "İlk prototipi 1 günde bitirin"]
   },
   3: {
-    next: "İş süreçlerinizi haritalayın ve no-code prototip geliştirin.",
-    tools: ["Google AI Studio", "Bolt.new", "Replit", "v0.dev"],
-    resources: ["SIPOC ve Cynefin modeli öğrenin", "İlk prototipi 1 günde bitirin"]
-  },
-  4: {
-    next: "Otomasyon araçlarını öğrenin ve manuel işleri otomatikleştirin.",
-    tools: ["Zapier", "Make", "n8n"],
-    resources: ["Gmail → Sheets basit otomasyon kurun", "If-then mantığını öğrenin"]
-  },
-  5: {
-    next: "Yapay zeka API'lerini otomasyon akışlarına entegre edin.",
-    tools: ["n8n + OpenAI", "Make + Gemini API", "UiPath"],
+    next: "Otomasyon araçlarıyla yapay zekayı iş akışlarına entegre edin.",
+    tools: ["n8n", "Make.com", "OpenAI Platform"],
     resources: ["API anahtarı alın ve test edin", "Hibrit akışlar kurun"]
   },
-  6: {
+  4: {
     next: "Ajan tabanlı sistemleri öğrenin ve otonom çözümler geliştirin.",
-    tools: ["Claude Code", "LangChain", "AutoGPT", "Azure AI Agents"],
+    tools: ["Claude Code", "ChatGPT Codex", "Google Antigravity"],
     resources: ["Ajan güvenliği ve izleme öğrenin", "Production deployment yapın"]
   },
-  7: {
+  5: {
     next: "Tebrikler! Bilginizi paylaşın ve mentorluk yapın.",
     tools: ["Tüm araçlar"],
     resources: ["Ekibinize eğitim verin", "YZ yönetişim politikaları oluşturun"]
@@ -551,10 +365,17 @@ export default function AICompetencyApp() {
   const [currentLevel, setCurrentLevel] = useState(0);
   const [responses, setResponses] = useState({});
   const [showGlossary, setShowGlossary] = useState(false);
+  const [showNews, setShowNews] = useState(false);
   const [selectedLevelPopover, setSelectedLevelPopover] = useState(null);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [showMentorChat, setShowMentorChat] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [educationActiveLevel, setEducationActiveLevel] = useState(0);
+  const [educationActiveSection, setEducationActiveSection] = useState('read'); // 'read' | 'watch'
+  const [educationActiveTool, setEducationActiveTool] = useState(null); // araç indexi (Seviye 2 için)
+
+  // Seviye 2 (index 1) araç bazlı navigasyon kullanır
+  const TOOL_NAV_LEVELS = [0, 1, 2, 3, 4];
   const assessmentRef = useRef(null);
 
   // Mobil cihaz kontrolü
@@ -582,7 +403,7 @@ export default function AICompetencyApp() {
       if (questionIndex < currentLevelData.questions.length - 1) {
         // Aynı seviyede sonraki soru
         setCurrentQuestion(questionIndex + 1);
-      } else if (level < 7) {
+      } else if (level < 4) {
         // Sonraki seviyeye geç
         setCurrentLevel(level + 1);
         setCurrentQuestion(0);
@@ -616,7 +437,7 @@ export default function AICompetencyApp() {
   };
 
   const calculateOverallLevel = () => {
-    for (let i = 7; i >= 0; i--) {
+    for (let i = 4; i >= 0; i--) {
       if (getLevelPercentage(i) >= 70) {
         return i;
       }
@@ -644,7 +465,7 @@ export default function AICompetencyApp() {
     const currentLevelData = competencyLevels[currentLevel];
     if (currentQuestion < currentLevelData.questions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
-    } else if (currentLevel < 7) {
+    } else if (currentLevel < 4) {
       setCurrentLevel(currentLevel + 1);
       setCurrentQuestion(0);
     } else {
@@ -729,6 +550,50 @@ export default function AICompetencyApp() {
                   {!isMobile && 'Kavramlar'}
                 </button>
                 <button
+                  onClick={() => setShowNews(true)}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '8px',
+                    color: '#475569',
+                    fontSize: '14px',
+                    fontWeight: 500,
+                    padding: isMobile ? '10px' : '10px 16px',
+                    borderRadius: '10px',
+                    border: 'none',
+                    background: 'transparent',
+                    cursor: 'pointer',
+                    minWidth: '44px',
+                    minHeight: '44px'
+                  }}
+                >
+                  <TrendingUp style={{ width: isMobile ? '20px' : '16px', height: isMobile ? '20px' : '16px' }} />
+                  {!isMobile && 'Güncel Haberler'}
+                </button>
+                <button
+                  onClick={() => setCurrentView('education')}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '8px',
+                    color: '#475569',
+                    fontSize: '14px',
+                    fontWeight: 500,
+                    padding: isMobile ? '10px' : '10px 16px',
+                    borderRadius: '10px',
+                    border: 'none',
+                    background: 'transparent',
+                    cursor: 'pointer',
+                    minWidth: '44px',
+                    minHeight: '44px'
+                  }}
+                >
+                  <BookOpen style={{ width: isMobile ? '20px' : '16px', height: isMobile ? '20px' : '16px' }} />
+                  {!isMobile && 'Eğitim'}
+                </button>
+                <button
                   onClick={startAssessment}
                   style={{
                     background: 'linear-gradient(135deg, #2563eb, #4f46e5)',
@@ -807,7 +672,7 @@ export default function AICompetencyApp() {
               margin: '0 auto 48px'
             }}>
               Yapay zeka yetkinliğinizi{' '}
-              <strong style={{ color: '#0f172a' }}>8 seviyeli</strong>{' '}
+              <strong style={{ color: '#0f172a' }}>5 seviyeli</strong>{' '}
               çerçevemizle değerlendirin ve kişisel gelişim yolunuzu belirleyin.
             </p>
 
@@ -847,101 +712,158 @@ export default function AICompetencyApp() {
                 YETKİNLİK SEVİYELERİ
               </p>
               <h2 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 700, color: '#0f172a' }}>
-                8 Seviyeli Değerlendirme
+                5 Seviyeli Değerlendirme
               </h2>
             </div>
 
+            {/* Horizontal Timeline Container */}
             <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-              gap: '20px'
+              display: 'flex',
+              flexDirection: isMobile ? 'column' : 'row',
+              alignItems: isMobile ? 'stretch' : 'flex-start',
+              gap: isMobile ? '16px' : '12px',
+              justifyContent: 'center',
+              position: 'relative',
+              padding: isMobile ? '0' : '20px 0'
             }}>
+              {/* Timeline Line - Desktop Only */}
+              {!isMobile && (
+                <div style={{
+                  position: 'absolute',
+                  top: '52px',
+                  left: '5%',
+                  right: '5%',
+                  height: '4px',
+                  background: 'linear-gradient(90deg, #3b82f6 0%, #f59e0b 25%, #10b981 50%, #8b5cf6 75%, #f43f5e 100%)',
+                  borderRadius: '2px',
+                  zIndex: 0,
+                  opacity: 0.15
+                }} />
+              )}
+
               {competencyLevels.map((level, index) => {
                 const LevelIcon = level.icon;
-                const colors = ['#64748b', '#3b82f6', '#8b5cf6', '#f59e0b', '#10b981', '#06b6d4', '#ec4899', '#6366f1'];
+                const colors = ['#3b82f6', '#f59e0b', '#10b981', '#8b5cf6', '#f43f5e'];
                 const bgColor = colors[index];
                 const isPopoverOpen = selectedLevelPopover === index;
 
                 return (
                   <div
                     key={level.id}
-                    style={{ position: 'relative' }}
+                    style={{
+                      position: 'relative',
+                      flex: isMobile ? 'none' : '0 0 auto',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      zIndex: 1
+                    }}
                   >
+
                     {/* Level Card */}
                     <div
                       onClick={() => setSelectedLevelPopover(isPopoverOpen ? null : index)}
                       style={{
                         backgroundColor: 'white',
-                        border: isPopoverOpen ? `2px solid ${bgColor}` : '2px solid #f1f5f9',
-                        borderRadius: '20px',
-                        padding: '24px',
-                        transition: 'all 0.2s ease',
+                        border: isPopoverOpen ? `3px solid ${bgColor}` : '2px solid #f1f5f9',
+                        borderRadius: '24px',
+                        padding: isMobile ? '20px' : '20px 16px',
+                        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                         cursor: 'pointer',
-                        boxShadow: isPopoverOpen ? `0 8px 32px ${bgColor}25` : 'none',
-                        transform: isPopoverOpen ? 'translateY(-4px)' : 'translateY(0)'
+                        boxShadow: isPopoverOpen ? `0 12px 40px ${bgColor}30` : '0 2px 8px rgba(0,0,0,0.04)',
+                        transform: isPopoverOpen ? 'translateY(-8px) scale(1.02)' : 'translateY(0) scale(1)',
+                        width: isMobile ? '100%' : '180px',
+                        minHeight: isMobile ? 'auto' : '240px'
                       }}
                       onMouseOver={(e) => {
                         if (!isPopoverOpen) {
-                          e.currentTarget.style.borderColor = '#e2e8f0';
-                          e.currentTarget.style.boxShadow = '0 8px 32px rgba(0,0,0,0.1)';
-                          e.currentTarget.style.transform = 'translateY(-4px)';
+                          e.currentTarget.style.borderColor = `${bgColor}40`;
+                          e.currentTarget.style.boxShadow = `0 8px 24px ${bgColor}20`;
+                          e.currentTarget.style.transform = 'translateY(-4px) scale(1.01)';
                         }
                       }}
                       onMouseOut={(e) => {
                         if (!isPopoverOpen) {
                           e.currentTarget.style.borderColor = '#f1f5f9';
-                          e.currentTarget.style.boxShadow = 'none';
-                          e.currentTarget.style.transform = 'translateY(0)';
+                          e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.04)';
+                          e.currentTarget.style.transform = 'translateY(0) scale(1)';
                         }
                       }}
                     >
-                      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
+                      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: '12px' }}>
+                        {/* Icon */}
                         <div style={{
-                          width: '56px',
-                          height: '56px',
+                          width: '64px',
+                          height: '64px',
                           backgroundColor: bgColor,
-                          borderRadius: '16px',
+                          borderRadius: '50%',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
                           flexShrink: 0,
-                          boxShadow: `0 4px 12px ${bgColor}40`
+                          boxShadow: `0 4px 16px ${bgColor}40`,
+                          position: 'relative'
                         }}>
-                          <LevelIcon style={{ width: '28px', height: '28px', color: 'white' }} />
-                        </div>
-                        <div style={{ flex: 1 }}>
-                          <span style={{
+                          <LevelIcon style={{ width: '32px', height: '32px', color: 'white' }} />
+                          {/* Level Number Badge */}
+                          <div style={{
+                            position: 'absolute',
+                            top: '-4px',
+                            right: '-4px',
+                            width: '24px',
+                            height: '24px',
+                            backgroundColor: 'white',
+                            borderRadius: '50%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            border: `2px solid ${bgColor}`,
                             fontSize: '11px',
                             fontWeight: 700,
-                            color: bgColor,
-                            backgroundColor: `${bgColor}15`,
-                            padding: '4px 10px',
-                            borderRadius: '50px',
-                            display: 'inline-block',
-                            marginBottom: '8px'
+                            color: bgColor
                           }}>
-                            Seviye {level.id}
-                          </span>
-                          <h3 style={{ fontSize: '16px', fontWeight: 700, color: '#0f172a', margin: '0 0 4px' }}>{level.title}</h3>
-                          <p style={{ fontSize: '14px', color: '#64748b', margin: 0, lineHeight: 1.5 }}>{level.subtitle}</p>
+                            {level.id}
+                          </div>
                         </div>
+
+                        {/* Content */}
+                        <div style={{ flex: 1, width: '100%' }}>
+                          <h3 style={{
+                            fontSize: isMobile ? '15px' : '14px',
+                            fontWeight: 700,
+                            color: '#0f172a',
+                            margin: '0 0 6px',
+                            lineHeight: 1.3
+                          }}>
+                            {level.title}
+                          </h3>
+                          <p style={{
+                            fontSize: isMobile ? '13px' : '12px',
+                            color: '#64748b',
+                            margin: 0,
+                            lineHeight: 1.4
+                          }}>
+                            {level.subtitle}
+                          </p>
+                        </div>
+
                         {/* Expand indicator */}
                         <div style={{
-                          width: '24px',
-                          height: '24px',
+                          width: '28px',
+                          height: '28px',
                           borderRadius: '50%',
                           backgroundColor: isPopoverOpen ? bgColor : '#f1f5f9',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
                           transition: 'all 0.2s',
-                          flexShrink: 0
+                          marginTop: '4px'
                         }}>
-                          <ChevronRight style={{
-                            width: '14px',
-                            height: '14px',
+                          <ChevronDown style={{
+                            width: '16px',
+                            height: '16px',
                             color: isPopoverOpen ? 'white' : '#94a3b8',
-                            transform: isPopoverOpen ? 'rotate(90deg)' : 'rotate(0deg)',
+                            transform: isPopoverOpen ? 'rotate(180deg)' : 'rotate(0deg)',
                             transition: 'transform 0.2s'
                           }} />
                         </div>
@@ -1041,7 +963,7 @@ export default function AICompetencyApp() {
                 Tanıdık Geldi mi?
               </div>
               <h2 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 700, color: '#0f172a', marginBottom: '12px' }}>
-                8 Seviyeli Değerlendirme ile<br />
+                5 Seviyeli Değerlendirme ile<br />
                 <span style={{ color: '#3b82f6' }}>Bu Sorulara Cevap Bulun</span>
               </h2>
               <p style={{ fontSize: '18px', color: '#64748b' }}>
@@ -1109,7 +1031,7 @@ export default function AICompetencyApp() {
               gap: '24px'
             }}>
               {[
-                { icon: Target, title: 'Mevcut Durum', desc: '8 seviyeli olgunluk modelinde şu an nerede olduğunuzu net olarak görün.', gradient: 'linear-gradient(135deg, #ecfdf5, #d1fae5)', border: '#a7f3d0', iconBg: 'linear-gradient(135deg, #10b981, #14b8a6)' },
+                { icon: Target, title: 'Mevcut Durum', desc: '5 seviyeli olgunluk modelinde şu an nerede olduğunuzu net olarak görün.', gradient: 'linear-gradient(135deg, #ecfdf5, #d1fae5)', border: '#a7f3d0', iconBg: 'linear-gradient(135deg, #10b981, #14b8a6)' },
                 { icon: TrendingUp, title: 'Gelişim Yolu', desc: 'Sonraki seviyeye geçmek için hangi becerilere odaklanmanız gerektiğini öğrenin.', gradient: 'linear-gradient(135deg, #eff6ff, #dbeafe)', border: '#93c5fd', iconBg: 'linear-gradient(135deg, #3b82f6, #6366f1)' },
                 { icon: Users, title: 'Ortak Dil', desc: 'İK, yöneticiler ve ekipler arasında ortak bir anlayış ve terminoloji oluşturun.', gradient: 'linear-gradient(135deg, #f5f3ff, #ede9fe)', border: '#c4b5fd', iconBg: 'linear-gradient(135deg, #8b5cf6, #a855f7)' }
               ].map((item, i) => {
@@ -1283,6 +1205,728 @@ export default function AICompetencyApp() {
         </footer>
 
         <GlossaryModal isOpen={showGlossary} onClose={() => setShowGlossary(false)} />
+        <NewsModal isOpen={showNews} onClose={() => setShowNews(false)} />
+      </div>
+    );
+  }
+
+  // ==================== EDUCATION PAGE ====================
+  if (currentView === 'education') {
+    const levelColors = ['#3b82f6', '#f59e0b', '#10b981', '#8b5cf6', '#f43f5e'];
+    const activeLevelData = competencyLevels[educationActiveLevel];
+    const activeBgColor = levelColors[educationActiveLevel];
+    const ActiveIcon = activeLevelData.icon;
+
+    const pageSections = educationActiveSection === 'read'
+      ? [
+          { id: 'giris', title: 'Giriş' },
+          { id: 'ogrenecekleriniz', title: 'Ne Öğreneceksiniz?' },
+          { id: 'araclar', title: 'Araçlar & Kaynaklar' },
+          { id: 'sonraki-adim', title: 'Sonraki Adım' },
+        ]
+      : [
+          { id: 'video-listesi', title: 'Video Listesi' },
+          { id: 'onerilen-kanallar', title: 'Önerilen Kanallar' },
+          { id: 'sonraki-adim', title: 'Sonraki Adım' },
+        ];
+
+    return (
+      <div style={{ minHeight: '100vh', backgroundColor: '#f8fafc' }}>
+        {/* Header */}
+        <header style={{
+          position: 'sticky',
+          top: 0,
+          zIndex: 50,
+          backgroundColor: 'rgba(255,255,255,0.95)',
+          backdropFilter: 'blur(12px)',
+          borderBottom: '1px solid #e2e8f0',
+          boxShadow: '0 1px 3px rgba(0,0,0,0.05)'
+        }}>
+          <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 24px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: isMobile ? '60px' : '72px' }}>
+              {/* Logo */}
+              <div
+                onClick={() => setCurrentView('home')}
+                style={{ display: 'flex', alignItems: 'center', gap: isMobile ? '10px' : '16px', cursor: 'pointer' }}
+              >
+                <div style={{
+                  width: isMobile ? '40px' : '48px',
+                  height: isMobile ? '40px' : '48px',
+                  background: 'linear-gradient(135deg, #2563eb, #4f46e5)',
+                  borderRadius: isMobile ? '10px' : '14px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  boxShadow: '0 4px 12px rgba(37,99,235,0.3)'
+                }}>
+                  <Brain style={{ width: isMobile ? '20px' : '24px', height: isMobile ? '20px' : '24px', color: 'white' }} />
+                </div>
+                {!isMobile && (
+                  <div>
+                    <h1 style={{ color: '#0f172a', fontWeight: 700, fontSize: '18px', margin: 0 }}>YZ Yetkinlik Değerlendirme</h1>
+                    <p style={{ color: '#64748b', fontSize: '12px', margin: 0 }}>Kişisel Değerlendirme</p>
+                  </div>
+                )}
+              </div>
+              {/* Nav */}
+              <nav style={{ display: 'flex', alignItems: 'center', gap: isMobile ? '8px' : '12px' }}>
+                <button
+                  onClick={() => setShowGlossary(true)}
+                  style={{
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+                    color: '#475569', fontSize: '14px', fontWeight: 500,
+                    padding: isMobile ? '10px' : '10px 16px', borderRadius: '10px',
+                    border: 'none', background: 'transparent', cursor: 'pointer',
+                    minWidth: '44px', minHeight: '44px'
+                  }}
+                >
+                  <Library style={{ width: isMobile ? '20px' : '16px', height: isMobile ? '20px' : '16px' }} />
+                  {!isMobile && 'Kavramlar'}
+                </button>
+                <button
+                  onClick={() => setShowNews(true)}
+                  style={{
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+                    color: '#475569', fontSize: '14px', fontWeight: 500,
+                    padding: isMobile ? '10px' : '10px 16px', borderRadius: '10px',
+                    border: 'none', background: 'transparent', cursor: 'pointer',
+                    minWidth: '44px', minHeight: '44px'
+                  }}
+                >
+                  <TrendingUp style={{ width: isMobile ? '20px' : '16px', height: isMobile ? '20px' : '16px' }} />
+                  {!isMobile && 'Güncel Haberler'}
+                </button>
+                {/* Active state for Eğitim */}
+                <button
+                  style={{
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+                    color: '#2563eb', fontSize: '14px', fontWeight: 600,
+                    padding: isMobile ? '10px' : '10px 16px', borderRadius: '10px',
+                    border: '1px solid #dbeafe', background: '#eff6ff', cursor: 'pointer',
+                    minWidth: '44px', minHeight: '44px'
+                  }}
+                >
+                  <BookOpen style={{ width: isMobile ? '20px' : '16px', height: isMobile ? '20px' : '16px' }} />
+                  {!isMobile && 'Eğitim'}
+                </button>
+                <button
+                  onClick={startAssessment}
+                  style={{
+                    background: 'linear-gradient(135deg, #2563eb, #4f46e5)',
+                    color: 'white', fontSize: isMobile ? '13px' : '14px', fontWeight: 600,
+                    padding: isMobile ? '10px 16px' : '12px 24px', borderRadius: '12px',
+                    border: 'none', cursor: 'pointer',
+                    boxShadow: '0 4px 12px rgba(37,99,235,0.3)', minHeight: '44px'
+                  }}
+                >
+                  {isMobile ? 'Başla' : 'Hemen Başla'}
+                </button>
+              </nav>
+            </div>
+          </div>
+        </header>
+
+        {/* 3-Column Layout */}
+        <div style={{
+          maxWidth: '1400px',
+          margin: '0 auto',
+          display: isMobile ? 'block' : 'flex',
+          minHeight: 'calc(100vh - 72px)'
+        }}>
+          {/* Left Sidebar */}
+          {!isMobile && (
+            <aside style={{
+              width: '260px',
+              flex: '0 0 260px',
+              borderRight: '1px solid #e2e8f0',
+              position: 'sticky',
+              top: '72px',
+              height: 'calc(100vh - 72px)',
+              overflowY: 'auto',
+              backgroundColor: 'white',
+              padding: '24px 0'
+            }}>
+              <div style={{
+                padding: '0 16px 12px',
+                fontSize: '11px', fontWeight: 700, color: '#94a3b8',
+                letterSpacing: '1.5px', textTransform: 'uppercase'
+              }}>
+                Modüller
+              </div>
+              {competencyLevels.map((level, index) => {
+                const LevelIcon = level.icon;
+                const color = levelColors[index];
+                const isActive = educationActiveLevel === index;
+                const hasToolNav = TOOL_NAV_LEVELS.includes(index);
+                const isReadActive = isActive && !hasToolNav && educationActiveSection === 'read';
+                const isWatchActive = isActive && !hasToolNav && educationActiveSection === 'watch';
+                return (
+                  <div key={level.id}>
+                    {/* Seviye butonu */}
+                    <button
+                      onClick={() => {
+                        setEducationActiveLevel(index);
+                        setEducationActiveSection('read');
+                        setEducationActiveTool(hasToolNav ? 0 : null);
+                      }}
+                      style={{
+                        width: '100%', display: 'flex', alignItems: 'center', gap: '12px',
+                        padding: '10px 16px',
+                        background: isActive ? '#eff6ff' : 'transparent',
+                        border: 'none',
+                        borderLeft: isActive ? `3px solid ${color}` : '3px solid transparent',
+                        cursor: 'pointer', textAlign: 'left', transition: 'all 0.15s'
+                      }}
+                    >
+                      <div style={{
+                        width: '32px', height: '32px',
+                        backgroundColor: isActive ? color : '#f1f5f9',
+                        borderRadius: '8px', display: 'flex', alignItems: 'center',
+                        justifyContent: 'center', flexShrink: 0, transition: 'all 0.15s'
+                      }}>
+                        <LevelIcon style={{ width: '15px', height: '15px', color: isActive ? 'white' : '#64748b' }} />
+                      </div>
+                      <div>
+                        <div style={{ fontSize: '11px', color: isActive ? color : '#94a3b8', fontWeight: 600, marginBottom: '2px' }}>
+                          Seviye {level.id}
+                        </div>
+                        <div style={{ fontSize: '13px', color: isActive ? '#0f172a' : '#475569', fontWeight: isActive ? 600 : 400, lineHeight: 1.3 }}>
+                          {level.title}
+                        </div>
+                      </div>
+                    </button>
+
+                    {/* Alt navigasyon — sadece aktif seviyede */}
+                    {isActive && (
+                      <div style={{ borderLeft: `3px solid ${color}`, marginLeft: '16px' }}>
+
+                        {/* Araç bazlı nav (Seviye 2 gibi) */}
+                        {hasToolNav ? (
+                          level.tools.map((tool, toolIndex) => {
+                            const isToolActive = educationActiveTool === toolIndex;
+                            const isToolReadActive = isToolActive && educationActiveSection === 'read';
+                            const isToolWatchActive = isToolActive && educationActiveSection === 'watch';
+                            return (
+                              <div key={toolIndex}>
+                                {/* Araç butonu */}
+                                <button
+                                  onClick={() => { setEducationActiveTool(toolIndex); setEducationActiveSection('read'); }}
+                                  style={{
+                                    width: '100%', display: 'flex', alignItems: 'center', gap: '8px',
+                                    padding: '8px 16px',
+                                    background: isToolActive ? `${color}12` : 'transparent',
+                                    border: 'none', cursor: 'pointer', textAlign: 'left', transition: 'all 0.15s'
+                                  }}
+                                >
+                                  <div style={{
+                                    width: '6px', height: '6px', borderRadius: '50%', flexShrink: 0,
+                                    backgroundColor: isToolActive ? color : '#cbd5e1',
+                                    transition: 'all 0.15s'
+                                  }} />
+                                  <span style={{ fontSize: '12px', color: isToolActive ? color : '#64748b', fontWeight: isToolActive ? 700 : 400 }}>
+                                    {tool}
+                                  </span>
+                                </button>
+
+                                {/* Read / Watch — sadece aktif araç altında */}
+                                {isToolActive && (
+                                  <div style={{ marginLeft: '22px' }}>
+                                    <button
+                                      onClick={() => setEducationActiveSection('read')}
+                                      style={{
+                                        width: '100%', display: 'flex', alignItems: 'center', gap: '8px',
+                                        padding: '6px 16px',
+                                        background: isToolReadActive ? `${color}10` : 'transparent',
+                                        border: 'none', cursor: 'pointer', textAlign: 'left', transition: 'all 0.15s'
+                                      }}
+                                    >
+                                      <BookOpen style={{ width: '11px', height: '11px', color: isToolReadActive ? color : '#94a3b8', flexShrink: 0 }} />
+                                      <span style={{ fontSize: '11px', color: isToolReadActive ? color : '#94a3b8', fontWeight: isToolReadActive ? 600 : 400 }}>
+                                        Okuyarak Öğren
+                                      </span>
+                                    </button>
+                                    <button
+                                      onClick={() => setEducationActiveSection('watch')}
+                                      style={{
+                                        width: '100%', display: 'flex', alignItems: 'center', gap: '8px',
+                                        padding: '6px 16px',
+                                        background: isToolWatchActive ? `${color}10` : 'transparent',
+                                        border: 'none', cursor: 'pointer', textAlign: 'left', transition: 'all 0.15s'
+                                      }}
+                                    >
+                                      <PlayCircle style={{ width: '11px', height: '11px', color: isToolWatchActive ? color : '#94a3b8', flexShrink: 0 }} />
+                                      <span style={{ fontSize: '11px', color: isToolWatchActive ? color : '#94a3b8', fontWeight: isToolWatchActive ? 600 : 400 }}>
+                                        İzleyerek Öğren
+                                      </span>
+                                    </button>
+                                  </div>
+                                )}
+                              </div>
+                            );
+                          })
+                        ) : (
+                          /* Doğrudan read/watch (Seviye 1, 3, 4, 5) */
+                          <>
+                            <button
+                              onClick={() => setEducationActiveSection('read')}
+                              style={{
+                                width: '100%', display: 'flex', alignItems: 'center', gap: '8px',
+                                padding: '8px 16px',
+                                background: isReadActive ? `${color}12` : 'transparent',
+                                border: 'none', cursor: 'pointer', textAlign: 'left', transition: 'all 0.15s'
+                              }}
+                            >
+                              <BookOpen style={{ width: '13px', height: '13px', color: isReadActive ? color : '#94a3b8', flexShrink: 0 }} />
+                              <span style={{ fontSize: '12px', color: isReadActive ? color : '#64748b', fontWeight: isReadActive ? 600 : 400 }}>
+                                Okuyarak Öğren
+                              </span>
+                            </button>
+                            <button
+                              onClick={() => setEducationActiveSection('watch')}
+                              style={{
+                                width: '100%', display: 'flex', alignItems: 'center', gap: '8px',
+                                padding: '8px 16px',
+                                background: isWatchActive ? `${color}12` : 'transparent',
+                                border: 'none', cursor: 'pointer', textAlign: 'left', transition: 'all 0.15s'
+                              }}
+                            >
+                              <PlayCircle style={{ width: '13px', height: '13px', color: isWatchActive ? color : '#94a3b8', flexShrink: 0 }} />
+                              <span style={{ fontSize: '12px', color: isWatchActive ? color : '#64748b', fontWeight: isWatchActive ? 600 : 400 }}>
+                                İzleyerek Öğren
+                              </span>
+                            </button>
+                          </>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </aside>
+          )}
+
+          {/* Mobile Level Tabs */}
+          {isMobile && (
+            <div style={{
+              overflowX: 'auto', padding: '16px 16px 0',
+              display: 'flex', gap: '8px',
+              borderBottom: '1px solid #e2e8f0',
+              backgroundColor: 'white'
+            }}>
+              {competencyLevels.map((level, index) => {
+                const color = levelColors[index];
+                const isActive = educationActiveLevel === index;
+                return (
+                  <button
+                    key={level.id}
+                    onClick={() => setEducationActiveLevel(index)}
+                    style={{
+                      flexShrink: 0, padding: '8px 14px 12px',
+                      borderRadius: '0', border: 'none',
+                      borderBottom: isActive ? `3px solid ${color}` : '3px solid transparent',
+                      background: 'transparent',
+                      color: isActive ? color : '#64748b',
+                      fontSize: '13px', fontWeight: isActive ? 700 : 500,
+                      cursor: 'pointer', whiteSpace: 'nowrap', transition: 'all 0.15s'
+                    }}
+                  >
+                    S{level.id} · {level.title}
+                  </button>
+                );
+              })}
+            </div>
+          )}
+
+          {/* Main Content */}
+          <main style={{
+            flex: 1,
+            padding: isMobile ? '28px 20px 60px' : '40px 56px 80px',
+            minWidth: 0
+          }}>
+            {/* Breadcrumb */}
+            <div style={{
+              display: 'flex', alignItems: 'center', gap: '6px',
+              marginBottom: '28px', fontSize: '13px', color: '#94a3b8', flexWrap: 'wrap'
+            }}>
+              <span
+                onClick={() => setCurrentView('home')}
+                style={{ cursor: 'pointer', transition: 'color 0.15s' }}
+                onMouseOver={(e) => { e.currentTarget.style.color = '#475569'; }}
+                onMouseOut={(e) => { e.currentTarget.style.color = '#94a3b8'; }}
+              >Ana Sayfa</span>
+              <ChevronRight style={{ width: '14px', height: '14px' }} />
+              <span>Eğitim</span>
+              <ChevronRight style={{ width: '14px', height: '14px' }} />
+              <span
+                onClick={() => { setEducationActiveTool(null); setEducationActiveSection('read'); }}
+                style={{ cursor: TOOL_NAV_LEVELS.includes(educationActiveLevel) ? 'pointer' : 'default', color: '#475569' }}
+              >
+                Seviye {activeLevelData.id} · {activeLevelData.title}
+              </span>
+              {TOOL_NAV_LEVELS.includes(educationActiveLevel) && educationActiveTool !== null && (
+                <>
+                  <ChevronRight style={{ width: '14px', height: '14px' }} />
+                  <span style={{ color: activeBgColor, fontWeight: 600 }}>
+                    {activeLevelData.tools[educationActiveTool]}
+                  </span>
+                </>
+              )}
+              {!TOOL_NAV_LEVELS.includes(educationActiveLevel) && (
+                <>
+                  <ChevronRight style={{ width: '14px', height: '14px' }} />
+                  <span style={{ color: activeBgColor, fontWeight: 600 }}>
+                    {educationActiveSection === 'read' ? 'Okuyarak Öğren' : 'İzleyerek Öğren'}
+                  </span>
+                </>
+              )}
+            </div>
+
+            {/* Module Header */}
+            <div style={{ marginBottom: '48px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '16px' }}>
+                <div style={{
+                  width: '60px', height: '60px',
+                  backgroundColor: activeBgColor,
+                  borderRadius: '18px', display: 'flex',
+                  alignItems: 'center', justifyContent: 'center',
+                  boxShadow: `0 6px 20px ${activeBgColor}40`, flexShrink: 0
+                }}>
+                  <ActiveIcon style={{ width: '30px', height: '30px', color: 'white' }} />
+                </div>
+                <div>
+                  <p style={{
+                    fontSize: '12px', fontWeight: 700, color: activeBgColor,
+                    letterSpacing: '1.5px', textTransform: 'uppercase', margin: '0 0 6px'
+                  }}>
+                    Seviye {activeLevelData.id}
+                  </p>
+                  <h1 style={{
+                    fontSize: 'clamp(24px, 3vw, 36px)', fontWeight: 800,
+                    color: '#0f172a', margin: 0, lineHeight: 1.2
+                  }}>
+                    {activeLevelData.title}
+                  </h1>
+                </div>
+              </div>
+              <p style={{
+                fontSize: '17px', color: '#475569', lineHeight: 1.7,
+                margin: 0, maxWidth: '680px'
+              }}>
+                {activeLevelData.description}
+              </p>
+            </div>
+
+            {/* ——— OKUYARAK ÖĞREN ——— */}
+            {educationActiveSection === 'read' && (
+              <>
+                {/* Seviye 1 — Gemini Prompting Slaytları */}
+                {educationActiveLevel === 0 ? (
+                  <>
+                    <section id="giris" style={{ marginBottom: '52px' }}>
+                      <h2 style={{ fontSize: '20px', fontWeight: 700, color: '#0f172a', marginBottom: '16px', paddingBottom: '12px', borderBottom: '2px solid #f1f5f9' }}>
+                        Mastering Gemini Prompting
+                      </h2>
+                      <p style={{ fontSize: '15px', color: '#475569', lineHeight: 1.8, marginBottom: '28px', maxWidth: '680px' }}>
+                        Google'ın <strong style={{ color: '#0f172a' }}>LearnLM</strong> teknolojisi, Gemini yapay zekasını bir öğretmen asistanına dönüştürüyor.
+                        Bu rehber; doğrudan cevap vermek yerine adım adım düşündüren, <strong style={{ color: '#0f172a' }}>PARTS çerçevesiyle</strong> özelleştirilebilen
+                        ve Google Arama, YouTube ile Classroom'a entegre çalışan sistemi pratik örneklerle anlatıyor.
+                        YZ'nin sınıflarda nasıl koçluk yapabileceğini 15 slayta sığdırdık.
+                      </p>
+                      <SlideViewer
+                        slides={GEMINI_SLIDES}
+                        title="Mastering Gemini Prompting"
+                        source="Google · 15 slayt"
+                      />
+                    </section>
+
+                    <section id="ogrenecekleriniz" style={{ marginBottom: '52px' }}>
+                      <h2 style={{ fontSize: '20px', fontWeight: 700, color: '#0f172a', marginBottom: '20px', paddingBottom: '12px', borderBottom: '2px solid #f1f5f9' }}>
+                        Bu Rehberde Ne Var?
+                      </h2>
+                      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, 1fr)', gap: '12px' }}>
+                        {[
+                          'LearnLM nedir, nasıl çalışır?',
+                          'PARTS çerçevesi ile prompt yazma',
+                          'Öğretmen asistanı oluşturma',
+                          'Gerçek sınıf senaryoları'
+                        ].map((item, i) => (
+                          <div key={i} style={{ backgroundColor: 'white', border: '1px solid #e2e8f0', borderRadius: '10px', padding: '16px', display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
+                            <div style={{ width: '24px', height: '24px', backgroundColor: activeBgColor + '20', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: '1px' }}>
+                              <CheckCircle2 style={{ width: '13px', height: '13px', color: activeBgColor }} />
+                            </div>
+                            <span style={{ fontSize: '14px', color: '#334155', lineHeight: 1.6 }}>{item}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </section>
+
+                    <section id="araclar" style={{ marginBottom: '52px' }}>
+                      <h2 style={{ fontSize: '20px', fontWeight: 700, color: '#0f172a', marginBottom: '20px', paddingBottom: '12px', borderBottom: '2px solid #f1f5f9' }}>
+                        Araçlar & Kaynaklar
+                      </h2>
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+                        {activeLevelData.tools.map((tool, i) => (
+                          <span key={i} style={{ backgroundColor: 'white', border: `1px solid ${activeBgColor}50`, borderRadius: '20px', padding: '8px 16px', fontSize: '14px', fontWeight: 500, color: activeBgColor, display: 'flex', alignItems: 'center', gap: '6px' }}>
+                            <div style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: activeBgColor }} />
+                            {tool}
+                          </span>
+                        ))}
+                      </div>
+                    </section>
+                  </>
+                ) : TOOL_NAV_LEVELS.includes(educationActiveLevel) && educationActiveTool !== null ? (
+                  /* Araç bazlı seviyeler (Seviye 2 vb.) — aktif araç için placeholder */
+                  <>
+                    <section id="giris" style={{ marginBottom: '52px' }}>
+                      <h2 style={{ fontSize: '20px', fontWeight: 700, color: '#0f172a', marginBottom: '16px', paddingBottom: '12px', borderBottom: '2px solid #f1f5f9' }}>
+                        {activeLevelData.tools[educationActiveTool]}
+                      </h2>
+                      <div style={{ backgroundColor: '#eff6ff', border: '1px solid #dbeafe', borderRadius: '12px', padding: '20px 24px', display: 'flex', gap: '12px' }}>
+                        <Info style={{ width: '20px', height: '20px', color: '#2563eb', flexShrink: 0, marginTop: '2px' }} />
+                        <p style={{ color: '#1e40af', fontSize: '15px', lineHeight: 1.7, margin: 0 }}>
+                          <strong>{activeLevelData.tools[educationActiveTool]}</strong> için okuma içeriği hazırlanmaktadır.
+                          Yakında burada rehberler ve makaleler yer alacak.
+                        </p>
+                      </div>
+                    </section>
+
+                    <section id="ogrenecekleriniz" style={{ marginBottom: '52px' }}>
+                      <h2 style={{ fontSize: '20px', fontWeight: 700, color: '#0f172a', marginBottom: '20px', paddingBottom: '12px', borderBottom: '2px solid #f1f5f9' }}>
+                        Ne Öğreneceksiniz?
+                      </h2>
+                      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, 1fr)', gap: '12px' }}>
+                        {[
+                          'Temel kavramlar ve terminoloji',
+                          'Pratik uygulama örnekleri',
+                          'Adım adım kurulum rehberi',
+                          'Gerçek kullanım senaryoları'
+                        ].map((item, i) => (
+                          <div key={i} style={{ backgroundColor: 'white', border: '1px solid #e2e8f0', borderRadius: '10px', padding: '16px', display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
+                            <div style={{ width: '24px', height: '24px', backgroundColor: activeBgColor + '20', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: '1px' }}>
+                              <CheckCircle2 style={{ width: '13px', height: '13px', color: activeBgColor }} />
+                            </div>
+                            <span style={{ fontSize: '14px', color: '#334155', lineHeight: 1.6 }}>{item}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </section>
+                  </>
+                ) : (
+                  /* Diğer seviyeler — genel placeholder */
+                  <>
+                    <section id="giris" style={{ marginBottom: '52px' }}>
+                      <h2 style={{ fontSize: '20px', fontWeight: 700, color: '#0f172a', marginBottom: '16px', paddingBottom: '12px', borderBottom: '2px solid #f1f5f9' }}>
+                        Giriş
+                      </h2>
+                      <div style={{ backgroundColor: '#eff6ff', border: '1px solid #dbeafe', borderRadius: '12px', padding: '20px 24px', display: 'flex', gap: '12px' }}>
+                        <Info style={{ width: '20px', height: '20px', color: '#2563eb', flexShrink: 0, marginTop: '2px' }} />
+                        <p style={{ color: '#1e40af', fontSize: '15px', lineHeight: 1.7, margin: 0 }}>
+                          Bu modülün yazılı içeriği hazırlanmaktadır. Yakında burada{' '}
+                          <strong>{activeLevelData.title}</strong> seviyesine ait makaleler ve rehberler yer alacak.
+                        </p>
+                      </div>
+                    </section>
+
+                    <section id="ogrenecekleriniz" style={{ marginBottom: '52px' }}>
+                      <h2 style={{ fontSize: '20px', fontWeight: 700, color: '#0f172a', marginBottom: '20px', paddingBottom: '12px', borderBottom: '2px solid #f1f5f9' }}>
+                        Ne Öğreneceksiniz?
+                      </h2>
+                      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, 1fr)', gap: '12px' }}>
+                        {[
+                          'Temel kavramlar ve terminoloji',
+                          'Pratik uygulama örnekleri',
+                          'Gerçek dünya senaryoları',
+                          'Değerlendirme kriterleri ve kanıtlar'
+                        ].map((item, i) => (
+                          <div key={i} style={{ backgroundColor: 'white', border: '1px solid #e2e8f0', borderRadius: '10px', padding: '16px', display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
+                            <div style={{ width: '24px', height: '24px', backgroundColor: activeBgColor + '20', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: '1px' }}>
+                              <CheckCircle2 style={{ width: '13px', height: '13px', color: activeBgColor }} />
+                            </div>
+                            <span style={{ fontSize: '14px', color: '#334155', lineHeight: 1.6 }}>{item}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </section>
+
+                    <section id="araclar" style={{ marginBottom: '52px' }}>
+                      <h2 style={{ fontSize: '20px', fontWeight: 700, color: '#0f172a', marginBottom: '20px', paddingBottom: '12px', borderBottom: '2px solid #f1f5f9' }}>
+                        Araçlar & Kaynaklar
+                      </h2>
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+                        {activeLevelData.tools.map((tool, i) => (
+                          <span key={i} style={{ backgroundColor: 'white', border: `1px solid ${activeBgColor}50`, borderRadius: '20px', padding: '8px 16px', fontSize: '14px', fontWeight: 500, color: activeBgColor, display: 'flex', alignItems: 'center', gap: '6px' }}>
+                            <div style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: activeBgColor }} />
+                            {tool}
+                          </span>
+                        ))}
+                      </div>
+                    </section>
+                  </>
+                )}
+              </>
+            )}
+
+            {/* ——— İZLEYEREK ÖĞREN ——— */}
+            {educationActiveSection === 'watch' && (
+              <>
+                <section id="video-listesi" style={{ marginBottom: '52px' }}>
+                  <h2 style={{ fontSize: '20px', fontWeight: 700, color: '#0f172a', marginBottom: '20px', paddingBottom: '12px', borderBottom: '2px solid #f1f5f9' }}>
+                    Video Listesi
+                  </h2>
+
+                  {/* Seviye 1 — gerçek video */}
+                  {TOOL_NAV_LEVELS.includes(educationActiveLevel) && educationActiveTool !== null
+                      && activeLevelData.tools[educationActiveTool] ? (
+                    <YouTubeVideoList
+                      keyword={activeLevelData.tools[educationActiveTool]}
+                      accentColor={activeBgColor}
+                    />
+                  ) : (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                      {[1, 2, 3].map((i) => (
+                        <div key={i} style={{ backgroundColor: 'white', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '16px 20px', display: 'flex', alignItems: 'center', gap: '16px' }}>
+                          <div style={{ width: '52px', height: '52px', backgroundColor: activeBgColor + '15', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                            <PlayCircle style={{ width: '24px', height: '24px', color: activeBgColor }} />
+                          </div>
+                          <div style={{ flex: 1 }}>
+                            <div style={{ fontSize: '14px', fontWeight: 600, color: '#0f172a', marginBottom: '4px' }}>Sol menüden bir araç seçin</div>
+                            <div style={{ fontSize: '12px', color: '#94a3b8' }}>Araç seçince videolar burada görünür</div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </section>
+
+                <section id="onerilen-kanallar" style={{ marginBottom: '52px' }}>
+                  <h2 style={{ fontSize: '20px', fontWeight: 700, color: '#0f172a', marginBottom: '20px', paddingBottom: '12px', borderBottom: '2px solid #f1f5f9' }}>
+                    Önerilen Kanallar
+                  </h2>
+                  <div style={{ backgroundColor: '#eff6ff', border: '1px solid #dbeafe', borderRadius: '12px', padding: '20px 24px', display: 'flex', gap: '12px' }}>
+                    <Info style={{ width: '20px', height: '20px', color: '#2563eb', flexShrink: 0, marginTop: '2px' }} />
+                    <p style={{ color: '#1e40af', fontSize: '15px', lineHeight: 1.7, margin: 0 }}>
+                      {TOOL_NAV_LEVELS.includes(educationActiveLevel) && educationActiveTool !== null
+                        ? <><strong>{activeLevelData.tools[educationActiveTool]}</strong> için önerilen YouTube kanalları ve playlistler yakında burada listelenecek.</>
+                        : <><strong>{activeLevelData.title}</strong> konusunda önerilen YouTube kanalları ve playlistler yakında burada listelenecek.</>
+                      }
+                    </p>
+                  </div>
+                </section>
+              </>
+            )}
+
+            {/* Sonraki Adım — her iki bölümde de ortak */}
+            <section id="sonraki-adim" style={{ marginBottom: '52px' }}>
+              <h2 style={{ fontSize: '20px', fontWeight: 700, color: '#0f172a', marginBottom: '20px', paddingBottom: '12px', borderBottom: '2px solid #f1f5f9' }}>
+                Sonraki Adım
+              </h2>
+              <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+                {educationActiveLevel < 4 && (
+                  <button
+                    onClick={() => { setEducationActiveLevel(educationActiveLevel + 1); setEducationActiveSection('read'); }}
+                    style={{ display: 'flex', alignItems: 'center', gap: '12px', backgroundColor: 'white', border: '2px solid #e2e8f0', borderRadius: '12px', padding: '16px 20px', cursor: 'pointer', transition: 'all 0.2s', textAlign: 'left' }}
+                    onMouseOver={(e) => { e.currentTarget.style.borderColor = levelColors[educationActiveLevel + 1]; e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.08)'; }}
+                    onMouseOut={(e) => { e.currentTarget.style.borderColor = '#e2e8f0'; e.currentTarget.style.boxShadow = 'none'; }}
+                  >
+                    <div>
+                      <div style={{ fontSize: '11px', color: '#94a3b8', marginBottom: '4px' }}>Sonraki Seviye</div>
+                      <div style={{ fontSize: '15px', fontWeight: 700, color: '#0f172a' }}>{competencyLevels[educationActiveLevel + 1].title}</div>
+                    </div>
+                    <ChevronRight style={{ width: '20px', height: '20px', color: '#94a3b8' }} />
+                  </button>
+                )}
+                <button
+                  onClick={startAssessment}
+                  style={{ display: 'flex', alignItems: 'center', gap: '10px', background: 'linear-gradient(135deg, #2563eb, #4f46e5)', color: 'white', border: 'none', borderRadius: '12px', padding: '16px 24px', cursor: 'pointer', fontWeight: 600, fontSize: '14px', boxShadow: '0 4px 12px rgba(37,99,235,0.3)' }}
+                >
+                  <Target style={{ width: '18px', height: '18px' }} />
+                  Seviyeni Test Et
+                </button>
+              </div>
+            </section>
+
+            {/* Prev / Next Navigation */}
+            <div style={{
+              display: 'flex', justifyContent: 'space-between',
+              paddingTop: '32px', borderTop: '1px solid #e2e8f0'
+            }}>
+              {educationActiveLevel > 0 ? (
+                <button
+                  onClick={() => setEducationActiveLevel(educationActiveLevel - 1)}
+                  style={{
+                    display: 'flex', alignItems: 'center', gap: '10px',
+                    color: '#475569', background: 'none', border: 'none',
+                    cursor: 'pointer', fontSize: '14px', fontWeight: 500
+                  }}
+                >
+                  <ChevronLeft style={{ width: '18px', height: '18px' }} />
+                  <div style={{ textAlign: 'left' }}>
+                    <div style={{ fontSize: '11px', color: '#94a3b8', marginBottom: '2px' }}>Önceki Seviye</div>
+                    <div>{competencyLevels[educationActiveLevel - 1].title}</div>
+                  </div>
+                </button>
+              ) : <div />}
+              {educationActiveLevel < 4 ? (
+                <button
+                  onClick={() => setEducationActiveLevel(educationActiveLevel + 1)}
+                  style={{
+                    display: 'flex', alignItems: 'center', gap: '10px',
+                    color: '#475569', background: 'none', border: 'none',
+                    cursor: 'pointer', fontSize: '14px', fontWeight: 500
+                  }}
+                >
+                  <div style={{ textAlign: 'right' }}>
+                    <div style={{ fontSize: '11px', color: '#94a3b8', marginBottom: '2px' }}>Sonraki Seviye</div>
+                    <div>{competencyLevels[educationActiveLevel + 1].title}</div>
+                  </div>
+                  <ChevronRight style={{ width: '18px', height: '18px' }} />
+                </button>
+              ) : <div />}
+            </div>
+          </main>
+
+          {/* Right Sidebar — Bu Sayfada */}
+          {!isMobile && (
+            <aside style={{
+              width: '220px', flex: '0 0 220px',
+              padding: '40px 24px 40px 8px',
+              position: 'sticky', top: '72px',
+              height: 'calc(100vh - 72px)', overflowY: 'auto'
+            }}>
+              <div style={{
+                fontSize: '11px', fontWeight: 700, color: '#94a3b8',
+                letterSpacing: '1.5px', textTransform: 'uppercase', marginBottom: '12px'
+              }}>
+                Bu Sayfada
+              </div>
+              {pageSections.map(section => (
+                <a
+                  key={section.id}
+                  href={`#${section.id}`}
+                  style={{
+                    display: 'block', fontSize: '13px', color: '#64748b',
+                    textDecoration: 'none', padding: '6px 0 6px 12px',
+                    borderLeft: '2px solid #e2e8f0',
+                    marginBottom: '4px', transition: 'all 0.15s'
+                  }}
+                  onMouseOver={(e) => {
+                    e.currentTarget.style.color = '#2563eb';
+                    e.currentTarget.style.borderLeftColor = '#2563eb';
+                  }}
+                  onMouseOut={(e) => {
+                    e.currentTarget.style.color = '#64748b';
+                    e.currentTarget.style.borderLeftColor = '#e2e8f0';
+                  }}
+                >
+                  {section.title}
+                </a>
+              ))}
+            </aside>
+          )}
+        </div>
+
+        <GlossaryModal isOpen={showGlossary} onClose={() => setShowGlossary(false)} />
+        <NewsModal isOpen={showNews} onClose={() => setShowNews(false)} />
       </div>
     );
   }
@@ -1301,7 +1945,7 @@ export default function AICompetencyApp() {
     const currentQuestionNumber = totalQuestionsBeforeCurrentLevel + currentQuestion + 1;
     const progress = (currentQuestionNumber / getTotalQuestions()) * 100;
 
-    const levelColors = ['#64748b', '#3b82f6', '#8b5cf6', '#f59e0b', '#10b981', '#06b6d4', '#ec4899', '#6366f1'];
+    const levelColors = ['#3b82f6', '#f59e0b', '#10b981', '#8b5cf6', '#f43f5e'];
     const currentColor = levelColors[currentLevel];
 
     return (
@@ -1373,6 +2017,26 @@ export default function AICompetencyApp() {
               >
                 <Library style={{ width: isMobile ? '20px' : '16px', height: isMobile ? '20px' : '16px' }} />
                 {!isMobile && <span>Kavramlar</span>}
+              </button>
+              <button
+                onClick={() => setShowNews(true)}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  color: '#64748b',
+                  fontSize: isMobile ? '14px' : '13px',
+                  fontWeight: 500,
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  padding: isMobile ? '10px 12px' : '4px 8px',
+                  minHeight: isMobile ? '44px' : 'auto',
+                  borderRadius: '6px'
+                }}
+              >
+                <TrendingUp style={{ width: isMobile ? '20px' : '16px', height: isMobile ? '20px' : '16px' }} />
+                {!isMobile && <span>Haberler</span>}
               </button>
             </div>
 
@@ -1449,7 +2113,7 @@ export default function AICompetencyApp() {
                     }}
                   >
                     <LevelIcon style={{ width: isMobile ? '16px' : '13px', height: isMobile ? '16px' : '13px' }} />
-                    <span>{isMobile ? `${idx}` : `${idx}. Seviye`}</span>
+                    <span>{isMobile ? `${level.id}` : `${level.id}. Seviye`}</span>
                     {isComplete ? (
                       <CheckCircle2 style={{ width: isMobile ? '14px' : '11px', height: isMobile ? '14px' : '11px', color: '#10b981' }} />
                     ) : (
@@ -1488,7 +2152,7 @@ export default function AICompetencyApp() {
                 <Icon style={{ width: '16px', height: '16px', color: 'white' }} />
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flex: 1 }}>
-                <span style={{ fontSize: '11px', color: currentColor, fontWeight: 700 }}>SEVİYE {currentLevel}</span>
+                <span style={{ fontSize: '11px', color: currentColor, fontWeight: 700 }}>SEVİYE {currentLevelData.id}</span>
                 <span style={{ fontSize: '11px', color: '#94a3b8' }}>•</span>
                 <span style={{ fontSize: '13px', fontWeight: 600, color: '#0f172a' }}>{currentLevelData.title}</span>
                 <span style={{ fontSize: '12px', color: '#64748b' }}>- {currentLevelData.subtitle}</span>
@@ -1663,7 +2327,7 @@ export default function AICompetencyApp() {
                   isOpen={showMentorChat}
                   onClose={() => setShowMentorChat(false)}
                   context={{
-                    level: currentLevel,
+                    level: currentLevelData.id,
                     levelTitle: currentLevelData.title,
                     questionIndex: currentQuestion,
                     questionText: currentQuestionData.text,
@@ -1744,6 +2408,7 @@ export default function AICompetencyApp() {
         </footer>
 
         <GlossaryModal isOpen={showGlossary} onClose={() => setShowGlossary(false)} />
+        <NewsModal isOpen={showNews} onClose={() => setShowNews(false)} />
       </div>
     );
   }
@@ -1753,6 +2418,7 @@ export default function AICompetencyApp() {
     const overallLevel = calculateOverallLevel();
     const levelScores = competencyLevels.map((level, idx) => ({
       level: idx,
+      levelId: level.id,
       title: level.title,
       icon: level.icon,
       color: level.color,
@@ -1767,14 +2433,14 @@ export default function AICompetencyApp() {
 
     const weakAreas = levelScores.filter(l => l.percentage < 50);
     const currentLevelData = overallLevel >= 0 ? competencyLevels[overallLevel] : competencyLevels[0];
-    const nextLevelRec = recommendations[Math.min(overallLevel + 1, 7)];
+    const nextLevelRec = recommendations[Math.min(overallLevel >= 0 ? competencyLevels[overallLevel].id + 1 : 1, 5)];
 
     const handleDownloadPDF = () => {
       window.print();
     };
 
     // Seviye bazlı renkler
-    const levelColors = ['#64748b', '#3b82f6', '#8b5cf6', '#f59e0b', '#10b981', '#06b6d4', '#ec4899', '#6366f1'];
+    const levelColors = ['#3b82f6', '#f59e0b', '#10b981', '#8b5cf6', '#f43f5e'];
     const currentColor = levelColors[Math.max(0, overallLevel)];
 
     // Motivasyon mesajları
@@ -1849,6 +2515,22 @@ export default function AICompetencyApp() {
                   <Library style={{ width: '18px', height: '18px' }} />
                 </button>
                 <button
+                  onClick={() => setShowNews(true)}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    color: '#64748b',
+                    fontSize: '13px',
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    padding: '8px'
+                  }}
+                >
+                  <TrendingUp style={{ width: '18px', height: '18px' }} />
+                </button>
+                <button
                   onClick={handleDownloadPDF}
                   style={{
                     display: 'flex',
@@ -1913,7 +2595,7 @@ export default function AICompetencyApp() {
                   Yapay Zeka Yetkinlik Seviyeniz
                 </p>
                 <h2 style={{ fontSize: '48px', fontWeight: 800, color: 'white', margin: '0 0 4px 0' }}>
-                  {overallLevel === -1 ? 0 : overallLevel}. Seviye
+                  {overallLevel >= 0 ? currentLevelData.id : 1}. Seviye
                 </h2>
                 <p style={{ fontSize: '20px', color: 'rgba(255,255,255,0.9)', margin: 0 }}>
                   {currentLevelData.title}
@@ -1964,7 +2646,7 @@ export default function AICompetencyApp() {
                   Seviye Bazlı Performans
                 </h3>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                  {levelScores.map(({ level, icon: LIcon, score, maxScore, percentage }) => (
+                  {levelScores.map(({ level, levelId, icon: LIcon, score, maxScore, percentage }) => (
                     <div key={level} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                       <div style={{
                         width: '28px',
@@ -1980,7 +2662,7 @@ export default function AICompetencyApp() {
                       </div>
                       <div style={{ flex: 1 }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
-                          <span style={{ fontSize: '12px', color: '#475569', fontWeight: 500 }}>{level}. Seviye</span>
+                          <span style={{ fontSize: '12px', color: '#475569', fontWeight: 500 }}>{levelId}. Seviye</span>
                           <span style={{
                             fontSize: '12px',
                             fontWeight: 600,
@@ -2061,7 +2743,7 @@ export default function AICompetencyApp() {
                           Geliştirilmesi Gereken Alanlar
                         </p>
                         <p style={{ fontSize: '12px', color: '#92400e', margin: 0 }}>
-                          {weakAreas.map(a => `${a.level}. Seviye`).join(', ')}
+                          {weakAreas.map(a => `${a.levelId}. Seviye`).join(', ')}
                         </p>
                       </div>
                     </div>
@@ -2151,6 +2833,7 @@ export default function AICompetencyApp() {
         </main>
 
         <GlossaryModal isOpen={showGlossary} onClose={() => setShowGlossary(false)} />
+        <NewsModal isOpen={showNews} onClose={() => setShowNews(false)} />
       </div>
     );
   }

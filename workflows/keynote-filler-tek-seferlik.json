@@ -1,0 +1,258 @@
+{
+  "updatedAt": "2026-02-22T19:57:02.207Z",
+  "createdAt": "2026-02-22T19:44:43.963Z",
+  "id": "qseu2Zx87wSe1qfI",
+  "name": "Keynote Filler - Tek Seferlik",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "id": "wh-kf",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        250,
+        300
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "rs-kf",
+      "name": "Read Sheet",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        450,
+        300
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "t4HCMP0g6sVA7b15",
+          "name": "Google Sheets account"
+        }
+      },
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "119Vyiqz167jacFXfdtxNa4a3qemGj3f0LvP1sdy34AY",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Egitim_Videolar",
+          "mode": "name"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "code-filter-kf",
+      "name": "Filter Empty Keynote",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        650,
+        300
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const filtered = $input.all()\n  .filter(item => {\n    const keynote = item.json.keynote;\n    const videoId = item.json.videoId;\n    const durum = item.json.durum || '';\n    const isOnaylı = durum.includes('Onaylı') || durum.trim() === '';\n    return (!keynote || String(keynote).trim() === '') && videoId && isOnaylı;\n  });\n\n// 50'lik gruplar oluştur\nconst batches = [];\nfor (let i = 0; i < filtered.length; i += 50) {\n  const batch = filtered.slice(i, i + 50);\n  batches.push({\n    json: {\n      videoIds: batch.map(item => item.json.videoId).join(',')\n    }\n  });\n}\nreturn batches;"
+      }
+    },
+    {
+      "id": "http-yt-kf",
+      "name": "Get Video Details",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        850,
+        300
+      ],
+      "parameters": {
+        "url": "=https://www.googleapis.com/youtube/v3/videos?part=snippet&id={{ $json.videoIds }}&key=YOUTUBE_API_KEY",
+        "options": {}
+      }
+    },
+    {
+      "id": "code-desc-kf",
+      "name": "Extract Description",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1050,
+        300
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const results = [];\nfor (const item of $input.all()) {\n  for (const video of (item.json.items || [])) {\n    const videoId = video.id;\n    const description = (video.snippet?.description || '').trim();\n    if (videoId && description) {\n      results.push({ json: { videoId, keynote: description } });\n    }\n  }\n}\nreturn results;"
+      }
+    },
+    {
+      "id": "gs-update-kf",
+      "name": "Update Sheet",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1250,
+        300
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "t4HCMP0g6sVA7b15",
+          "name": "Google Sheets account"
+        }
+      },
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "119Vyiqz167jacFXfdtxNa4a3qemGj3f0LvP1sdy34AY",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Egitim_Videolar",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "videoId": "={{ $json.videoId }}",
+            "keynote": "={{ $json.keynote }}"
+          },
+          "schema": []
+        },
+        "options": {
+          "matchingColumns": [
+            "videoId"
+          ]
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Read Sheet": {
+      "main": [
+        [
+          {
+            "node": "Filter Empty Keynote",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter Empty Keynote": {
+      "main": [
+        [
+          {
+            "node": "Get Video Details",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Video Details": {
+      "main": [
+        [
+          {
+            "node": "Extract Description",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Description": {
+      "main": [
+        [
+          {
+            "node": "Update Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Read Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": null,
+  "versionId": "31ad9aea-1bc0-4f1d-8e46-f576cca5356e",
+  "activeVersionId": null,
+  "versionCounter": 4,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2026-02-22T19:44:43.965Z",
+      "createdAt": "2026-02-22T19:44:43.965Z",
+      "role": "workflow:owner",
+      "workflowId": "qseu2Zx87wSe1qfI",
+      "projectId": "HJjAtACAOEAgAq1P",
+      "project": {
+        "updatedAt": "2026-01-01T15:24:09.764Z",
+        "createdAt": "2026-01-01T15:24:05.171Z",
+        "id": "HJjAtACAOEAgAq1P",
+        "name": "Mustafa AYDIN <mustafaaydin@lab-mind.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "8160207f-44cf-421f-91d4-47f6c1c353da",
+        "projectRelations": [
+          {
+            "updatedAt": "2026-01-01T15:24:05.171Z",
+            "createdAt": "2026-01-01T15:24:05.171Z",
+            "userId": "8160207f-44cf-421f-91d4-47f6c1c353da",
+            "projectId": "HJjAtACAOEAgAq1P",
+            "user": {
+              "updatedAt": "2026-02-22T09:24:44.000Z",
+              "createdAt": "2026-01-01T15:24:03.720Z",
+              "id": "8160207f-44cf-421f-91d4-47f6c1c353da",
+              "email": "mustafaaydin@lab-mind.com",
+              "firstName": "Mustafa",
+              "lastName": "AYDIN",
+              "personalizationAnswers": null,
+              "settings": {
+                "userActivated": true,
+                "userClaimedAiCredits": true,
+                "easyAIWorkflowOnboarded": true,
+                "firstSuccessfulWorkflowId": "6h89lRIgl7zVKbQM",
+                "userActivatedAt": 1768746185528,
+                "npsSurvey": {
+                  "waitingForResponse": true,
+                  "ignoredCount": 2,
+                  "lastShownAt": 1771489979559
+                }
+              },
+              "disabled": false,
+              "mfaEnabled": false,
+              "lastActiveAt": "2026-02-21",
+              "isPending": false
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "tags": [],
+  "activeVersion": null
+}

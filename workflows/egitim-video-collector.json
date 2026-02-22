@@ -1,0 +1,534 @@
+{
+  "updatedAt": "2026-02-22T19:37:34.776Z",
+  "createdAt": "2026-02-22T10:21:24.119Z",
+  "id": "hMBxO5xdZbshioUu",
+  "name": "Egitim Video Collector",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "youtube-collect",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "wh-collect",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        250,
+        300
+      ],
+      "webhookId": "youtube-collect"
+    },
+    {
+      "parameters": {
+        "url": "=https://www.googleapis.com/youtube/v3/search?part=snippet&q={{ $json.body.keyword }}&type=video&maxResults=6&order=relevance{{ $json.body.language ? '&relevanceLanguage=' + $json.body.language : '' }}{{ $json.body.publishedAfter ? '&publishedAfter=' + $json.body.publishedAfter : '' }}&key=YOUTUBE_API_KEY",
+        "options": {}
+      },
+      "id": "yt-search",
+      "name": "YouTube Search",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        450,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "119Vyiqz167jacFXfdtxNa4a3qemGj3f0LvP1sdy34AY",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Egitim_Videolar",
+          "mode": "name"
+        },
+        "options": {}
+      },
+      "id": "sheets-read",
+      "name": "Read Sheet",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        650,
+        300
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "t4HCMP0g6sVA7b15",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const keyword = $('Webhook').first().json.body.keyword;\nconst language = $('Webhook').first().json.body.language || 'tr';\n\nconst seviyeMap = {\n    'ChatGPT': '1 - Prompt Muhendisligi',\n    'Gemini': '1 - Prompt Muhendisligi',\n    'CoPilot': '1 - Prompt Muhendisligi',\n    'Grok': '1 - Prompt Muhendisligi',\n    'Perplexity': '1 - Prompt Muhendisligi',\n    'Gemini GEM': '2 - Ozel GPT',\n    'Custom GPT': '2 - Ozel GPT',\n    'NotebookLM': '2 - Ozel GPT',\n    'ChippAI': '2 - Ozel GPT',\n    'Google AI Studio': '3 - Builder',\n    'Claude Artifacts': '3 - Builder',\n    'Replit': '3 - Builder',\n    'Cursor': '3 - Builder',\n    'Lovable': '3 - Builder',\n    'n8n': '4 - Workflow',\n    'Make.com': '4 - Workflow',\n    'Google Opal': '4 - Workflow',\n    'OpenAI Platform': '4 - Workflow',\n    'Claude Code': '5 - YZ Ajanlari',\n    'Google Antigravity': '5 - YZ Ajanlari',\n    'Clawbot': '5 - YZ Ajanlari',\n    'ChatGPT Codex': '5 - YZ Ajanlari',\n};\n\n// Sheet'teki mevcut video ID'leri\nconst sheetRows = $input.all().map(r => r.json);\nconst existingIds = new Set(sheetRows.map(r => r.videoId).filter(Boolean));\n\n// YouTube sonuclari\nconst ytData = $('YouTube Search').first().json;\nconst newVideos = (ytData.items || [])\n  .filter(item => !existingIds.has(item.id.videoId))\n  .map(item => ({\n    videoId: item.id.videoId,\n    title: item.snippet.title,\n    channelTitle: item.snippet.channelTitle,\n    publishedAt: item.snippet.publishedAt,\n    thumbnail: item.snippet.thumbnails && item.snippet.thumbnails.medium ? item.snippet.thumbnails.medium.url : '',\n    url: 'https://www.youtube.com/watch?v=' + item.id.videoId,\n    keyword: keyword,\n    language: language,\n    dateAdded: new Date().toISOString(),\n    durum: '🟡 Incelenmeli',\n    seviye: seviyeMap[keyword] || ''\n  }));\n\nreturn newVideos.map(v => ({ json: v }));"
+      },
+      "id": "code-filter",
+      "name": "Filter New Videos",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        850,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "119Vyiqz167jacFXfdtxNa4a3qemGj3f0LvP1sdy34AY",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Egitim_Videolar",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "videoId": "={{ $json.videoId }}",
+            "title": "={{ $json.title }}",
+            "channelTitle": "={{ $json.channelTitle }}",
+            "publishedAt": "={{ $json.publishedAt }}",
+            "thumbnail": "={{ $json.thumbnail }}",
+            "url": "={{ $json.url }}",
+            "keyword": "={{ $json.keyword }}",
+            "language": "={{ $json.language }}",
+            "dateAdded": "={{ $json.dateAdded }}",
+            "durum": "={{ $json.durum }}",
+            "seviye": "={{ $json.seviye }}",
+            "keynote": "={{ $json.keynote }}"
+          },
+          "schema": []
+        },
+        "options": {}
+      },
+      "id": "sheets-append",
+      "name": "Save New to Sheet",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1450,
+        300
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "t4HCMP0g6sVA7b15",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "id": "yt-video-details",
+      "name": "Get Video Details",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1050,
+        300
+      ],
+      "parameters": {
+        "url": "=https://www.googleapis.com/youtube/v3/videos?part=snippet&id={{ $json.videoId }}&key=YOUTUBE_API_KEY",
+        "options": {}
+      }
+    },
+    {
+      "id": "code-keynote",
+      "name": "Extract Keynote",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1250,
+        300
+      ],
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const description = ($json.items?.[0]?.snippet?.description || '').trim();\nconst original = $('Filter New Videos').item.json;\n\nreturn {\n  json: {\n    videoId: original.videoId,\n    title: original.title,\n    channelTitle: original.channelTitle,\n    publishedAt: original.publishedAt,\n    thumbnail: original.thumbnail,\n    url: original.url,\n    keyword: original.keyword,\n    language: original.language,\n    dateAdded: original.dateAdded,\n    durum: original.durum,\n    seviye: original.seviye,\n    keynote: description\n  }\n};"
+      }
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "YouTube Search",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "YouTube Search": {
+      "main": [
+        [
+          {
+            "node": "Read Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Sheet": {
+      "main": [
+        [
+          {
+            "node": "Filter New Videos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter New Videos": {
+      "main": [
+        [
+          {
+            "node": "Get Video Details",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Video Details": {
+      "main": [
+        [
+          {
+            "node": "Extract Keynote",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Keynote": {
+      "main": [
+        [
+          {
+            "node": "Save New to Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": null,
+  "versionId": "89472efc-28ae-4222-92f2-2ff098918cac",
+  "activeVersionId": "89472efc-28ae-4222-92f2-2ff098918cac",
+  "versionCounter": 33,
+  "triggerCount": 1,
+  "shared": [
+    {
+      "updatedAt": "2026-02-22T10:21:24.121Z",
+      "createdAt": "2026-02-22T10:21:24.121Z",
+      "role": "workflow:owner",
+      "workflowId": "hMBxO5xdZbshioUu",
+      "projectId": "HJjAtACAOEAgAq1P",
+      "project": {
+        "updatedAt": "2026-01-01T15:24:09.764Z",
+        "createdAt": "2026-01-01T15:24:05.171Z",
+        "id": "HJjAtACAOEAgAq1P",
+        "name": "Mustafa AYDIN <mustafaaydin@lab-mind.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "8160207f-44cf-421f-91d4-47f6c1c353da",
+        "projectRelations": [
+          {
+            "updatedAt": "2026-01-01T15:24:05.171Z",
+            "createdAt": "2026-01-01T15:24:05.171Z",
+            "userId": "8160207f-44cf-421f-91d4-47f6c1c353da",
+            "projectId": "HJjAtACAOEAgAq1P",
+            "user": {
+              "updatedAt": "2026-02-22T09:24:44.000Z",
+              "createdAt": "2026-01-01T15:24:03.720Z",
+              "id": "8160207f-44cf-421f-91d4-47f6c1c353da",
+              "email": "mustafaaydin@lab-mind.com",
+              "firstName": "Mustafa",
+              "lastName": "AYDIN",
+              "personalizationAnswers": null,
+              "settings": {
+                "userActivated": true,
+                "userClaimedAiCredits": true,
+                "easyAIWorkflowOnboarded": true,
+                "firstSuccessfulWorkflowId": "6h89lRIgl7zVKbQM",
+                "userActivatedAt": 1768746185528,
+                "npsSurvey": {
+                  "waitingForResponse": true,
+                  "ignoredCount": 2,
+                  "lastShownAt": 1771489979559
+                }
+              },
+              "disabled": false,
+              "mfaEnabled": false,
+              "lastActiveAt": "2026-02-21",
+              "isPending": false
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "tags": [],
+  "activeVersion": {
+    "updatedAt": "2026-02-22T19:37:34.777Z",
+    "createdAt": "2026-02-22T19:37:34.777Z",
+    "versionId": "89472efc-28ae-4222-92f2-2ff098918cac",
+    "workflowId": "hMBxO5xdZbshioUu",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "youtube-collect",
+          "responseMode": "onReceived",
+          "options": {}
+        },
+        "id": "wh-collect",
+        "name": "Webhook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          250,
+          300
+        ],
+        "webhookId": "youtube-collect"
+      },
+      {
+        "parameters": {
+          "url": "=https://www.googleapis.com/youtube/v3/search?part=snippet&q={{ $json.body.keyword }}&type=video&maxResults=6&order=relevance{{ $json.body.language ? '&relevanceLanguage=' + $json.body.language : '' }}{{ $json.body.publishedAfter ? '&publishedAfter=' + $json.body.publishedAfter : '' }}&key=YOUTUBE_API_KEY",
+          "options": {}
+        },
+        "id": "yt-search",
+        "name": "YouTube Search",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          450,
+          300
+        ]
+      },
+      {
+        "parameters": {
+          "documentId": {
+            "__rl": true,
+            "value": "119Vyiqz167jacFXfdtxNa4a3qemGj3f0LvP1sdy34AY",
+            "mode": "id"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "Egitim_Videolar",
+            "mode": "name"
+          },
+          "options": {}
+        },
+        "id": "sheets-read",
+        "name": "Read Sheet",
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.5,
+        "position": [
+          650,
+          300
+        ],
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "t4HCMP0g6sVA7b15",
+            "name": "Google Sheets account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "const keyword = $('Webhook').first().json.body.keyword;\nconst language = $('Webhook').first().json.body.language || 'tr';\n\nconst seviyeMap = {\n    'ChatGPT': '1 - Prompt Muhendisligi',\n    'Gemini': '1 - Prompt Muhendisligi',\n    'CoPilot': '1 - Prompt Muhendisligi',\n    'Grok': '1 - Prompt Muhendisligi',\n    'Perplexity': '1 - Prompt Muhendisligi',\n    'Gemini GEM': '2 - Ozel GPT',\n    'Custom GPT': '2 - Ozel GPT',\n    'NotebookLM': '2 - Ozel GPT',\n    'ChippAI': '2 - Ozel GPT',\n    'Google AI Studio': '3 - Builder',\n    'Claude Artifacts': '3 - Builder',\n    'Replit': '3 - Builder',\n    'Cursor': '3 - Builder',\n    'Lovable': '3 - Builder',\n    'n8n': '4 - Workflow',\n    'Make.com': '4 - Workflow',\n    'Google Opal': '4 - Workflow',\n    'OpenAI Platform': '4 - Workflow',\n    'Claude Code': '5 - YZ Ajanlari',\n    'Google Antigravity': '5 - YZ Ajanlari',\n    'Clawbot': '5 - YZ Ajanlari',\n    'ChatGPT Codex': '5 - YZ Ajanlari',\n};\n\n// Sheet'teki mevcut video ID'leri\nconst sheetRows = $input.all().map(r => r.json);\nconst existingIds = new Set(sheetRows.map(r => r.videoId).filter(Boolean));\n\n// YouTube sonuclari\nconst ytData = $('YouTube Search').first().json;\nconst newVideos = (ytData.items || [])\n  .filter(item => !existingIds.has(item.id.videoId))\n  .map(item => ({\n    videoId: item.id.videoId,\n    title: item.snippet.title,\n    channelTitle: item.snippet.channelTitle,\n    publishedAt: item.snippet.publishedAt,\n    thumbnail: item.snippet.thumbnails && item.snippet.thumbnails.medium ? item.snippet.thumbnails.medium.url : '',\n    url: 'https://www.youtube.com/watch?v=' + item.id.videoId,\n    keyword: keyword,\n    language: language,\n    dateAdded: new Date().toISOString(),\n    durum: '🟡 Incelenmeli',\n    seviye: seviyeMap[keyword] || ''\n  }));\n\nreturn newVideos.map(v => ({ json: v }));"
+        },
+        "id": "code-filter",
+        "name": "Filter New Videos",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          850,
+          300
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "append",
+          "documentId": {
+            "__rl": true,
+            "value": "119Vyiqz167jacFXfdtxNa4a3qemGj3f0LvP1sdy34AY",
+            "mode": "id"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "Egitim_Videolar",
+            "mode": "name"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "videoId": "={{ $json.videoId }}",
+              "title": "={{ $json.title }}",
+              "channelTitle": "={{ $json.channelTitle }}",
+              "publishedAt": "={{ $json.publishedAt }}",
+              "thumbnail": "={{ $json.thumbnail }}",
+              "url": "={{ $json.url }}",
+              "keyword": "={{ $json.keyword }}",
+              "language": "={{ $json.language }}",
+              "dateAdded": "={{ $json.dateAdded }}",
+              "durum": "={{ $json.durum }}",
+              "seviye": "={{ $json.seviye }}",
+              "keynote": "={{ $json.keynote }}"
+            },
+            "schema": []
+          },
+          "options": {}
+        },
+        "id": "sheets-append",
+        "name": "Save New to Sheet",
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.5,
+        "position": [
+          1450,
+          300
+        ],
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "t4HCMP0g6sVA7b15",
+            "name": "Google Sheets account"
+          }
+        }
+      },
+      {
+        "id": "yt-video-details",
+        "name": "Get Video Details",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1050,
+          300
+        ],
+        "parameters": {
+          "url": "=https://www.googleapis.com/youtube/v3/videos?part=snippet&id={{ $json.videoId }}&key=YOUTUBE_API_KEY",
+          "options": {}
+        }
+      },
+      {
+        "id": "code-keynote",
+        "name": "Extract Keynote",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1250,
+          300
+        ],
+        "parameters": {
+          "mode": "runOnceForEachItem",
+          "jsCode": "const description = ($json.items?.[0]?.snippet?.description || '').trim();\nconst original = $('Filter New Videos').item.json;\n\nreturn {\n  json: {\n    videoId: original.videoId,\n    title: original.title,\n    channelTitle: original.channelTitle,\n    publishedAt: original.publishedAt,\n    thumbnail: original.thumbnail,\n    url: original.url,\n    keyword: original.keyword,\n    language: original.language,\n    dateAdded: original.dateAdded,\n    durum: original.durum,\n    seviye: original.seviye,\n    keynote: description\n  }\n};"
+        }
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "YouTube Search",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "YouTube Search": {
+        "main": [
+          [
+            {
+              "node": "Read Sheet",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Read Sheet": {
+        "main": [
+          [
+            {
+              "node": "Filter New Videos",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Filter New Videos": {
+        "main": [
+          [
+            {
+              "node": "Get Video Details",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get Video Details": {
+        "main": [
+          [
+            {
+              "node": "Extract Keynote",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Extract Keynote": {
+        "main": [
+          [
+            {
+              "node": "Save New to Sheet",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Mustafa AYDIN",
+    "name": null,
+    "description": null,
+    "autosaved": false,
+    "workflowPublishHistory": [
+      {
+        "createdAt": "2026-02-22T19:37:34.986Z",
+        "id": 61,
+        "workflowId": "hMBxO5xdZbshioUu",
+        "versionId": "89472efc-28ae-4222-92f2-2ff098918cac",
+        "event": "activated",
+        "userId": "8160207f-44cf-421f-91d4-47f6c1c353da"
+      }
+    ]
+  }
+}

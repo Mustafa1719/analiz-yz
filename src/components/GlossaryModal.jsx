@@ -85,39 +85,25 @@ const saltFramework = {
   ]
 };
 
-// 8 Seviye detayları (Değerlendirme ile senkronize)
+// 5 Seviye detayları (Yapay Zeka Gelişim Piramidi ile senkronize)
 const levelDetails = [
-  {
-    level: 0,
-    title: "Temel Farkındalık",
-    icon: Brain,
-    color: "#64748b",
-    definition: "Yapay zeka araçlarının varlığından haberdar olma ve temel kavramları anlama aşaması.",
-    behaviors: [
-      "Yapay zeka araçlarının ne olduğunu ve isimlerini biliyor",
-      "Yapay zekanın işine nerede değer katabileceğini kavrıyor",
-      "Temel yapay zeka kavramlarını (prompt, model, halüsinasyon) biliyor",
-      "Yapay zekanın sınırlarını ve risklerini fark ediyor"
-    ],
-    tools: ["ChatGPT", "Gemini", "Claude", "Perplexity"]
-  },
   {
     level: 1,
     title: "Prompt Mühendisliği",
     icon: Zap,
     color: "#3b82f6",
-    definition: "Yapay zekaya doğru talimatlar vererek etkili sonuçlar alma becerisi.",
+    definition: "Yapay zekaya doğru talimatlar vererek etkili sonuçlar alma becerisi. Temel kavramları anlama, araçları tanıma ve yapılandırılmış istemler yazabilme aşaması.",
     behaviors: [
       "Net ve yapılandırılmış talimatlar (prompt) yazıyor",
       "Aynı işi farklı istemlerle test eder ve çıktıyı iyileştiriyor",
       "Farklı hedef kitleler için yanıt biçimini ayarlayabiliyor",
       "Hangi yapay zeka aracının hangi iş için uygun olduğunu ayırt ediyor"
     ],
-    tools: ["ChatGPT", "Gemini", "Claude", "Perplexity"]
+    tools: ["ChatGPT", "Gemini", "CoPilot", "Grok", "Perplexity"]
   },
   {
     level: 2,
-    title: "Özel GPT (Sohbet Botları)",
+    title: "Özel GPT'ler (Custom)",
     icon: Sparkles,
     color: "#f59e0b",
     definition: "Belirli bir iş ihtiyacını karşılayan, tutarlı ve tekrar kullanılabilir yapay zeka asistanları tasarlayabilme.",
@@ -127,77 +113,49 @@ const levelDetails = [
       "Asistanı belirli bir rol, süreç veya uzmanlık alanına göre sınırlıyor",
       "Çıktı kalitesini sürdürülebilir şekilde koruyor"
     ],
-    tools: ["ChatGPT GPTs", "Gemini Gems", "Claude Projects"]
+    tools: ["Gemini GEM", "Custom GPT", "NotebookLM", "ChippAI"]
   },
   {
     level: 3,
-    title: "YZ Destekli Prototipleme",
+    title: "Temel Otomasyonlar (Builder)",
     icon: Target,
     color: "#10b981",
-    definition: "Bir iş problemini basit bir uygulama veya prototip haline getirerek test edebilme.",
+    definition: "Bir iş problemini basit bir uygulama veya prototip haline getirerek test edebilme. Kod yazmadan çalışan çözümler oluşturma aşaması.",
     behaviors: [
       "İş sürecini yüksek seviyede adımlara ayırıyor",
       "Yapay zekanın katkı sağlayacağı noktaları belirliyor",
       "Kod yazmadan çalışan bir prototip oluşturuyor",
       "Prototipi geri bildirimle geliştiriyor"
     ],
-    tools: ["Google AI Studio", "Bolt.new", "Replit", "v0.dev"]
+    tools: ["Google AI Studio", "Claude Artifacts", "Replit", "Cursor", "Lovable"]
   },
   {
     level: 4,
-    title: "İş Akışı Otomasyonu",
+    title: "YZ Destekli Otomasyon (Workflow)",
     icon: Cpu,
-    color: "#06b6d4",
-    definition: "Tekrarlayan işleri otomatikleştirerek manuel yükü azaltma becerisi.",
+    color: "#8b5cf6",
+    definition: "Tekrarlayan işleri otomatikleştirme ve otomasyon içinde yapay zekayı karar destek noktalarında bilinçli şekilde kullanma becerisi.",
     behaviors: [
-      "Tekrar eden işleri fark ediyor",
-      "Araçları birbirine bağlayarak otomatik akış kuruyor",
+      "Tekrar eden işleri fark ediyor ve otomatik akış kuruyor",
       "Tetikleyici – işlem – çıktı mantığını kurguluyor",
-      "Sürecin sorunsuz çalıştığını takip ediyor"
+      "Yapay zekayı yalnızca gerekli adımlarda devreye alıyor",
+      "Sürecin kalitesini ve doğruluğunu izliyor"
     ],
-    tools: ["n8n", "Make", "Zapier", "UiPath"]
+    tools: ["n8n", "Make.com", "Google Opal", "OpenAI Platform"]
   },
   {
     level: 5,
-    title: "YZ Destekli Otomasyon",
-    icon: Bot,
-    color: "#8b5cf6",
-    definition: "Otomasyon içinde yapay zekayı karar destek noktalarında bilinçli şekilde kullanma.",
-    behaviors: [
-      "Yapay zekayı yalnızca gerekli adımlarda devreye alıyor",
-      "Yorumlama, sınıflandırma, yönlendirme işlerini AI'a bırakıyor",
-      "Kurallarla AI arasındaki sınırı doğru çiziyor",
-      "Sürecin kalitesini ve doğruluğunu izliyor"
-    ],
-    tools: ["n8n + AI", "Make + OpenAI", "Gemini API", "OpenAI API"]
-  },
-  {
-    level: 6,
-    title: "Yapay Zeka Ajanı",
+    title: "YZ Ajanları",
     icon: Rocket,
-    color: "#ec4899",
-    definition: "Hedef bazlı çalışan otonom yapay zeka sistemleri tasarlayabilme.",
+    color: "#f43f5e",
+    definition: "Hedef bazlı çalışan otonom yapay zeka sistemleri tasarlayabilme. Ajanlara hedef tanımlayıp minimum insan müdahalesiyle yönetme aşaması.",
     behaviors: [
       "Yapay zekaya hedef tanımlıyor, adım değil",
       "Ajanın hangi araçları kullanacağını belirliyor",
       "Hatalı durumları ve istisnaları öngörüyor",
       "Süreci minimum insan müdahalesiyle yönetiyor"
     ],
-    tools: ["Claude Code + MCP", "Azure AI Agents", "Gemini Agents", "LangChain"]
-  },
-  {
-    level: 7,
-    title: "Stratejik YZ Liderliği",
-    icon: Layers,
-    color: "#0f172a",
-    definition: "Organizasyon genelinde yapay zeka stratejisi belirleme ve uygulama.",
-    behaviors: [
-      "Organizasyonel YZ vizyonu oluşturuyor",
-      "Takım genelinde YZ yetkinlik gelişimini yönetiyor",
-      "YZ yatırımlarının ROI'sini ölçüyor",
-      "Etik ve uyumluluk standartlarını belirlıyor"
-    ],
-    tools: ["Enterprise AI Platforms", "AI Governance Tools", "ROI Analytics"]
+    tools: ["Claude Code", "Google Antigravity", "Clawbot", "ChatGPT Codex"]
   }
 ];
 
@@ -253,7 +211,7 @@ export default function GlossaryModal({ isOpen, onClose }) {
 
   // Sadeleştirilmiş 3 ana kategori
   const tabs = [
-    { id: 'levels', label: '8 Seviye', icon: Layers },
+    { id: 'levels', label: '5 Seviye', icon: Layers },
     { id: 'frameworks', label: 'Prompt Modelleri', icon: MessageSquare },
     { id: 'thinking', label: 'Düşünce Yaklaşımları', icon: Brain }
   ];
@@ -479,7 +437,7 @@ export default function GlossaryModal({ isOpen, onClose }) {
           {activeTab === 'levels' && (
             <div>
               <p style={{ color: '#64748b', fontSize: '14px', marginBottom: '16px' }}>
-                Yapay Zeka Yetkinlik Piramidi <strong>8 seviyeden</strong> oluşur. Her seviye farklı beceriler ve araçlar gerektirir.
+                Yapay Zeka Yetkinlik Piramidi <strong>5 seviyeden</strong> oluşur. Her seviye farklı beceriler ve araçlar gerektirir.
               </p>
               {filteredLevels.map((level) => {
                 const Icon = level.icon;
@@ -890,7 +848,7 @@ export default function GlossaryModal({ isOpen, onClose }) {
                 border: '1px solid #c7d2fe'
               }}>
                 <h4 style={{ fontSize: '14px', fontWeight: 600, color: '#1e40af', marginBottom: '8px' }}>
-                  Ortak Yetkinlik Hedefi (3-7. Seviyeler)
+                  Ortak Yetkinlik Hedefi (3-5. Seviyeler)
                 </h4>
                 <p style={{ fontSize: '13px', color: '#3730a3', margin: 0 }}>
                   "Cynefin modeli ile yapay zeka ile çalışılabilecek problem alanlarını ayırt eder;

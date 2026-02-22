@@ -12,6 +12,12 @@ dist
 dist-ssr
 *.local
 
+# Hassas dosyalar
+Kaynaklar/n8n api.txt
+
+# Büyük medya dosyaları
+public/videos/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
