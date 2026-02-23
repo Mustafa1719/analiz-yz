@@ -131,7 +131,7 @@ const levelDetails = [
   },
   {
     level: 4,
-    title: "YZ Destekli Otomasyon (Workflow)",
+    title: "Yapay Zeka Destekli Otomasyon (Workflow)",
     icon: Cpu,
     color: "#8b5cf6",
     definition: "Tekrarlayan işleri otomatikleştirme ve otomasyon içinde yapay zekayı karar destek noktalarında bilinçli şekilde kullanma becerisi.",
@@ -145,7 +145,7 @@ const levelDetails = [
   },
   {
     level: 5,
-    title: "YZ Ajanları",
+    title: "Yapay Zeka Ajanları",
     icon: Rocket,
     color: "#f43f5e",
     definition: "Hedef bazlı çalışan otonom yapay zeka sistemleri tasarlayabilme. Ajanlara hedef tanımlayıp minimum insan müdahalesiyle yönetme aşaması.",

@@ -22,7 +22,7 @@ const competencyLevels = [
   {
     id: 1,
     title: "Prompt Mühendisliği",
-    subtitle: "Temel YZ Kullanımı",
+    subtitle: "Temel Yapay Zeka Kullanımı",
     icon: Zap,
     color: "from-blue-500 to-blue-700",
     bgColor: "bg-blue-500",
@@ -166,12 +166,12 @@ const competencyLevels = [
       {
         text: "Yapay zekanın değer yaratabileceği noktaları tespit ediyorum",
         options: [
-          "Hangi işlerin YZ'ye uygun olduğunu bilmiyorum",
+          "Hangi işlerin yapay zekaya uygun olduğunu bilmiyorum",
           "'Belki burada kullanılabilir' diye düşünüyorum ama net değil",
-          "Süreç içinde YZ kullanılabilecek 2-3 nokta belirleyebiliyorum",
+          "Süreç içinde yapay zekanın kullanılabileceği 2-3 nokta belirleyebiliyorum",
           "Sistematik analiz yapıyorum (tekrar eden iş, karar noktası, veri analizi vb.) ve önceliklendiriyorum"
         ],
-        evidence: "Süreç haritasında 'YZ kullanım noktaları' işaretli dokümantasyon"
+        evidence: "Süreç haritasında 'yapay zeka kullanım noktaları' işaretli dokümantasyon"
       },
       {
         text: "No-code platformlarda prototip geliştiriyorum",
@@ -207,8 +207,8 @@ const competencyLevels = [
   },
   {
     id: 4,
-    title: "YZ Destekli Otomasyon",
-    subtitle: "Workflow / AI + Otomasyon",
+    title: "Yapay Zeka Destekli Otomasyon",
+    subtitle: "Workflow / Yapay Zeka + Otomasyon",
     icon: Cpu,
     color: "from-purple-500 to-indigo-600",
     bgColor: "bg-purple-500",
@@ -243,7 +243,7 @@ const competencyLevels = [
           "1-2 otomasyonda yapay zeka kullanıyorum",
           "5+ otomasyonda stratejik karar noktalarında yapay zeka kullanıyorum ve kurallı mantıkla hibrit yaklaşım kurdum"
         ],
-        evidence: "E-posta sınıflandırma (AI) → Kategoriye göre routing (kural) akışı"
+        evidence: "E-posta sınıflandırma (Yapay Zeka) → Kategoriye göre routing (kural) akışı"
       },
       {
         text: "Yapay zeka çıktısını akış içinde kullanıyorum",
@@ -253,7 +253,7 @@ const competencyLevels = [
           "Yapay zeka çıktısını sonraki adıma input olarak gönderiyorum",
           "Yapay zeka çıktısına göre dallanma, filtreleme ve dinamik akış kontrolü yapıyorum"
         ],
-        evidence: "AI sınıflandırma sonucu 'Acil' ise Slack'e bildir, değilse ticket oluştur"
+        evidence: "Yapay zeka sınıflandırma sonucu 'Acil' ise Slack'e bildir, değilse ticket oluştur"
       },
       {
         text: "Hata durumları için alternatif akışlar kurdum",
@@ -269,8 +269,8 @@ const competencyLevels = [
   },
   {
     id: 5,
-    title: "YZ Ajanları",
-    subtitle: "Otonom AI Sistemler",
+    title: "Yapay Zeka Ajanları",
+    subtitle: "Otonom Yapay Zeka Sistemleri",
     icon: Rocket,
     color: "from-rose-500 to-pink-600",
     bgColor: "bg-rose-500",
@@ -356,7 +356,7 @@ const recommendations = {
   5: {
     next: "Tebrikler! Bilginizi paylaşın ve mentorluk yapın.",
     tools: ["Tüm araçlar"],
-    resources: ["Ekibinize eğitim verin", "YZ yönetişim politikaları oluşturun"]
+    resources: ["Ekibinize eğitim verin", "Yapay zeka yönetişim politikaları oluşturun"]
   }
 };
 
@@ -519,7 +519,7 @@ export default function AICompetencyApp() {
                 </div>
                 {!isMobile && (
                   <div>
-                    <h1 style={{ color: '#0f172a', fontWeight: 700, fontSize: '18px', margin: 0 }}>YZ Yetkinlik Değerlendirme</h1>
+                    <h1 style={{ color: '#0f172a', fontWeight: 700, fontSize: '18px', margin: 0 }}>Yapay Zeka Yetkinlik Değerlendirme</h1>
                     <p style={{ color: '#64748b', fontSize: '12px', margin: 0 }}>Kişisel Değerlendirme</p>
                   </div>
                 )}
@@ -656,7 +656,7 @@ export default function AICompetencyApp() {
               border: '1px solid #dbeafe'
             }}>
               <Sparkles style={{ width: isMobile ? '14px' : '16px', height: isMobile ? '14px' : '16px' }} />
-              <span>Kişisel YZ Yetkinlik Analizi</span>
+              <span>Kişisel Yapay Zeka Yetkinlik Analizi</span>
             </div>
 
             {/* Heading */}
@@ -1106,7 +1106,7 @@ export default function AICompetencyApp() {
               {[
                 { icon: Compass, title: 'Test değil, pusula', desc: 'Doğru veya yanlış cevap yok. Amacımız yargılamak değil, yön göstermek.' },
                 { icon: Lock, title: 'Verileriniz sizde', desc: 'Yanıtlarınız sunucuya gönderilmez. Tüm işlem tarayıcınızda gerçekleşir.' },
-                { icon: Target, title: 'Kişisel gelişim odaklı', desc: 'Bireysel YZ yetkinliğinizi ölçün ve size özel gelişim önerileri alın.' }
+                { icon: Target, title: 'Kişisel gelişim odaklı', desc: 'Bireysel yapay zeka yetkinliğinizi ölçün ve size özel gelişim önerileri alın.' }
               ].map((item, i) => {
                 const ItemIcon = item.icon;
                 return (
@@ -1156,7 +1156,7 @@ export default function AICompetencyApp() {
               <span>Hazır mısınız?</span>
             </div>
             <h2 style={{ fontSize: 'clamp(32px, 5vw, 52px)', fontWeight: 700, color: 'white', marginBottom: '20px' }}>
-              AI Yolculuğunuza Başlayın
+              Yapay Zeka Yolculuğunuza Başlayın
             </h2>
             <p style={{ fontSize: '20px', color: 'rgba(255,255,255,0.85)', lineHeight: 1.6, marginBottom: '40px' }}>
               Değerlendirme yaklaşık 10 dakika sürer.<br />
@@ -1279,7 +1279,7 @@ export default function AICompetencyApp() {
                 </div>
                 {!isMobile && (
                   <div>
-                    <h1 style={{ color: '#0f172a', fontWeight: 700, fontSize: '18px', margin: 0 }}>YZ Yetkinlik Değerlendirme</h1>
+                    <h1 style={{ color: '#0f172a', fontWeight: 700, fontSize: '18px', margin: 0 }}>Yapay Zeka Yetkinlik Değerlendirme</h1>
                     <p style={{ color: '#64748b', fontSize: '12px', margin: 0 }}>Kişisel Değerlendirme</p>
                   </div>
                 )}
@@ -1669,7 +1669,7 @@ export default function AICompetencyApp() {
                         Google'ın <strong style={{ color: '#0f172a' }}>LearnLM</strong> teknolojisi, Gemini yapay zekasını bir öğretmen asistanına dönüştürüyor.
                         Bu rehber; doğrudan cevap vermek yerine adım adım düşündüren, <strong style={{ color: '#0f172a' }}>PARTS çerçevesiyle</strong> özelleştirilebilen
                         ve Google Arama, YouTube ile Classroom'a entegre çalışan sistemi pratik örneklerle anlatıyor.
-                        YZ'nin sınıflarda nasıl koçluk yapabileceğini 15 slayta sığdırdık.
+                        Yapay zekanın sınıflarda nasıl koçluk yapabileceğini 15 slayta sığdırdık.
                       </p>
                       <SlideViewer
                         slides={GEMINI_SLIDES}
@@ -2488,7 +2488,7 @@ export default function AICompetencyApp() {
 
     // Motivasyon mesajları
     const getMotivationMessage = () => {
-      if (overallPercentage >= 80) return { emoji: '🎉', text: 'Mükemmel! YZ konusunda ileri seviyedesiniz.' };
+      if (overallPercentage >= 80) return { emoji: '🎉', text: 'Mükemmel! Yapay zeka konusunda ileri seviyedesiniz.' };
       if (overallPercentage >= 60) return { emoji: '💪', text: 'Harika ilerleme! Biraz daha pratikle uzmanlaşabilirsiniz.' };
       if (overallPercentage >= 40) return { emoji: '🚀', text: 'İyi bir başlangıç! Potansiyeliniz yüksek.' };
       return { emoji: '🌱', text: 'Yolculuğunuz başlıyor! Adım adım ilerleyeceksiniz.' };
