@@ -1243,7 +1243,6 @@ export default function AICompetencyApp() {
         ]
       : [
           { id: 'video-listesi', title: 'Video Listesi' },
-          { id: 'onerilen-kanallar', title: 'Önerilen Kanallar' },
           { id: 'sonraki-adim', title: 'Sonraki Adım' },
         ];
 
@@ -1838,20 +1837,6 @@ export default function AICompetencyApp() {
                   )}
                 </section>
 
-                <section id="onerilen-kanallar" style={{ marginBottom: '52px' }}>
-                  <h2 style={{ fontSize: '20px', fontWeight: 700, color: '#0f172a', marginBottom: '20px', paddingBottom: '12px', borderBottom: '2px solid #f1f5f9' }}>
-                    Önerilen Kanallar
-                  </h2>
-                  <div style={{ backgroundColor: '#eff6ff', border: '1px solid #dbeafe', borderRadius: '12px', padding: '20px 24px', display: 'flex', gap: '12px' }}>
-                    <Info style={{ width: '20px', height: '20px', color: '#2563eb', flexShrink: 0, marginTop: '2px' }} />
-                    <p style={{ color: '#1e40af', fontSize: '15px', lineHeight: 1.7, margin: 0 }}>
-                      {TOOL_NAV_LEVELS.includes(educationActiveLevel) && educationActiveTool !== null
-                        ? <><strong>{activeLevelData.tools[educationActiveTool]}</strong> için önerilen YouTube kanalları ve playlistler yakında burada listelenecek.</>
-                        : <><strong>{activeLevelData.title}</strong> konusunda önerilen YouTube kanalları ve playlistler yakında burada listelenecek.</>
-                      }
-                    </p>
-                  </div>
-                </section>
               </>
             )}
 
