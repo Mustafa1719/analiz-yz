@@ -529,6 +529,7 @@ export default function AICompetencyApp() {
               <nav style={{ display: 'flex', alignItems: 'center', gap: isMobile ? '8px' : '12px' }}>
                 <button
                   onClick={() => setShowGlossary(true)}
+                  aria-label="Kavramlar sözlüğünü aç"
                   style={{
                     display: 'flex',
                     alignItems: 'center',
@@ -543,14 +544,18 @@ export default function AICompetencyApp() {
                     background: 'transparent',
                     cursor: 'pointer',
                     minWidth: '44px',
-                    minHeight: '44px'
+                    minHeight: '44px',
+                    outline: 'none'
                   }}
+                  onFocus={(e) => e.currentTarget.style.boxShadow = '0 0 0 3px rgba(37,99,235,0.3)'}
+                  onBlur={(e) => e.currentTarget.style.boxShadow = 'none'}
                 >
                   <Library style={{ width: isMobile ? '20px' : '16px', height: isMobile ? '20px' : '16px' }} />
                   {!isMobile && 'Kavramlar'}
                 </button>
                 <button
                   onClick={() => setShowNews(true)}
+                  aria-label="Güncel haberleri aç"
                   style={{
                     display: 'flex',
                     alignItems: 'center',
@@ -565,14 +570,18 @@ export default function AICompetencyApp() {
                     background: 'transparent',
                     cursor: 'pointer',
                     minWidth: '44px',
-                    minHeight: '44px'
+                    minHeight: '44px',
+                    outline: 'none'
                   }}
+                  onFocus={(e) => e.currentTarget.style.boxShadow = '0 0 0 3px rgba(37,99,235,0.3)'}
+                  onBlur={(e) => e.currentTarget.style.boxShadow = 'none'}
                 >
                   <TrendingUp style={{ width: isMobile ? '20px' : '16px', height: isMobile ? '20px' : '16px' }} />
                   {!isMobile && 'Güncel Haberler'}
                 </button>
                 <button
                   onClick={() => setCurrentView('education')}
+                  aria-label="Eğitim sayfasına git"
                   style={{
                     display: 'flex',
                     alignItems: 'center',
@@ -587,14 +596,19 @@ export default function AICompetencyApp() {
                     background: 'transparent',
                     cursor: 'pointer',
                     minWidth: '44px',
-                    minHeight: '44px'
+                    minHeight: '44px',
+                    outline: 'none',
+                    position: 'relative'
                   }}
+                  onFocus={(e) => e.currentTarget.style.boxShadow = '0 0 0 3px rgba(37,99,235,0.3)'}
+                  onBlur={(e) => e.currentTarget.style.boxShadow = 'none'}
                 >
                   <BookOpen style={{ width: isMobile ? '20px' : '16px', height: isMobile ? '20px' : '16px' }} />
                   {!isMobile && 'Eğitim'}
                 </button>
                 <button
                   onClick={startAssessment}
+                  aria-label="Değerlendirmeyi başlat"
                   style={{
                     background: 'linear-gradient(135deg, #2563eb, #4f46e5)',
                     color: 'white',
@@ -605,10 +619,13 @@ export default function AICompetencyApp() {
                     border: 'none',
                     cursor: 'pointer',
                     boxShadow: '0 4px 12px rgba(37,99,235,0.3)',
-                    minHeight: '44px'
+                    minHeight: '44px',
+                    outline: 'none'
                   }}
+                  onFocus={(e) => e.currentTarget.style.boxShadow = '0 0 0 3px rgba(37,99,235,0.5)'}
+                  onBlur={(e) => e.currentTarget.style.boxShadow = '0 4px 12px rgba(37,99,235,0.3)'}
                 >
-                  {isMobile ? 'Başla' : 'Hemen Başla'}
+                  {isMobile ? 'Değerlendirme' : 'Değerlendirmeye Başla'}
                 </button>
               </nav>
             </div>
@@ -1272,38 +1289,46 @@ export default function AICompetencyApp() {
               <nav style={{ display: 'flex', alignItems: 'center', gap: isMobile ? '8px' : '12px' }}>
                 <button
                   onClick={() => setShowGlossary(true)}
+                  aria-label="Kavramlar sözlüğünü aç"
                   style={{
                     display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
                     color: '#475569', fontSize: '14px', fontWeight: 500,
                     padding: isMobile ? '10px' : '10px 16px', borderRadius: '10px',
                     border: 'none', background: 'transparent', cursor: 'pointer',
-                    minWidth: '44px', minHeight: '44px'
+                    minWidth: '44px', minHeight: '44px', outline: 'none'
                   }}
+                  onFocus={(e) => e.currentTarget.style.boxShadow = '0 0 0 3px rgba(37,99,235,0.3)'}
+                  onBlur={(e) => e.currentTarget.style.boxShadow = 'none'}
                 >
                   <Library style={{ width: isMobile ? '20px' : '16px', height: isMobile ? '20px' : '16px' }} />
                   {!isMobile && 'Kavramlar'}
                 </button>
                 <button
                   onClick={() => setShowNews(true)}
+                  aria-label="Güncel haberleri aç"
                   style={{
                     display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
                     color: '#475569', fontSize: '14px', fontWeight: 500,
                     padding: isMobile ? '10px' : '10px 16px', borderRadius: '10px',
                     border: 'none', background: 'transparent', cursor: 'pointer',
-                    minWidth: '44px', minHeight: '44px'
+                    minWidth: '44px', minHeight: '44px', outline: 'none'
                   }}
+                  onFocus={(e) => e.currentTarget.style.boxShadow = '0 0 0 3px rgba(37,99,235,0.3)'}
+                  onBlur={(e) => e.currentTarget.style.boxShadow = 'none'}
                 >
                   <TrendingUp style={{ width: isMobile ? '20px' : '16px', height: isMobile ? '20px' : '16px' }} />
                   {!isMobile && 'Güncel Haberler'}
                 </button>
-                {/* Active state for Eğitim */}
+                {/* Eğitim - aktif sayfa göstergesi */}
                 <button
+                  aria-current="page"
+                  aria-label="Şu an Eğitim sayfasındasınız"
                   style={{
                     display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
                     color: '#2563eb', fontSize: '14px', fontWeight: 600,
                     padding: isMobile ? '10px' : '10px 16px', borderRadius: '10px',
-                    border: '1px solid #dbeafe', background: '#eff6ff', cursor: 'pointer',
-                    minWidth: '44px', minHeight: '44px'
+                    border: '1px solid #dbeafe', background: '#eff6ff', cursor: 'default',
+                    minWidth: '44px', minHeight: '44px', outline: 'none'
                   }}
                 >
                   <BookOpen style={{ width: isMobile ? '20px' : '16px', height: isMobile ? '20px' : '16px' }} />
@@ -1311,15 +1336,18 @@ export default function AICompetencyApp() {
                 </button>
                 <button
                   onClick={startAssessment}
+                  aria-label="Değerlendirmeyi başlat"
                   style={{
                     background: 'linear-gradient(135deg, #2563eb, #4f46e5)',
                     color: 'white', fontSize: isMobile ? '13px' : '14px', fontWeight: 600,
                     padding: isMobile ? '10px 16px' : '12px 24px', borderRadius: '12px',
                     border: 'none', cursor: 'pointer',
-                    boxShadow: '0 4px 12px rgba(37,99,235,0.3)', minHeight: '44px'
+                    boxShadow: '0 4px 12px rgba(37,99,235,0.3)', minHeight: '44px', outline: 'none'
                   }}
+                  onFocus={(e) => e.currentTarget.style.boxShadow = '0 0 0 3px rgba(37,99,235,0.5)'}
+                  onBlur={(e) => e.currentTarget.style.boxShadow = '0 4px 12px rgba(37,99,235,0.3)'}
                 >
-                  {isMobile ? 'Başla' : 'Hemen Başla'}
+                  {isMobile ? 'Değerlendirme' : 'Değerlendirmeye Başla'}
                 </button>
               </nav>
             </div>
@@ -1369,31 +1397,43 @@ export default function AICompetencyApp() {
                         setEducationActiveSection('read');
                         setEducationActiveTool(hasToolNav ? 0 : null);
                       }}
+                      aria-current={isActive ? 'page' : undefined}
+                      aria-label={`Seviye ${level.id}: ${level.title}${isActive ? ' (şu an görüntüleniyor)' : ''}`}
                       style={{
                         width: '100%', display: 'flex', alignItems: 'center', gap: '12px',
                         padding: '10px 16px',
-                        background: isActive ? '#eff6ff' : 'transparent',
+                        background: isActive ? `${color}18` : 'transparent',
                         border: 'none',
                         borderLeft: isActive ? `3px solid ${color}` : '3px solid transparent',
-                        cursor: 'pointer', textAlign: 'left', transition: 'all 0.15s'
+                        cursor: 'pointer', textAlign: 'left', transition: 'all 0.15s',
+                        outline: 'none'
                       }}
+                      onFocus={(e) => { e.currentTarget.style.boxShadow = `inset 0 0 0 2px ${color}60`; }}
+                      onBlur={(e) => { e.currentTarget.style.boxShadow = 'none'; }}
                     >
                       <div style={{
                         width: '32px', height: '32px',
                         backgroundColor: isActive ? color : '#f1f5f9',
                         borderRadius: '8px', display: 'flex', alignItems: 'center',
-                        justifyContent: 'center', flexShrink: 0, transition: 'all 0.15s'
+                        justifyContent: 'center', flexShrink: 0, transition: 'all 0.15s',
+                        boxShadow: isActive ? `0 2px 8px ${color}40` : 'none'
                       }}>
-                        <LevelIcon style={{ width: '15px', height: '15px', color: isActive ? 'white' : '#64748b' }} />
+                        <LevelIcon style={{ width: '15px', height: '15px', color: isActive ? 'white' : '#64748b' }} aria-hidden="true" />
                       </div>
-                      <div>
+                      <div style={{ flex: 1 }}>
                         <div style={{ fontSize: '11px', color: isActive ? color : '#94a3b8', fontWeight: 600, marginBottom: '2px' }}>
                           Seviye {level.id}
                         </div>
-                        <div style={{ fontSize: '13px', color: isActive ? '#0f172a' : '#475569', fontWeight: isActive ? 600 : 400, lineHeight: 1.3 }}>
+                        <div style={{ fontSize: '13px', color: isActive ? '#0f172a' : '#475569', fontWeight: isActive ? 700 : 400, lineHeight: 1.3 }}>
                           {level.title}
                         </div>
                       </div>
+                      {isActive && (
+                        <div style={{
+                          width: '6px', height: '6px', borderRadius: '50%',
+                          backgroundColor: color, flexShrink: 0
+                        }} aria-hidden="true" />
+                      )}
                     </button>
 
                     {/* Alt navigasyon — sadece aktif seviyede */}
@@ -1965,6 +2005,7 @@ export default function AICompetencyApp() {
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
               <button
                 onClick={() => setCurrentView('home')}
+                aria-label="Ana sayfaya geri dön"
                 style={{
                   display: 'flex',
                   alignItems: 'center',
@@ -1978,14 +2019,17 @@ export default function AICompetencyApp() {
                   padding: isMobile ? '10px 12px' : '4px 8px',
                   minHeight: isMobile ? '44px' : 'auto',
                   borderRadius: '6px',
-                  transition: 'all 0.2s'
+                  transition: 'all 0.2s',
+                  outline: 'none'
                 }}
+                onFocus={(e) => e.currentTarget.style.boxShadow = '0 0 0 3px rgba(37,99,235,0.3)'}
+                onBlur={(e) => e.currentTarget.style.boxShadow = 'none'}
               >
-                <ChevronLeft style={{ width: isMobile ? '22px' : '18px', height: isMobile ? '22px' : '18px' }} />
+                <ChevronLeft style={{ width: isMobile ? '22px' : '18px', height: isMobile ? '22px' : '18px' }} aria-hidden="true" />
                 {!isMobile && <span>Ana Sayfa</span>}
               </button>
 
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px' }}>
                 <span style={{
                   backgroundColor: currentColor,
                   color: 'white',
@@ -1994,12 +2038,18 @@ export default function AICompetencyApp() {
                   fontSize: '13px',
                   fontWeight: 600
                 }}>
-                  {currentQuestionNumber} / {getTotalQuestions()}
+                  Soru {currentQuestionNumber} / {getTotalQuestions()}
                 </span>
+                {!isMobile && (
+                  <span style={{ fontSize: '11px', color: '#64748b' }}>
+                    Seviye {currentLevel + 1}/5 — {currentLevelData.title} • Soru {currentQuestion + 1}/{currentLevelData.questions.length}
+                  </span>
+                )}
               </div>
 
               <button
                 onClick={() => setShowGlossary(true)}
+                aria-label="Kavramlar sözlüğünü aç"
                 style={{
                   display: 'flex',
                   alignItems: 'center',
@@ -2012,14 +2062,18 @@ export default function AICompetencyApp() {
                   cursor: 'pointer',
                   padding: isMobile ? '10px 12px' : '4px 8px',
                   minHeight: isMobile ? '44px' : 'auto',
-                  borderRadius: '6px'
+                  borderRadius: '6px',
+                  outline: 'none'
                 }}
+                onFocus={(e) => e.currentTarget.style.boxShadow = '0 0 0 3px rgba(37,99,235,0.3)'}
+                onBlur={(e) => e.currentTarget.style.boxShadow = 'none'}
               >
-                <Library style={{ width: isMobile ? '20px' : '16px', height: isMobile ? '20px' : '16px' }} />
+                <Library style={{ width: isMobile ? '20px' : '16px', height: isMobile ? '20px' : '16px' }} aria-hidden="true" />
                 {!isMobile && <span>Kavramlar</span>}
               </button>
               <button
                 onClick={() => setShowNews(true)}
+                aria-label="Güncel haberleri aç"
                 style={{
                   display: 'flex',
                   alignItems: 'center',
@@ -2032,10 +2086,13 @@ export default function AICompetencyApp() {
                   cursor: 'pointer',
                   padding: isMobile ? '10px 12px' : '4px 8px',
                   minHeight: isMobile ? '44px' : 'auto',
-                  borderRadius: '6px'
+                  borderRadius: '6px',
+                  outline: 'none'
                 }}
+                onFocus={(e) => e.currentTarget.style.boxShadow = '0 0 0 3px rgba(37,99,235,0.3)'}
+                onBlur={(e) => e.currentTarget.style.boxShadow = 'none'}
               >
-                <TrendingUp style={{ width: isMobile ? '20px' : '16px', height: isMobile ? '20px' : '16px' }} />
+                <TrendingUp style={{ width: isMobile ? '20px' : '16px', height: isMobile ? '20px' : '16px' }} aria-hidden="true" />
                 {!isMobile && <span>Haberler</span>}
               </button>
             </div>
@@ -2059,12 +2116,13 @@ export default function AICompetencyApp() {
             </div>
             <div style={{
               display: 'flex',
-              justifyContent: 'center',
+              justifyContent: 'space-between',
               marginTop: '4px',
               fontSize: '11px',
               color: '#94a3b8'
             }}>
-              <span style={{ fontWeight: 600, color: currentColor }}>%{Math.round(progress)}</span>
+              <span>Genel ilerleme</span>
+              <span style={{ fontWeight: 600, color: currentColor }}>%{Math.round(progress)} tamamlandı</span>
             </div>
           </div>
         </header>

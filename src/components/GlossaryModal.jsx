@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   X, BookOpen, Search, ChevronDown, ChevronUp,
   Zap, Target, Users, FileText, Layers, Settings,
@@ -206,6 +206,19 @@ export default function GlossaryModal({ isOpen, onClose }) {
   const [expandedFramework, setExpandedFramework] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [hoveredItem, setHoveredItem] = useState(null);
+
+  // ESC tuşu ve body scroll kilidi
+  useEffect(() => {
+    if (!isOpen) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const handleKey = (e) => { if (e.key === 'Escape') onClose(); };
+    document.addEventListener('keydown', handleKey);
+    return () => {
+      document.body.style.overflow = prev;
+      document.removeEventListener('keydown', handleKey);
+    };
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 

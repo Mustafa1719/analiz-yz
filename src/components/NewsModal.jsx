@@ -214,6 +214,19 @@ const NewsModal = ({ isOpen, onClose }) => {
     }
   }, [isOpen]);
 
+  // ESC tuşu ve body scroll kilidi
+  useEffect(() => {
+    if (!isOpen) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const handleKey = (e) => { if (e.key === 'Escape') onClose(); };
+    document.addEventListener('keydown', handleKey);
+    return () => {
+      document.body.style.overflow = prev;
+      document.removeEventListener('keydown', handleKey);
+    };
+  }, [isOpen, onClose]);
+
   // Dropdown dışına tıklanınca kapat
   useEffect(() => {
     const handleClickOutside = () => setShowChannelDropdown(false);
@@ -501,14 +514,40 @@ const NewsModal = ({ isOpen, onClose }) => {
           padding: '8px 24px 24px'
         }}>
           {loading ? (
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: '48px',
-              color: '#6b7280'
-            }}>
-              Haberler yükleniyor...
+            <div>
+              <style>{`
+                @keyframes shimmer {
+                  0% { background-position: -400px 0; }
+                  100% { background-position: 400px 0; }
+                }
+                .skeleton-line {
+                  background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%);
+                  background-size: 400px 100%;
+                  animation: shimmer 1.4s ease-in-out infinite;
+                  border-radius: 6px;
+                }
+              `}</style>
+              {[1, 2, 3, 4].map(i => (
+                <div key={i} style={{
+                  display: 'flex',
+                  gap: '20px',
+                  padding: '24px 16px',
+                  borderRadius: '12px',
+                  marginBottom: '12px',
+                  backgroundColor: 'white'
+                }}>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ display: 'flex', gap: '8px', marginBottom: '10px' }}>
+                      <div className="skeleton-line" style={{ width: '22px', height: '22px', borderRadius: '50%' }} />
+                      <div className="skeleton-line" style={{ width: '100px', height: '14px', marginTop: '4px' }} />
+                    </div>
+                    <div className="skeleton-line" style={{ width: '90%', height: '18px', marginBottom: '8px' }} />
+                    <div className="skeleton-line" style={{ width: '60%', height: '18px', marginBottom: '12px' }} />
+                    <div className="skeleton-line" style={{ width: '80px', height: '12px' }} />
+                  </div>
+                  <div className="skeleton-line" style={{ width: '200px', height: '112px', borderRadius: '12px', flexShrink: 0 }} />
+                </div>
+              ))}
             </div>
           ) : (
             news.map((item, index) => (
