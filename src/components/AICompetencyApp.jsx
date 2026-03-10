@@ -522,7 +522,7 @@ export default function AICompetencyApp() {
                 {!isMobile && (
                   <div>
                     <h1 style={{ color: '#0f172a', fontWeight: 700, fontSize: '18px', margin: 0 }}>Yapay Zeka Gelişim Modeli</h1>
-                    <p style={{ color: '#64748b', fontSize: '12px', margin: 0 }}>Öğren · Gelişin · Büyü</p>
+                    <p style={{ color: '#64748b', fontSize: '12px', margin: 0 }}>Keşfedin · Öğrenin · Geliştirin</p>
                   </div>
                 )}
               </div>
@@ -1336,7 +1336,7 @@ export default function AICompetencyApp() {
                 {!isMobile && (
                   <div>
                     <h1 style={{ color: '#0f172a', fontWeight: 700, fontSize: '18px', margin: 0 }}>Yapay Zeka Gelişim Modeli</h1>
-                    <p style={{ color: '#64748b', fontSize: '12px', margin: 0 }}>Öğren · Gelişin · Büyü</p>
+                    <p style={{ color: '#64748b', fontSize: '12px', margin: 0 }}>Keşfedin · Öğrenin · Geliştirin</p>
                   </div>
                 )}
               </div>
