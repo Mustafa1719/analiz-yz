@@ -269,7 +269,7 @@ export default function MentorChat({
           </div>
           <div>
             <p style={{ margin: 0, fontSize: isMobile ? '16px' : '14px', fontWeight: 600, color: '#0f172a' }}>
-              Yapay Zeka Yetkinlik Mentörü
+              Yapay Zeka Gelişim Mentörü
             </p>
             <p style={{ margin: 0, fontSize: isMobile ? '13px' : '11px', color: '#64748b' }}>
               Bu maddeyi açıklamak için buradayım

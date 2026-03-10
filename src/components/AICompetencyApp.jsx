@@ -5,7 +5,7 @@ import {
   Brain, Zap, Target, Layers, Cpu, Bot, Sparkles, Rocket,
   TrendingUp, Trophy, Info, Download, AlertTriangle,
   Library, ArrowDown, Users, Lightbulb, MessageCircle,
-  Clock, Shield, AlertCircle, Compass, Lock, Building2, Menu, BookOpen, PlayCircle
+  Clock, Shield, AlertCircle, Compass, Lock, Building2, Menu, BookOpen, PlayCircle, ExternalLink
 } from 'lucide-react';
 import GlossaryModal from './GlossaryModal';
 import MentorChat from './MentorChat';
@@ -21,13 +21,13 @@ const GEMINI_SLIDES = Array.from({ length: 15 }, (_, i) =>
 const competencyLevels = [
   {
     id: 1,
-    title: "Prompt Mühendisliği",
+    title: "Yapay Zeka Kullanımı ve Prompt Mühendisliği",
     subtitle: "Temel Yapay Zeka Kullanımı",
     icon: Zap,
     color: "from-blue-500 to-blue-700",
     bgColor: "bg-blue-500",
     description: "Yapay zekaya doğru talimatlar vererek etkili sonuçlar alma becerisi.",
-    tools: ["ChatGPT", "Gemini", "CoPilot", "Grok", "Perplexity"],
+    tools: ["ChatGPT", "Gemini"],
     questions: [
       {
         text: "Yapay zeka araçlarını düzenli kullanıyorum",
@@ -89,7 +89,7 @@ const competencyLevels = [
     color: "from-amber-500 to-orange-600",
     bgColor: "bg-amber-500",
     description: "Tekrar eden işler için özel yapay zeka asistanları oluşturabilme.",
-    tools: ["Gemini GEM", "Custom GPT", "NotebookLM", "ChippAI"],
+    tools: ["Gemini GEM", "Custom GPT", "NotebookLM"],
     questions: [
       {
         text: "Tekrar eden işlerim için özel asistan oluşturdum",
@@ -151,7 +151,7 @@ const competencyLevels = [
     color: "from-emerald-500 to-teal-600",
     bgColor: "bg-emerald-500",
     description: "Kod yazmadan yapay zeka destekli uygulamalar ve prototipler geliştirebilme.",
-    tools: ["Google AI Studio", "Claude Artifacts", "Replit", "Cursor", "Lovable"],
+    tools: ["Google AI Studio"],
     questions: [
       {
         text: "İş süreçlerimi görselleştirebiliyorum",
@@ -181,7 +181,7 @@ const competencyLevels = [
           "En az 1 çalışan prototip oluşturdum",
           "3+ prototip geliştirdim ve iş değeri test ettim"
         ],
-        evidence: "Google AI Studio, Bolt.new veya Replit'te çalışan uygulama linki"
+        evidence: "Google AI Studio'da çalışan uygulama linki"
       },
       {
         text: "Prototipleri test edip geri bildirimle geliştiriyorum",
@@ -213,7 +213,7 @@ const competencyLevels = [
     color: "from-purple-500 to-indigo-600",
     bgColor: "bg-purple-500",
     description: "Otomasyon araçlarıyla yapay zekayı birleştirerek akıllı iş akışları kurma.",
-    tools: ["n8n", "Make.com", "Google Opal", "OpenAI Platform"],
+    tools: ["n8n"],
     questions: [
       {
         text: "Otomasyon araçlarını aktif kullanıyorum",
@@ -275,7 +275,7 @@ const competencyLevels = [
     color: "from-rose-500 to-pink-600",
     bgColor: "bg-rose-500",
     description: "Hedef bazlı çalışan otonom yapay zeka sistemleri tasarlayabilme.",
-    tools: ["Claude Code", "Google Antigravity", "Clawbot", "ChatGPT Codex"],
+    tools: ["Claude Code", "Google Antigravity"],
     questions: [
       {
         text: "Yapay zekaya hedef tanımlıyorum, adımları kendisi planlıyor",
@@ -340,17 +340,17 @@ const recommendations = {
   },
   2: {
     next: "No-code platformlarda ilk prototiplerinizi geliştirin.",
-    tools: ["Google AI Studio", "Claude Artifacts", "Replit", "Lovable"],
+    tools: ["Google AI Studio"],
     resources: ["İş süreçlerinizi haritalayın", "İlk prototipi 1 günde bitirin"]
   },
   3: {
     next: "Otomasyon araçlarıyla yapay zekayı iş akışlarına entegre edin.",
-    tools: ["n8n", "Make.com", "OpenAI Platform"],
+    tools: ["n8n"],
     resources: ["API anahtarı alın ve test edin", "Hibrit akışlar kurun"]
   },
   4: {
     next: "Ajan tabanlı sistemleri öğrenin ve otonom çözümler geliştirin.",
-    tools: ["Claude Code", "ChatGPT Codex", "Google Antigravity"],
+    tools: ["Claude Code", "Google Antigravity"],
     resources: ["Ajan güvenliği ve izleme öğrenin", "Production deployment yapın"]
   },
   5: {
@@ -373,6 +373,8 @@ export default function AICompetencyApp() {
   const [educationActiveLevel, setEducationActiveLevel] = useState(0);
   const [educationActiveSection, setEducationActiveSection] = useState('read'); // 'read' | 'watch'
   const [educationActiveTool, setEducationActiveTool] = useState(null); // araç indexi (Seviye 2 için)
+  const [expandedModules, setExpandedModules] = useState(new Set([0])); // başlangıçta Modül 0 açık
+  const [educationActiveLesson, setEducationActiveLesson] = useState(null); // Claude Code ders seçimi
 
   // Seviye 2 (index 1) araç bazlı navigasyon kullanır
   const TOOL_NAV_LEVELS = [0, 1, 2, 3, 4];
@@ -519,14 +521,41 @@ export default function AICompetencyApp() {
                 </div>
                 {!isMobile && (
                   <div>
-                    <h1 style={{ color: '#0f172a', fontWeight: 700, fontSize: '18px', margin: 0 }}>Yapay Zeka Yetkinlik Değerlendirme</h1>
-                    <p style={{ color: '#64748b', fontSize: '12px', margin: 0 }}>Kişisel Değerlendirme</p>
+                    <h1 style={{ color: '#0f172a', fontWeight: 700, fontSize: '18px', margin: 0 }}>Yapay Zeka Gelişim Modeli</h1>
+                    <p style={{ color: '#64748b', fontSize: '12px', margin: 0 }}>Öğren · Gelişin · Büyü</p>
                   </div>
                 )}
               </div>
 
               {/* Nav */}
               <nav style={{ display: 'flex', alignItems: 'center', gap: isMobile ? '8px' : '12px' }}>
+                <button
+                  onClick={() => setCurrentView('education')}
+                  aria-label="Eğitim sayfasına git"
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '8px',
+                    color: '#2563eb',
+                    fontSize: '14px',
+                    fontWeight: 600,
+                    padding: isMobile ? '10px' : '10px 16px',
+                    borderRadius: '10px',
+                    border: 'none',
+                    background: '#eff6ff',
+                    cursor: 'pointer',
+                    minWidth: '44px',
+                    minHeight: '44px',
+                    outline: 'none',
+                    position: 'relative'
+                  }}
+                  onFocus={(e) => e.currentTarget.style.boxShadow = '0 0 0 3px rgba(37,99,235,0.3)'}
+                  onBlur={(e) => e.currentTarget.style.boxShadow = 'none'}
+                >
+                  <BookOpen style={{ width: isMobile ? '20px' : '16px', height: isMobile ? '20px' : '16px' }} />
+                  {!isMobile && 'Eğitimler'}
+                </button>
                 <button
                   onClick={() => setShowGlossary(true)}
                   aria-label="Kavramlar sözlüğünü aç"
@@ -577,34 +606,7 @@ export default function AICompetencyApp() {
                   onBlur={(e) => e.currentTarget.style.boxShadow = 'none'}
                 >
                   <TrendingUp style={{ width: isMobile ? '20px' : '16px', height: isMobile ? '20px' : '16px' }} />
-                  {!isMobile && 'Güncel Haberler'}
-                </button>
-                <button
-                  onClick={() => setCurrentView('education')}
-                  aria-label="Eğitim sayfasına git"
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '8px',
-                    color: '#475569',
-                    fontSize: '14px',
-                    fontWeight: 500,
-                    padding: isMobile ? '10px' : '10px 16px',
-                    borderRadius: '10px',
-                    border: 'none',
-                    background: 'transparent',
-                    cursor: 'pointer',
-                    minWidth: '44px',
-                    minHeight: '44px',
-                    outline: 'none',
-                    position: 'relative'
-                  }}
-                  onFocus={(e) => e.currentTarget.style.boxShadow = '0 0 0 3px rgba(37,99,235,0.3)'}
-                  onBlur={(e) => e.currentTarget.style.boxShadow = 'none'}
-                >
-                  <BookOpen style={{ width: isMobile ? '20px' : '16px', height: isMobile ? '20px' : '16px' }} />
-                  {!isMobile && 'Eğitim'}
+                  {!isMobile && 'Haberler'}
                 </button>
                 <button
                   onClick={startAssessment}
@@ -656,7 +658,7 @@ export default function AICompetencyApp() {
               border: '1px solid #dbeafe'
             }}>
               <Sparkles style={{ width: isMobile ? '14px' : '16px', height: isMobile ? '14px' : '16px' }} />
-              <span>Kişisel Yapay Zeka Yetkinlik Analizi</span>
+              <span>5 Seviyeli Yapay Zeka Gelişim Modeli</span>
             </div>
 
             {/* Heading */}
@@ -668,14 +670,14 @@ export default function AICompetencyApp() {
               marginBottom: '32px',
               letterSpacing: '-0.02em'
             }}>
-              Yapay Zeka<br />
+              Gelişim Yolunuzu<br />
               <span style={{
                 background: 'linear-gradient(135deg, #2563eb, #7c3aed)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text'
               }}>
-                Yetkinliğinizi Ölçün
+                Keşfedin
               </span>
             </h1>
 
@@ -688,36 +690,69 @@ export default function AICompetencyApp() {
               maxWidth: '700px',
               margin: '0 auto 48px'
             }}>
-              Yapay zeka yetkinliğinizi{' '}
-              <strong style={{ color: '#0f172a' }}>5 seviyeli</strong>{' '}
-              çerçevemizle değerlendirin ve kişisel gelişim yolunuzu belirleyin.
+              Yapay zekayı{' '}
+              <strong style={{ color: '#0f172a' }}>öğrenin, uygulayın ve büyüyün.</strong>{' '}
+              Seviye seviye ilerleyen eğitimler ve kişisel yetkinlik değerlendirmesi bir arada.
             </p>
 
-            {/* CTA */}
-            <button
-              onClick={startAssessment}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: isMobile ? '10px' : '12px',
-                background: 'linear-gradient(135deg, #2563eb, #4f46e5)',
-                color: 'white',
-                fontSize: isMobile ? '16px' : '18px',
-                fontWeight: 700,
-                padding: isMobile ? '16px 28px' : '20px 40px',
-                minHeight: isMobile ? '52px' : 'auto',
-                width: isMobile ? '100%' : 'auto',
-                maxWidth: isMobile ? '320px' : 'none',
-                borderRadius: isMobile ? '14px' : '16px',
-                border: 'none',
-                cursor: 'pointer',
-                boxShadow: '0 8px 32px rgba(37,99,235,0.35)'
-              }}
-            >
-              <span>Değerlendirmeye Başla</span>
-              <ArrowRight style={{ width: isMobile ? '18px' : '20px', height: isMobile ? '18px' : '20px' }} />
-            </button>
+            {/* Dual CTA */}
+            <div style={{
+              display: 'flex',
+              flexDirection: isMobile ? 'column' : 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: isMobile ? '12px' : '16px',
+              width: isMobile ? '100%' : 'auto',
+              maxWidth: isMobile ? '320px' : 'none',
+              margin: '0 auto'
+            }}>
+              <button
+                onClick={() => setCurrentView('education')}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: isMobile ? '10px' : '12px',
+                  background: 'linear-gradient(135deg, #2563eb, #4f46e5)',
+                  color: 'white',
+                  fontSize: isMobile ? '16px' : '18px',
+                  fontWeight: 700,
+                  padding: isMobile ? '16px 28px' : '20px 40px',
+                  minHeight: isMobile ? '52px' : 'auto',
+                  width: isMobile ? '100%' : 'auto',
+                  borderRadius: isMobile ? '14px' : '16px',
+                  border: 'none',
+                  cursor: 'pointer',
+                  boxShadow: '0 8px 32px rgba(37,99,235,0.35)'
+                }}
+              >
+                <BookOpen style={{ width: isMobile ? '18px' : '20px', height: isMobile ? '18px' : '20px' }} />
+                <span>Eğitimlere Başla</span>
+              </button>
+              <button
+                onClick={startAssessment}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: isMobile ? '10px' : '12px',
+                  background: 'white',
+                  color: '#2563eb',
+                  fontSize: isMobile ? '15px' : '17px',
+                  fontWeight: 600,
+                  padding: isMobile ? '15px 28px' : '19px 36px',
+                  minHeight: isMobile ? '52px' : 'auto',
+                  width: isMobile ? '100%' : 'auto',
+                  borderRadius: isMobile ? '14px' : '16px',
+                  border: '2px solid #2563eb',
+                  cursor: 'pointer',
+                  boxShadow: '0 4px 16px rgba(37,99,235,0.15)'
+                }}
+              >
+                <BarChart3 style={{ width: isMobile ? '17px' : '19px', height: isMobile ? '17px' : '19px' }} />
+                <span>Seviyemi Ölç</span>
+              </button>
+            </div>
           </div>
         </section>
 
@@ -726,10 +761,10 @@ export default function AICompetencyApp() {
           <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
             <div style={{ textAlign: 'center', marginBottom: '48px' }}>
               <p style={{ fontSize: '12px', fontWeight: 700, color: '#2563eb', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '12px' }}>
-                YETKİNLİK SEVİYELERİ
+                GELİŞİM MODELİ
               </p>
               <h2 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 700, color: '#0f172a' }}>
-                5 Seviyeli Değerlendirme
+                5 Seviyeli Yapay Zeka Gelişim Modeli
               </h2>
             </div>
 
@@ -977,14 +1012,14 @@ export default function AICompetencyApp() {
                 marginBottom: '16px'
               }}>
                 <Sparkles style={{ width: '16px', height: '16px' }} />
-                Tanıdık Geldi mi?
+                Nereden Başlayacaksın?
               </div>
               <h2 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 700, color: '#0f172a', marginBottom: '12px' }}>
-                5 Seviyeli Değerlendirme ile<br />
-                <span style={{ color: '#3b82f6' }}>Bu Sorulara Cevap Bulun</span>
+                Gelişim Modeli Bu Sorulara<br />
+                <span style={{ color: '#3b82f6' }}>Cevap Veriyor</span>
               </h2>
               <p style={{ fontSize: '18px', color: '#64748b' }}>
-                Seviyenizi öğrenin, gelişim yolunuzu netleştirin
+                Seviyeni keşfet, doğru eğitimden başla
               </p>
             </div>
 
@@ -1037,9 +1072,9 @@ export default function AICompetencyApp() {
                 FAYDALAR
               </p>
               <h2 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 700, color: '#0f172a', marginBottom: '12px' }}>
-                Bu Değerlendirme Size Ne Sağlar?
+                Yapay Zeka Gelişim Modeli<br />Size Ne Sağlar?
               </h2>
-              <p style={{ fontSize: '18px', color: '#64748b' }}>Somut çıktılar ve aksiyonlar</p>
+              <p style={{ fontSize: '18px', color: '#64748b' }}>Öğrenmekten eyleme — somut adımlar</p>
             </div>
 
             <div style={{
@@ -1106,7 +1141,7 @@ export default function AICompetencyApp() {
               {[
                 { icon: Compass, title: 'Test değil, pusula', desc: 'Doğru veya yanlış cevap yok. Amacımız yargılamak değil, yön göstermek.' },
                 { icon: Lock, title: 'Verileriniz sizde', desc: 'Yanıtlarınız sunucuya gönderilmez. Tüm işlem tarayıcınızda gerçekleşir.' },
-                { icon: Target, title: 'Kişisel gelişim odaklı', desc: 'Bireysel yapay zeka yetkinliğinizi ölçün ve size özel gelişim önerileri alın.' }
+                { icon: Target, title: 'Gelişim odaklı', desc: 'Eğitimler ve değerlendirme birlikte çalışır — öğrenin, uygulayın, bir üst seviyeye geçin.' }
               ].map((item, i) => {
                 const ItemIcon = item.icon;
                 return (
@@ -1156,32 +1191,53 @@ export default function AICompetencyApp() {
               <span>Hazır mısınız?</span>
             </div>
             <h2 style={{ fontSize: 'clamp(32px, 5vw, 52px)', fontWeight: 700, color: 'white', marginBottom: '20px' }}>
-              Yapay Zeka Yolculuğunuza Başlayın
+              Yapay Zeka Gelişim<br />Yolculuğunuza Başlayın
             </h2>
             <p style={{ fontSize: '20px', color: 'rgba(255,255,255,0.85)', lineHeight: 1.6, marginBottom: '40px' }}>
-              Değerlendirme yaklaşık 10 dakika sürer.<br />
-              Sonuçlarınızı hemen göreceksiniz.
+              Eğitimlerle öğrenin, değerlendirmeyle seviyenizi doğrulayın.<br />
+              Hepsi burada, ücretsiz.
             </p>
-            <button
-              onClick={startAssessment}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '12px',
-                backgroundColor: 'white',
-                color: '#0f172a',
-                fontSize: '18px',
-                fontWeight: 700,
-                padding: '20px 40px',
-                borderRadius: '16px',
-                border: 'none',
-                cursor: 'pointer',
-                boxShadow: '0 8px 32px rgba(0,0,0,0.2)'
-              }}
-            >
-              <span>Değerlendirmeye Başla</span>
-              <ArrowRight style={{ width: '20px', height: '20px' }} />
-            </button>
+            <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', alignItems: 'center', justifyContent: 'center', gap: '16px' }}>
+              <button
+                onClick={() => setCurrentView('education')}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '12px',
+                  backgroundColor: 'white',
+                  color: '#2563eb',
+                  fontSize: '18px',
+                  fontWeight: 700,
+                  padding: '20px 40px',
+                  borderRadius: '16px',
+                  border: 'none',
+                  cursor: 'pointer',
+                  boxShadow: '0 8px 32px rgba(0,0,0,0.2)'
+                }}
+              >
+                <BookOpen style={{ width: '20px', height: '20px' }} />
+                <span>Eğitimlere Git</span>
+              </button>
+              <button
+                onClick={startAssessment}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '12px',
+                  backgroundColor: 'transparent',
+                  color: 'white',
+                  fontSize: '17px',
+                  fontWeight: 600,
+                  padding: '19px 36px',
+                  borderRadius: '16px',
+                  border: '2px solid rgba(255,255,255,0.6)',
+                  cursor: 'pointer'
+                }}
+              >
+                <BarChart3 style={{ width: '19px', height: '19px' }} />
+                <span>Seviyemi Ölç</span>
+              </button>
+            </div>
           </div>
         </section>
 
@@ -1279,8 +1335,8 @@ export default function AICompetencyApp() {
                 </div>
                 {!isMobile && (
                   <div>
-                    <h1 style={{ color: '#0f172a', fontWeight: 700, fontSize: '18px', margin: 0 }}>Yapay Zeka Yetkinlik Değerlendirme</h1>
-                    <p style={{ color: '#64748b', fontSize: '12px', margin: 0 }}>Kişisel Değerlendirme</p>
+                    <h1 style={{ color: '#0f172a', fontWeight: 700, fontSize: '18px', margin: 0 }}>Yapay Zeka Gelişim Modeli</h1>
+                    <p style={{ color: '#64748b', fontSize: '12px', margin: 0 }}>Öğren · Gelişin · Büyü</p>
                   </div>
                 )}
               </div>
@@ -1316,7 +1372,7 @@ export default function AICompetencyApp() {
                   onBlur={(e) => e.currentTarget.style.boxShadow = 'none'}
                 >
                   <TrendingUp style={{ width: isMobile ? '20px' : '16px', height: isMobile ? '20px' : '16px' }} />
-                  {!isMobile && 'Güncel Haberler'}
+                  {!isMobile && 'Haberler'}
                 </button>
                 {/* Eğitim - aktif sayfa göstergesi */}
                 <button
@@ -1375,8 +1431,8 @@ export default function AICompetencyApp() {
             }}>
               <div style={{
                 padding: '0 16px 12px',
-                fontSize: '11px', fontWeight: 700, color: '#94a3b8',
-                letterSpacing: '1.5px', textTransform: 'uppercase'
+                fontSize: '12px', fontWeight: 700, color: '#94a3b8',
+                letterSpacing: '1px', textTransform: 'uppercase'
               }}>
                 Modüller
               </div>
@@ -1400,7 +1456,7 @@ export default function AICompetencyApp() {
                       aria-label={`Seviye ${level.id}: ${level.title}${isActive ? ' (şu an görüntüleniyor)' : ''}`}
                       style={{
                         width: '100%', display: 'flex', alignItems: 'center', gap: '12px',
-                        padding: '10px 16px',
+                        padding: '12px 16px',
                         background: isActive ? `${color}18` : 'transparent',
                         border: 'none',
                         borderLeft: isActive ? `3px solid ${color}` : '3px solid transparent',
@@ -1420,10 +1476,10 @@ export default function AICompetencyApp() {
                         <LevelIcon style={{ width: '15px', height: '15px', color: isActive ? 'white' : '#64748b' }} aria-hidden="true" />
                       </div>
                       <div style={{ flex: 1 }}>
-                        <div style={{ fontSize: '11px', color: isActive ? color : '#94a3b8', fontWeight: 600, marginBottom: '2px' }}>
+                        <div style={{ fontSize: '12px', color: isActive ? color : '#94a3b8', fontWeight: 600, marginBottom: '2px' }}>
                           Seviye {level.id}
                         </div>
-                        <div style={{ fontSize: '13px', color: isActive ? '#0f172a' : '#475569', fontWeight: isActive ? 700 : 400, lineHeight: 1.3 }}>
+                        <div style={{ fontSize: '14px', color: isActive ? '#0f172a' : '#475569', fontWeight: isActive ? 700 : 500, lineHeight: 1.3 }}>
                           {level.title}
                         </div>
                       </div>
@@ -1462,7 +1518,7 @@ export default function AICompetencyApp() {
                                     backgroundColor: isToolActive ? color : '#cbd5e1',
                                     transition: 'all 0.15s'
                                   }} />
-                                  <span style={{ fontSize: '12px', color: isToolActive ? color : '#64748b', fontWeight: isToolActive ? 700 : 400 }}>
+                                  <span style={{ fontSize: '13px', color: isToolActive ? color : '#64748b', fontWeight: isToolActive ? 700 : 500 }}>
                                     {tool}
                                   </span>
                                 </button>
@@ -1479,13 +1535,14 @@ export default function AICompetencyApp() {
                                         border: 'none', cursor: 'pointer', textAlign: 'left', transition: 'all 0.15s'
                                       }}
                                     >
-                                      <BookOpen style={{ width: '11px', height: '11px', color: isToolReadActive ? color : '#94a3b8', flexShrink: 0 }} />
-                                      <span style={{ fontSize: '11px', color: isToolReadActive ? color : '#94a3b8', fontWeight: isToolReadActive ? 600 : 400 }}>
+                                      <BookOpen style={{ width: '13px', height: '13px', color: isToolReadActive ? color : '#94a3b8', flexShrink: 0 }} />
+                                      <span style={{ fontSize: '13px', color: isToolReadActive ? color : '#94a3b8', fontWeight: isToolReadActive ? 600 : 400 }}>
                                         Okuyarak Öğren
                                       </span>
                                     </button>
+
                                     <button
-                                      onClick={() => setEducationActiveSection('watch')}
+                                      onClick={() => { setEducationActiveSection('watch'); setEducationActiveLesson(null); }}
                                       style={{
                                         width: '100%', display: 'flex', alignItems: 'center', gap: '8px',
                                         padding: '6px 16px',
@@ -1493,8 +1550,8 @@ export default function AICompetencyApp() {
                                         border: 'none', cursor: 'pointer', textAlign: 'left', transition: 'all 0.15s'
                                       }}
                                     >
-                                      <PlayCircle style={{ width: '11px', height: '11px', color: isToolWatchActive ? color : '#94a3b8', flexShrink: 0 }} />
-                                      <span style={{ fontSize: '11px', color: isToolWatchActive ? color : '#94a3b8', fontWeight: isToolWatchActive ? 600 : 400 }}>
+                                      <PlayCircle style={{ width: '13px', height: '13px', color: isToolWatchActive ? color : '#94a3b8', flexShrink: 0 }} />
+                                      <span style={{ fontSize: '13px', color: isToolWatchActive ? color : '#94a3b8', fontWeight: isToolWatchActive ? 600 : 400 }}>
                                         İzleyerek Öğren
                                       </span>
                                     </button>
@@ -1515,8 +1572,8 @@ export default function AICompetencyApp() {
                                 border: 'none', cursor: 'pointer', textAlign: 'left', transition: 'all 0.15s'
                               }}
                             >
-                              <BookOpen style={{ width: '13px', height: '13px', color: isReadActive ? color : '#94a3b8', flexShrink: 0 }} />
-                              <span style={{ fontSize: '12px', color: isReadActive ? color : '#64748b', fontWeight: isReadActive ? 600 : 400 }}>
+                              <BookOpen style={{ width: '14px', height: '14px', color: isReadActive ? color : '#94a3b8', flexShrink: 0 }} />
+                              <span style={{ fontSize: '13px', color: isReadActive ? color : '#64748b', fontWeight: isReadActive ? 600 : 400 }}>
                                 Okuyarak Öğren
                               </span>
                             </button>
@@ -1529,8 +1586,8 @@ export default function AICompetencyApp() {
                                 border: 'none', cursor: 'pointer', textAlign: 'left', transition: 'all 0.15s'
                               }}
                             >
-                              <PlayCircle style={{ width: '13px', height: '13px', color: isWatchActive ? color : '#94a3b8', flexShrink: 0 }} />
-                              <span style={{ fontSize: '12px', color: isWatchActive ? color : '#64748b', fontWeight: isWatchActive ? 600 : 400 }}>
+                              <PlayCircle style={{ width: '14px', height: '14px', color: isWatchActive ? color : '#94a3b8', flexShrink: 0 }} />
+                              <span style={{ fontSize: '13px', color: isWatchActive ? color : '#64748b', fontWeight: isWatchActive ? 600 : 400 }}>
                                 İzleyerek Öğren
                               </span>
                             </button>
@@ -1579,13 +1636,13 @@ export default function AICompetencyApp() {
           {/* Main Content */}
           <main style={{
             flex: 1,
-            padding: isMobile ? '28px 20px 60px' : '40px 56px 80px',
+            padding: isMobile ? '28px 20px 60px' : '40px 32px 80px',
             minWidth: 0
           }}>
             {/* Breadcrumb */}
             <div style={{
               display: 'flex', alignItems: 'center', gap: '6px',
-              marginBottom: '28px', fontSize: '13px', color: '#94a3b8', flexWrap: 'wrap'
+              marginBottom: '28px', fontSize: '14px', color: '#94a3b8', flexWrap: 'wrap'
             }}>
               <span
                 onClick={() => setCurrentView('home')}
@@ -1648,8 +1705,8 @@ export default function AICompetencyApp() {
                 </div>
               </div>
               <p style={{
-                fontSize: '17px', color: '#475569', lineHeight: 1.7,
-                margin: 0, maxWidth: '680px'
+                fontSize: '18px', color: '#475569', lineHeight: 1.7,
+                margin: 0, maxWidth: '720px'
               }}>
                 {activeLevelData.description}
               </p>
@@ -1714,7 +1771,123 @@ export default function AICompetencyApp() {
                     </section>
                   </>
                 ) : TOOL_NAV_LEVELS.includes(educationActiveLevel) && educationActiveTool !== null ? (
-                  /* Araç bazlı seviyeler (Seviye 2 vb.) — aktif araç için placeholder */
+                  /* Araç bazlı seviyeler */
+                  educationActiveLevel === 4 && educationActiveTool === 0 && educationActiveSection === 'read' ? (
+                    /* Claude Code — Okuyarak Öğren ders içerikleri */
+                    <>
+                      {!educationActiveLesson && (
+                        <section style={{ marginBottom: '40px' }}>
+                          <h2 style={{ fontSize: '20px', fontWeight: 700, color: '#0f172a', marginBottom: '16px', paddingBottom: '12px', borderBottom: '2px solid #f1f5f9' }}>
+                            Claude Code — Okuyarak Öğren
+                          </h2>
+                          <div style={{ backgroundColor: '#fff1f2', border: '1px solid #fecdd3', borderRadius: '12px', padding: '20px 24px' }}>
+                            <p style={{ color: '#881337', fontSize: '15px', lineHeight: 1.7, margin: 0 }}>
+                              Sol menüden bir konu seçerek okumaya başlayabilirsin.
+                            </p>
+                          </div>
+                        </section>
+                      )}
+
+                      {educationActiveLesson === 'intro' && (
+                        <section style={{ marginBottom: '40px' }}>
+                          <h2 style={{ fontSize: '22px', fontWeight: 700, color: '#0f172a', marginBottom: '16px', paddingBottom: '12px', borderBottom: '2px solid #f1f5f9' }}>
+                            Kurs Tanıtımı
+                          </h2>
+                          <p style={{ fontSize: '16px', color: '#475569', lineHeight: 1.8, marginBottom: '20px' }}>
+                            Bu kurs, Claude Code'u sıfırdan öğrenmek isteyenler için hazırlanmıştır. Kodlama bilgisi gerekmez — sadece yapay zeka ile çalışmak istemen yeterli.
+                          </p>
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                            {['Kodlama bilgisi gerekmez', 'Adım adım ilerleyebilirsin', 'Gerçek projeler üretirsin', 'Yapay zeka destekli geliştirme öğrenirsin'].map((item, i) => (
+                              <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '12px', backgroundColor: 'white', border: '1px solid #fecdd3', borderRadius: '10px', padding: '14px 16px' }}>
+                                <div style={{ width: '28px', height: '28px', backgroundColor: '#fff1f2', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                                  <CheckCircle2 style={{ width: '14px', height: '14px', color: '#f43f5e' }} />
+                                </div>
+                                <span style={{ fontSize: '15px', color: '#334155' }}>{item}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </section>
+                      )}
+
+                      {educationActiveLesson === 'mod0-0' && (
+                        <section style={{ marginBottom: '40px' }}>
+                          <h2 style={{ fontSize: '22px', fontWeight: 700, color: '#0f172a', marginBottom: '16px', paddingBottom: '12px', borderBottom: '2px solid #f1f5f9' }}>
+                            0.0: Claude Code'a Giriş
+                          </h2>
+                          <p style={{ fontSize: '16px', color: '#475569', lineHeight: 1.8, marginBottom: '20px' }}>
+                            Claude Code, Anthropic'in yapay zeka destekli terminal aracıdır. Terminal üzerinden komutlar vererek kod yazar, dosya oluşturur, projeleri yönetir ve hata ayıklar.
+                          </p>
+                          <div style={{ backgroundColor: '#fff1f2', border: '1px solid #fecdd3', borderRadius: '12px', padding: '20px 24px', marginBottom: '20px' }}>
+                            <p style={{ color: '#881337', fontSize: '15px', lineHeight: 1.7, margin: '0 0 8px', fontWeight: 700 }}>Ne Yapabilir?</p>
+                            <ul style={{ color: '#9f1239', fontSize: '15px', lineHeight: 2, margin: 0, paddingLeft: '20px' }}>
+                              <li>Doğal dille komut vererek uygulama geliştir</li>
+                              <li>Mevcut kodunu oku, düzenle ve açıkla</li>
+                              <li>Hataları otomatik olarak tespit edip düzelt</li>
+                              <li>GitHub'a push, test çalıştırma gibi işlemleri yönet</li>
+                            </ul>
+                          </div>
+                        </section>
+                      )}
+
+                      {educationActiveLesson === 'mod0-1' && (
+                        <section style={{ marginBottom: '40px' }}>
+                          <h2 style={{ fontSize: '22px', fontWeight: 700, color: '#0f172a', marginBottom: '16px', paddingBottom: '12px', borderBottom: '2px solid #f1f5f9' }}>
+                            0.1: Kurulum
+                          </h2>
+                          <p style={{ fontSize: '16px', color: '#475569', lineHeight: 1.8, marginBottom: '20px' }}>
+                            Claude Code'u kurmak için bilgisayarında Node.js yüklü olması yeterli.
+                          </p>
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                            {[
+                              { adim: '1', baslik: 'Node.js Kur', aciklama: 'nodejs.org adresinden Node.js 18+ sürümünü indir ve kur.' },
+                              { adim: '2', baslik: 'Claude Code Yükle', aciklama: 'Terminali aç ve şu komutu çalıştır: npm install -g @anthropic-ai/claude-code' },
+                              { adim: '3', baslik: 'Giriş Yap', aciklama: 'claude komutuyla başlat, Anthropic hesabınla giriş yap.' },
+                            ].map((item, i) => (
+                              <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '16px', backgroundColor: 'white', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '16px 20px' }}>
+                                <div style={{ width: '32px', height: '32px', backgroundColor: '#f43f5e', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                                  <span style={{ fontSize: '14px', fontWeight: 700, color: 'white' }}>{item.adim}</span>
+                                </div>
+                                <div>
+                                  <p style={{ fontSize: '15px', fontWeight: 700, color: '#0f172a', margin: '0 0 4px' }}>{item.baslik}</p>
+                                  <p style={{ fontSize: '14px', color: '#64748b', margin: 0, lineHeight: 1.6 }}>{item.aciklama}</p>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </section>
+                      )}
+
+                      {educationActiveLesson === 'mod0-2' && (
+                        <section style={{ marginBottom: '40px' }}>
+                          <h2 style={{ fontSize: '22px', fontWeight: 700, color: '#0f172a', marginBottom: '16px', paddingBottom: '12px', borderBottom: '2px solid #f1f5f9' }}>
+                            0.2: İndir ve Başlat
+                          </h2>
+                          <p style={{ fontSize: '16px', color: '#475569', lineHeight: 1.8, marginBottom: '20px' }}>
+                            Kurulum tamamlandıktan sonra Claude Code'u ilk kez başlatmak çok kolay.
+                          </p>
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                            {[
+                              { adim: '1', baslik: 'Terminali Aç', aciklama: 'Windows\'ta PowerShell, Mac\'te Terminal uygulamasını aç.' },
+                              { adim: '2', baslik: 'Proje Klasörüne Git', aciklama: 'cd komutunu kullanarak proje klasörüne git. Örnek: cd belgeler/projem' },
+                              { adim: '3', baslik: 'Claude\'u Başlat', aciklama: '"claude" yazıp Enter\'a bas. Yapay zeka seni karşılayacak.' },
+                              { adim: '4', baslik: 'İlk Komutu Ver', aciklama: '"Merhaba, bu klasörde ne var?" diyerek başlayabilirsin.' },
+                            ].map((item, i) => (
+                              <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '16px', backgroundColor: 'white', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '16px 20px' }}>
+                                <div style={{ width: '32px', height: '32px', backgroundColor: '#f43f5e', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                                  <span style={{ fontSize: '14px', fontWeight: 700, color: 'white' }}>{item.adim}</span>
+                                </div>
+                                <div>
+                                  <p style={{ fontSize: '15px', fontWeight: 700, color: '#0f172a', margin: '0 0 4px' }}>{item.baslik}</p>
+                                  <p style={{ fontSize: '14px', color: '#64748b', margin: 0, lineHeight: 1.6 }}>{item.aciklama}</p>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </section>
+                      )}
+                    </>
+                  ) : (
+                  /* Diğer araçlar için placeholder */
                   <>
                     <section id="giris" style={{ marginBottom: '52px' }}>
                       <h2 style={{ fontSize: '20px', fontWeight: 700, color: '#0f172a', marginBottom: '16px', paddingBottom: '12px', borderBottom: '2px solid #f1f5f9' }}>
@@ -1750,6 +1923,7 @@ export default function AICompetencyApp() {
                       </div>
                     </section>
                   </>
+                  )
                 ) : (
                   /* Diğer seviyeler — genel placeholder */
                   <>
@@ -1813,7 +1987,77 @@ export default function AICompetencyApp() {
                     Video Listesi
                   </h2>
 
-                  {/* Seviye 1 — gerçek video */}
+                  {/* Claude Code özel kurs kartı */}
+                  {educationActiveLevel === 4 && educationActiveTool === 0 && (
+                    <a
+                      href="https://anthropic.skilljar.com/claude-code-in-action/303233"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        display: 'flex',
+                        gap: '0',
+                        borderRadius: '18px',
+                        overflow: 'hidden',
+                        border: '2px solid #e9d5ff',
+                        textDecoration: 'none',
+                        marginBottom: '16px',
+                        boxShadow: '0 4px 20px rgba(124,58,237,0.1)',
+                        transition: 'all 0.25s',
+                        background: 'white',
+                      }}
+                      onMouseOver={(e) => {
+                        e.currentTarget.style.borderColor = '#7c3aed';
+                        e.currentTarget.style.boxShadow = '0 8px 32px rgba(124,58,237,0.2)';
+                        e.currentTarget.style.transform = 'translateY(-2px)';
+                      }}
+                      onMouseOut={(e) => {
+                        e.currentTarget.style.borderColor = '#e9d5ff';
+                        e.currentTarget.style.boxShadow = '0 4px 20px rgba(124,58,237,0.1)';
+                        e.currentTarget.style.transform = 'translateY(0)';
+                      }}
+                    >
+                      {/* Sol — görsel */}
+                      <div style={{
+                        width: '200px',
+                        minHeight: '110px',
+                        flexShrink: 0,
+                        overflow: 'hidden',
+                        background: '#1e1b4b',
+                      }}>
+                        <img
+                          src="/claude-code-promo.svg"
+                          alt="Claude Code in Action"
+                          style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                        />
+                      </div>
+
+                      {/* Sağ — içerik */}
+                      <div style={{ flex: 1, padding: '18px 22px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '8px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '2px' }}>
+                          <span style={{
+                            fontSize: '11px', fontWeight: 700,
+                            background: 'linear-gradient(135deg, #7c3aed, #4f46e5)',
+                            color: 'white', padding: '3px 10px', borderRadius: '20px',
+                            letterSpacing: '0.5px', textTransform: 'uppercase'
+                          }}>
+                            Resmi Kurs
+                          </span>
+                        </div>
+                        <div style={{ fontSize: '16px', fontWeight: 700, color: '#0f172a', lineHeight: 1.3 }}>
+                          Claude Code in Action
+                        </div>
+                        <div style={{ fontSize: '13px', color: '#64748b', lineHeight: 1.5 }}>
+                          MCP sunucuları, GitHub entegrasyonu, bağlam yönetimi ve otomasyon komutlarını kapsayan kapsamlı geliştirici eğitimi.
+                        </div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '4px' }}>
+                          <ExternalLink style={{ width: '13px', height: '13px', color: '#7c3aed' }} />
+                          <span style={{ fontSize: '12px', color: '#7c3aed', fontWeight: 600 }}>anthropic.skilljar.com'da aç</span>
+                        </div>
+                      </div>
+                    </a>
+                  )}
+
+                  {/* YouTube video listesi */}
                   {TOOL_NAV_LEVELS.includes(educationActiveLevel) && educationActiveTool !== null
                       && activeLevelData.tools[educationActiveTool] ? (
                     <YouTubeVideoList
@@ -1919,8 +2163,8 @@ export default function AICompetencyApp() {
               height: 'calc(100vh - 72px)', overflowY: 'auto'
             }}>
               <div style={{
-                fontSize: '11px', fontWeight: 700, color: '#94a3b8',
-                letterSpacing: '1.5px', textTransform: 'uppercase', marginBottom: '12px'
+                fontSize: '12px', fontWeight: 700, color: '#94a3b8',
+                letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '12px'
               }}>
                 Bu Sayfada
               </div>
@@ -1929,8 +2173,8 @@ export default function AICompetencyApp() {
                   key={section.id}
                   href={`#${section.id}`}
                   style={{
-                    display: 'block', fontSize: '13px', color: '#64748b',
-                    textDecoration: 'none', padding: '6px 0 6px 12px',
+                    display: 'block', fontSize: '14px', color: '#64748b',
+                    textDecoration: 'none', padding: '8px 0 8px 12px',
                     borderLeft: '2px solid #e2e8f0',
                     marginBottom: '4px', transition: 'all 0.15s'
                   }}
@@ -2635,7 +2879,7 @@ export default function AICompetencyApp() {
                 textAlign: 'center'
               }}>
                 <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: '14px', marginBottom: '8px' }}>
-                  Yapay Zeka Yetkinlik Seviyeniz
+                  Yapay Zeka Gelişim Seviyeniz
                 </p>
                 <h2 style={{ fontSize: '48px', fontWeight: 800, color: 'white', margin: '0 0 4px 0' }}>
                   {overallLevel >= 0 ? currentLevelData.id : 1}. Seviye
@@ -2869,7 +3113,7 @@ export default function AICompetencyApp() {
             {/* Print Footer */}
             <div style={{ display: 'none' }} className="print:block">
               <p style={{ marginTop: '32px', paddingTop: '16px', borderTop: '1px solid #e2e8f0', textAlign: 'center', color: '#64748b', fontSize: '12px' }}>
-                Yapay Zeka Yetkinlik Değerlendirmesi - {new Date().toLocaleDateString('tr-TR')}
+                Yapay Zeka Gelişim Modeli - {new Date().toLocaleDateString('tr-TR')}
               </p>
             </div>
           </div>

@@ -99,7 +99,7 @@ const levelDetails = [
       "Farklı hedef kitleler için yanıt biçimini ayarlayabiliyor",
       "Hangi yapay zeka aracının hangi iş için uygun olduğunu ayırt ediyor"
     ],
-    tools: ["ChatGPT", "Gemini", "CoPilot", "Grok", "Perplexity"]
+    tools: ["ChatGPT", "Gemini"]
   },
   {
     level: 2,
@@ -113,7 +113,7 @@ const levelDetails = [
       "Asistanı belirli bir rol, süreç veya uzmanlık alanına göre sınırlıyor",
       "Çıktı kalitesini sürdürülebilir şekilde koruyor"
     ],
-    tools: ["Gemini GEM", "Custom GPT", "NotebookLM", "ChippAI"]
+    tools: ["Gemini GEM", "Custom GPT", "NotebookLM"]
   },
   {
     level: 3,
@@ -127,7 +127,7 @@ const levelDetails = [
       "Kod yazmadan çalışan bir prototip oluşturuyor",
       "Prototipi geri bildirimle geliştiriyor"
     ],
-    tools: ["Google AI Studio", "Claude Artifacts", "Replit", "Cursor", "Lovable"]
+    tools: ["Google AI Studio"]
   },
   {
     level: 4,
@@ -141,7 +141,7 @@ const levelDetails = [
       "Yapay zekayı yalnızca gerekli adımlarda devreye alıyor",
       "Sürecin kalitesini ve doğruluğunu izliyor"
     ],
-    tools: ["n8n", "Make.com", "Google Opal", "OpenAI Platform"]
+    tools: ["n8n"]
   },
   {
     level: 5,
@@ -155,7 +155,7 @@ const levelDetails = [
       "Hatalı durumları ve istisnaları öngörüyor",
       "Süreci minimum insan müdahalesiyle yönetiyor"
     ],
-    tools: ["Claude Code", "Google Antigravity", "Clawbot", "ChatGPT Codex"]
+    tools: ["Claude Code", "Google Antigravity", "Clawbot"]
   }
 ];
 
@@ -374,7 +374,7 @@ export default function GlossaryModal({ isOpen, onClose }) {
             </div>
             <div>
               <h2 style={{ fontSize: '20px', fontWeight: 700, color: '#0f172a', margin: 0 }}>
-                Yapay Zeka Yetkinlik Sözlüğü
+                Yapay Zeka Gelişim Sözlüğü
               </h2>
               <p style={{ fontSize: '14px', color: '#64748b', margin: 0 }}>
                 Seviyeler, modeller ve yaklaşımlar
@@ -450,7 +450,7 @@ export default function GlossaryModal({ isOpen, onClose }) {
           {activeTab === 'levels' && (
             <div>
               <p style={{ color: '#64748b', fontSize: '14px', marginBottom: '16px' }}>
-                Yapay Zeka Yetkinlik Piramidi <strong>5 seviyeden</strong> oluşur. Her seviye farklı beceriler ve araçlar gerektirir.
+                Yapay Zeka Gelişim Modeli <strong>5 seviyeden</strong> oluşur. Her seviye farklı beceriler ve araçlar gerektirir.
               </p>
               {filteredLevels.map((level) => {
                 const Icon = level.icon;

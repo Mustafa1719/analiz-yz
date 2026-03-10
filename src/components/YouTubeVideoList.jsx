@@ -3,7 +3,11 @@ import { ExternalLink, PlayCircle, AlertCircle, Clock } from 'lucide-react';
 import { useYouTubeSearch } from '../hooks/useYouTubeSearch';
 
 function timeAgo(dateStr) {
-  const diff = (Date.now() - new Date(dateStr).getTime()) / 1000;
+  if (!dateStr) return '';
+  const date = new Date(dateStr);
+  if (isNaN(date.getTime())) return '';
+  const diff = (Date.now() - date.getTime()) / 1000;
+  if (diff < 0) return '';
   if (diff < 3600) return `${Math.floor(diff / 60)} dakika önce`;
   if (diff < 86400) return `${Math.floor(diff / 3600)} saat önce`;
   if (diff < 2592000) return `${Math.floor(diff / 86400)} gün önce`;
@@ -71,10 +75,12 @@ function VideoCard({ video, color }) {
             <div style={{ width: '7px', height: '7px', borderRadius: '50%', backgroundColor: color, flexShrink: 0 }} />
             {channelTitle}
           </span>
-          <span style={{ fontSize: '12px', color: '#94a3b8', display: 'flex', alignItems: 'center', gap: '4px' }}>
-            <Clock style={{ width: '12px', height: '12px' }} />
-            {timeAgo(publishedAt)}
-          </span>
+          {timeAgo(publishedAt) && (
+            <span style={{ fontSize: '12px', color: '#94a3b8', display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <Clock style={{ width: '12px', height: '12px' }} />
+              {timeAgo(publishedAt)}
+            </span>
+          )}
         </div>
       </div>
 
