@@ -1715,8 +1715,31 @@ export default function AICompetencyApp() {
             {/* ——— OKUYARAK ÖĞREN ——— */}
             {educationActiveSection === 'read' && (
               <>
-                {/* Seviye 1 — Gemini Prompting Slaytları */}
-                {educationActiveLevel === 0 ? (
+                {/* Seviye 1 — ChatGPT: yakında / Gemini: Prompting Slaytları */}
+                {educationActiveLevel === 0 && educationActiveTool === 0 ? (
+                  /* ChatGPT — içerik yakında */
+                  <section style={{ marginBottom: '52px' }}>
+                    <div style={{
+                      backgroundColor: '#f8fafc', border: '2px dashed #e2e8f0',
+                      borderRadius: '16px', padding: '48px 32px', textAlign: 'center'
+                    }}>
+                      <div style={{
+                        width: '56px', height: '56px', backgroundColor: '#f1f5f9',
+                        borderRadius: '14px', display: 'flex', alignItems: 'center',
+                        justifyContent: 'center', margin: '0 auto 16px'
+                      }}>
+                        <BookOpen style={{ width: '26px', height: '26px', color: '#94a3b8' }} />
+                      </div>
+                      <p style={{ fontSize: '17px', fontWeight: 700, color: '#334155', margin: '0 0 8px' }}>
+                        İçerik Hazırlanıyor
+                      </p>
+                      <p style={{ fontSize: '14px', color: '#94a3b8', margin: 0 }}>
+                        ChatGPT için okuma içerikleri yakında eklenecek.
+                      </p>
+                    </div>
+                  </section>
+                ) : educationActiveLevel === 0 && educationActiveTool === 1 ? (
+                  /* Gemini — Prompting Slaytları */
                   <>
                     <section id="giris" style={{ marginBottom: '52px' }}>
                       <h2 style={{ fontSize: '20px', fontWeight: 700, color: '#0f172a', marginBottom: '16px', paddingBottom: '12px', borderBottom: '2px solid #f1f5f9' }}>
