@@ -670,7 +670,7 @@ export default function AICompetencyApp() {
               margin: '0 auto 48px'
             }}>
               Yapay zekayı{' '}
-              <strong style={{ color: '#0f172a' }}>öğrenin, uygulayın ve büyüyün.</strong>{' '}
+              <strong style={{ color: '#0f172a' }}>keşfedin, öğrenin ve geliştirin.</strong>{' '}
               Seviye seviye ilerleyen eğitimler ve kişisel yetkinlik değerlendirmesi bir arada.
             </p>
 
@@ -1120,7 +1120,7 @@ export default function AICompetencyApp() {
               {[
                 { icon: Compass, title: 'Test değil, pusula', desc: 'Doğru veya yanlış cevap yok. Amacımız yargılamak değil, yön göstermek.' },
                 { icon: Lock, title: 'Verileriniz sizde', desc: 'Yanıtlarınız sunucuya gönderilmez. Tüm işlem tarayıcınızda gerçekleşir.' },
-                { icon: Target, title: 'Gelişim odaklı', desc: 'Eğitimler ve değerlendirme birlikte çalışır — öğrenin, uygulayın, bir üst seviyeye geçin.' }
+                { icon: Target, title: 'Gelişim odaklı', desc: 'Eğitimler ve değerlendirme birlikte çalışır — keşfedin, öğrenin, geliştirin.' }
               ].map((item, i) => {
                 const ItemIcon = item.icon;
                 return (
