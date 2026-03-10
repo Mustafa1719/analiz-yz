@@ -1314,7 +1314,7 @@ export default function AICompetencyApp() {
           borderBottom: '1px solid #e2e8f0',
           boxShadow: '0 1px 3px rgba(0,0,0,0.05)'
         }}>
-          <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 24px' }}>
+          <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 24px' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: isMobile ? '60px' : '72px' }}>
               {/* Logo */}
               <div
