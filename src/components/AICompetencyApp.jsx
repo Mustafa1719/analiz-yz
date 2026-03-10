@@ -608,27 +608,6 @@ export default function AICompetencyApp() {
                   <TrendingUp style={{ width: isMobile ? '20px' : '16px', height: isMobile ? '20px' : '16px' }} />
                   {!isMobile && 'Haberler'}
                 </button>
-                <button
-                  onClick={startAssessment}
-                  aria-label="Değerlendirmeyi başlat"
-                  style={{
-                    background: 'linear-gradient(135deg, #2563eb, #4f46e5)',
-                    color: 'white',
-                    fontSize: isMobile ? '13px' : '14px',
-                    fontWeight: 600,
-                    padding: isMobile ? '10px 16px' : '12px 24px',
-                    borderRadius: '12px',
-                    border: 'none',
-                    cursor: 'pointer',
-                    boxShadow: '0 4px 12px rgba(37,99,235,0.3)',
-                    minHeight: '44px',
-                    outline: 'none'
-                  }}
-                  onFocus={(e) => e.currentTarget.style.boxShadow = '0 0 0 3px rgba(37,99,235,0.5)'}
-                  onBlur={(e) => e.currentTarget.style.boxShadow = '0 4px 12px rgba(37,99,235,0.3)'}
-                >
-                  {isMobile ? 'Değerlendirme' : 'Değerlendirmeye Başla'}
-                </button>
               </nav>
             </div>
           </div>
@@ -1388,21 +1367,6 @@ export default function AICompetencyApp() {
                 >
                   <TrendingUp style={{ width: isMobile ? '20px' : '16px', height: isMobile ? '20px' : '16px' }} />
                   {!isMobile && 'Haberler'}
-                </button>
-                <button
-                  onClick={startAssessment}
-                  aria-label="Değerlendirmeyi başlat"
-                  style={{
-                    background: 'linear-gradient(135deg, #2563eb, #4f46e5)',
-                    color: 'white', fontSize: isMobile ? '13px' : '14px', fontWeight: 600,
-                    padding: isMobile ? '10px 16px' : '12px 24px', borderRadius: '12px',
-                    border: 'none', cursor: 'pointer',
-                    boxShadow: '0 4px 12px rgba(37,99,235,0.3)', minHeight: '44px', outline: 'none'
-                  }}
-                  onFocus={(e) => e.currentTarget.style.boxShadow = '0 0 0 3px rgba(37,99,235,0.5)'}
-                  onBlur={(e) => e.currentTarget.style.boxShadow = '0 4px 12px rgba(37,99,235,0.3)'}
-                >
-                  {isMobile ? 'Değerlendirme' : 'Değerlendirmeye Başla'}
                 </button>
               </nav>
             </div>
