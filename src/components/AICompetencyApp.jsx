@@ -27,7 +27,7 @@ const competencyLevels = [
     color: "from-blue-500 to-blue-700",
     bgColor: "bg-blue-500",
     description: "Yapay zekaya doğru talimatlar vererek etkili sonuçlar alma becerisi.",
-    tools: ["ChatGPT", "Gemini"],
+    tools: ["Gemini", "ChatGPT"],
     questions: [
       {
         text: "Yapay zeka araçlarını düzenli kullanıyorum",
@@ -1715,8 +1715,8 @@ export default function AICompetencyApp() {
             {/* ——— OKUYARAK ÖĞREN ——— */}
             {educationActiveSection === 'read' && (
               <>
-                {/* Seviye 1 — ChatGPT: yakında / Gemini: Prompting Slaytları */}
-                {educationActiveLevel === 0 && educationActiveTool === 0 ? (
+                {/* Seviye 1 — Gemini: Prompting Slaytları / ChatGPT: yakında */}
+                {educationActiveLevel === 0 && educationActiveTool === 1 ? (
                   /* ChatGPT — içerik yakında */
                   <section style={{ marginBottom: '52px' }}>
                     <div style={{
@@ -1738,7 +1738,7 @@ export default function AICompetencyApp() {
                       </p>
                     </div>
                   </section>
-                ) : educationActiveLevel === 0 && educationActiveTool === 1 ? (
+                ) : educationActiveLevel === 0 && educationActiveTool === 0 ? (
                   /* Gemini — Prompting Slaytları */
                   <>
                     <section id="giris" style={{ marginBottom: '52px' }}>
