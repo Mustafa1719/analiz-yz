@@ -1342,6 +1342,21 @@ export default function AICompetencyApp() {
               </div>
               {/* Nav */}
               <nav style={{ display: 'flex', alignItems: 'center', gap: isMobile ? '8px' : '12px' }}>
+                {/* Eğitim - aktif sayfa göstergesi (ilk sırada, ana sayfa ile aynı konum) */}
+                <button
+                  aria-current="page"
+                  aria-label="Şu an Eğitim sayfasındasınız"
+                  style={{
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+                    color: '#2563eb', fontSize: '14px', fontWeight: 600,
+                    padding: isMobile ? '10px' : '10px 16px', borderRadius: '10px',
+                    border: '1px solid #dbeafe', background: '#eff6ff', cursor: 'default',
+                    minWidth: '44px', minHeight: '44px', outline: 'none'
+                  }}
+                >
+                  <BookOpen style={{ width: isMobile ? '20px' : '16px', height: isMobile ? '20px' : '16px' }} />
+                  {!isMobile && 'Eğitimler'}
+                </button>
                 <button
                   onClick={() => setShowGlossary(true)}
                   aria-label="Kavramlar sözlüğünü aç"
@@ -1373,21 +1388,6 @@ export default function AICompetencyApp() {
                 >
                   <TrendingUp style={{ width: isMobile ? '20px' : '16px', height: isMobile ? '20px' : '16px' }} />
                   {!isMobile && 'Haberler'}
-                </button>
-                {/* Eğitim - aktif sayfa göstergesi */}
-                <button
-                  aria-current="page"
-                  aria-label="Şu an Eğitim sayfasındasınız"
-                  style={{
-                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
-                    color: '#2563eb', fontSize: '14px', fontWeight: 600,
-                    padding: isMobile ? '10px' : '10px 16px', borderRadius: '10px',
-                    border: '1px solid #dbeafe', background: '#eff6ff', cursor: 'default',
-                    minWidth: '44px', minHeight: '44px', outline: 'none'
-                  }}
-                >
-                  <BookOpen style={{ width: isMobile ? '20px' : '16px', height: isMobile ? '20px' : '16px' }} />
-                  {!isMobile && 'Eğitim'}
                 </button>
                 <button
                   onClick={startAssessment}
