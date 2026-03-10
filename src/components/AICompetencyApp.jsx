@@ -507,17 +507,30 @@ export default function AICompetencyApp() {
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: isMobile ? '60px' : '72px' }}>
               {/* Logo */}
               <div style={{ display: 'flex', alignItems: 'center', gap: isMobile ? '10px' : '16px' }}>
+                {/* 5 seviye çubuk logosu */}
                 <div style={{
                   width: isMobile ? '40px' : '48px',
                   height: isMobile ? '40px' : '48px',
-                  background: 'linear-gradient(135deg, #2563eb, #4f46e5)',
+                  background: '#0f172a',
                   borderRadius: isMobile ? '10px' : '14px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  boxShadow: '0 4px 12px rgba(37,99,235,0.3)'
+                  boxShadow: '0 4px 12px rgba(15,23,42,0.35)',
+                  flexShrink: 0,
                 }}>
-                  <Brain style={{ width: isMobile ? '20px' : '24px', height: isMobile ? '20px' : '24px', color: 'white' }} />
+                  <svg width={isMobile ? '22' : '26'} height={isMobile ? '22' : '26'} viewBox="0 0 26 26" fill="none">
+                    {/* Seviye 1 — en geniş, mavi */}
+                    <rect x="1"  y="21" width="24" height="4" rx="2" fill="#3b82f6"/>
+                    {/* Seviye 2 — sarı */}
+                    <rect x="4"  y="15" width="18" height="4" rx="2" fill="#f59e0b"/>
+                    {/* Seviye 3 — yeşil */}
+                    <rect x="7"  y="9"  width="12" height="4" rx="2" fill="#10b981"/>
+                    {/* Seviye 4 — mor */}
+                    <rect x="10" y="3"  width="6"  height="4" rx="2" fill="#8b5cf6"/>
+                    {/* Seviye 5 — en dar, pembe (apex) */}
+                    <rect x="12" y="0"  width="2"  height="2" rx="1" fill="#f43f5e"/>
+                  </svg>
                 </div>
                 {!isMobile && (
                   <div>
@@ -1324,14 +1337,21 @@ export default function AICompetencyApp() {
                 <div style={{
                   width: isMobile ? '40px' : '48px',
                   height: isMobile ? '40px' : '48px',
-                  background: 'linear-gradient(135deg, #2563eb, #4f46e5)',
+                  background: '#0f172a',
                   borderRadius: isMobile ? '10px' : '14px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  boxShadow: '0 4px 12px rgba(37,99,235,0.3)'
+                  boxShadow: '0 4px 12px rgba(15,23,42,0.35)',
+                  flexShrink: 0,
                 }}>
-                  <Brain style={{ width: isMobile ? '20px' : '24px', height: isMobile ? '20px' : '24px', color: 'white' }} />
+                  <svg width={isMobile ? '22' : '26'} height={isMobile ? '22' : '26'} viewBox="0 0 26 26" fill="none">
+                    <rect x="1"  y="21" width="24" height="4" rx="2" fill="#3b82f6"/>
+                    <rect x="4"  y="15" width="18" height="4" rx="2" fill="#f59e0b"/>
+                    <rect x="7"  y="9"  width="12" height="4" rx="2" fill="#10b981"/>
+                    <rect x="10" y="3"  width="6"  height="4" rx="2" fill="#8b5cf6"/>
+                    <rect x="12" y="0"  width="2"  height="2" rx="1" fill="#f43f5e"/>
+                  </svg>
                 </div>
                 {!isMobile && (
                   <div>
