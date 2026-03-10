@@ -89,7 +89,7 @@ const competencyLevels = [
     color: "from-amber-500 to-orange-600",
     bgColor: "bg-amber-500",
     description: "Tekrar eden işler için özel yapay zeka asistanları oluşturabilme.",
-    tools: ["Gemini GEM", "Custom GPT", "NotebookLM"],
+    tools: ["Gemini GEM", "NotebookLM", "Custom GPT"],
     questions: [
       {
         text: "Tekrar eden işlerim için özel asistan oluşturdum",
